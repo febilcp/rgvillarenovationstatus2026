@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
 <style>
-/* ===== ROOT VARIABLES ===== */
 :root {
     --primary: #1e3a5f;
     --primary-light: #2d5a87;
@@ -30,37 +29,28 @@
     --transition: all 0.3s ease;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: var(--dark);
     line-height: 1.6;
 }
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+.container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-/* ===== HEADER ===== */
+/* Header */
 .header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    color: var(--white);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     padding: 15px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow);
 }
 
 .header .container {
@@ -71,93 +61,76 @@ body {
     gap: 15px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+.logo { display: flex; align-items: center; gap: 12px; }
 
 .logo i {
-    font-size: 2.2rem;
-    color: var(--secondary);
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.logo-text h1 {
-    font-size: 1.3rem;
-    font-weight: 700;
-}
+.logo-text h1 { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+.logo-text span { font-size: 0.75rem; color: var(--gray); }
 
-.logo-text span {
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+.header-actions { display: flex; align-items: center; gap: 12px; }
 
 .last-updated {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.1);
-    padding: 8px 15px;
+    gap: 6px;
+    background: var(--light);
+    padding: 8px 14px;
     border-radius: var(--radius-xl);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    color: var(--gray);
 }
 
-.last-updated i { color: var(--success-light); }
+.last-updated i { color: var(--success); }
 
 .refresh-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: var(--secondary);
+    gap: 6px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: var(--white);
     border: none;
     border-radius: var(--radius-xl);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
     font-family: inherit;
 }
 
-.refresh-btn:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
-}
+.refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(52,152,219,0.4); }
+.refresh-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
-.refresh-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-/* ===== STATS GRID ===== */
+/* Stats Grid */
 .dashboard { padding: 25px 0 15px; }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 
 .stat-card {
-    background: var(--white);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
     border-radius: var(--radius);
-    padding: 20px;
+    padding: 22px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
     box-shadow: var(--shadow);
     transition: var(--transition);
     border-left: 4px solid var(--secondary);
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
+.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
 .stat-card.total { border-left-color: var(--secondary); }
 .stat-card.completed { border-left-color: var(--success); }
@@ -174,30 +147,22 @@ body {
     font-size: 1.4rem;
 }
 
-.stat-card.total .stat-icon { background: rgba(52,152,219,0.1); color: var(--secondary); }
-.stat-card.completed .stat-icon { background: rgba(39,174,96,0.1); color: var(--success); }
-.stat-card.in-progress .stat-icon { background: rgba(243,156,18,0.1); color: var(--warning); }
-.stat-card.pending .stat-icon { background: rgba(23,162,184,0.1); color: var(--info); }
+.stat-card.total .stat-icon { background: rgba(52,152,219,0.15); color: var(--secondary); }
+.stat-card.completed .stat-icon { background: rgba(39,174,96,0.15); color: var(--success); }
+.stat-card.in-progress .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
+.stat-card.pending .stat-icon { background: rgba(23,162,184,0.15); color: var(--info); }
 
-.stat-info h3 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    line-height: 1;
-}
+.stat-info h3 { font-size: 1.9rem; font-weight: 700; line-height: 1; color: var(--dark); }
+.stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
 
-.stat-info p {
-    color: var(--gray);
-    font-size: 0.85rem;
-    margin-top: 3px;
-}
-
-/* ===== PROGRESS BAR ===== */
+/* Progress */
 .progress-section { padding: 10px 0 15px; }
 
 .progress-card {
-    background: var(--white);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
     border-radius: var(--radius);
-    padding: 20px 25px;
+    padding: 22px;
     box-shadow: var(--shadow);
 }
 
@@ -214,20 +179,17 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    color: var(--dark);
 }
 
 .progress-header h2 i { color: var(--secondary); }
 
-.progress-percentage {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--success);
-}
+.progress-percentage { font-size: 1.6rem; font-weight: 700; color: var(--success); }
 
 .progress-bar-container {
     background: var(--gray-light);
     border-radius: var(--radius-xl);
-    height: 20px;
+    height: 22px;
     overflow: hidden;
 }
 
@@ -237,31 +199,39 @@ body {
     background: linear-gradient(90deg, var(--success), var(--success-light));
     border-radius: var(--radius-xl);
     transition: width 1.5s ease;
-}
-
-/* ===== FILTERS ===== */
-.filters-section { padding: 10px 0; }
-
-.filters-wrapper {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 15px 20px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-}
-
-.search-box {
-    flex: 1;
-    min-width: 250px;
     position: relative;
 }
 
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+/* Filters */
+.filters-section { padding: 10px 0; }
+
+.filters-wrapper {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-box { flex: 1; min-width: 240px; position: relative; }
+
 .search-box i {
     position: absolute;
-    left: 15px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--gray);
@@ -269,42 +239,33 @@ body {
 
 .search-box input {
     width: 100%;
-    padding: 12px 15px 12px 45px;
+    padding: 11px 14px 11px 42px;
     border: 2px solid var(--gray-light);
     border-radius: var(--radius-xl);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     transition: var(--transition);
     font-family: inherit;
 }
 
-.search-box input:focus {
-    outline: none;
-    border-color: var(--secondary);
-}
+.search-box input:focus { outline: none; border-color: var(--secondary); }
 
-.filter-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
+.filter-group { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .filter-group select {
-    padding: 10px 15px;
+    padding: 10px 14px;
     border: 2px solid var(--gray-light);
     border-radius: var(--radius);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     font-family: inherit;
     background: var(--white);
+    min-width: 130px;
 }
 
-.filter-group select:focus {
-    outline: none;
-    border-color: var(--secondary);
-}
+.filter-group select:focus { outline: none; border-color: var(--secondary); }
 
 .clear-btn {
-    padding: 10px 18px;
+    padding: 10px 16px;
     background: var(--gray-light);
     color: var(--gray);
     border: none;
@@ -312,32 +273,30 @@ body {
     cursor: pointer;
     transition: var(--transition);
     font-family: inherit;
+    font-size: 0.85rem;
 }
 
-.clear-btn:hover {
-    background: var(--danger);
-    color: var(--white);
-}
+.clear-btn:hover { background: var(--danger); color: var(--white); }
 
-/* ===== VIEW TOGGLE ===== */
-.view-toggle-section { padding: 15px 0; }
+/* View Toggle */
+.view-toggle-section { padding: 12px 0; }
 
 .view-toggle {
     display: flex;
-    gap: 8px;
-    background: var(--white);
-    padding: 6px;
+    gap: 6px;
+    background: rgba(255,255,255,0.95);
+    padding: 5px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     width: fit-content;
 }
 
 .view-btn {
-    padding: 8px 18px;
+    padding: 9px 16px;
     background: transparent;
     border: none;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: var(--transition);
     font-family: inherit;
@@ -358,11 +317,11 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== TABLE ===== */
+/* Table */
 .table-section { padding: 10px 0 30px; }
 
 .table-wrapper {
-    background: var(--white);
+    background: rgba(255,255,255,0.98);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
@@ -373,7 +332,7 @@ table { width: 100%; border-collapse: collapse; }
 th, td { padding: 14px 18px; text-align: left; }
 
 th {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
     color: var(--white);
     font-weight: 600;
     font-size: 0.85rem;
@@ -385,50 +344,50 @@ th {
 }
 
 th:hover { background: var(--primary-light); }
+th i { margin-left: 6px; font-size: 0.7rem; opacity: 0.7; }
 
-th i { margin-left: 6px; font-size: 0.7rem; opacity: 0.6; }
-
-td {
-    border-bottom: 1px solid var(--gray-light);
-    font-size: 0.9rem;
-}
+td { border-bottom: 1px solid var(--gray-light); font-size: 0.9rem; }
 
 tbody tr { transition: var(--transition); }
-tbody tr:hover { background: rgba(52,152,219,0.04); }
+tbody tr:hover { background: rgba(52,152,219,0.05); }
+tbody tr:nth-child(even) { background: rgba(0,0,0,0.02); }
+tbody tr:nth-child(even):hover { background: rgba(52,152,219,0.05); }
+
 td:first-child { font-weight: 600; color: var(--primary); }
 
 /* Status Badges */
 .status-badge {
     padding: 5px 14px;
     border-radius: var(--radius-xl);
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.3px;
     display: inline-block;
 }
 
-.status-renovated, .status-completed, .status-done {
+.status-renovated, .status-completed, .status-done, .status-yes {
     background: rgba(39,174,96,0.12);
     color: var(--success);
 }
 
-.status-in-progress, .status-ongoing {
+.status-in-progress, .status-ongoing, .status-working {
     background: rgba(243,156,18,0.12);
     color: var(--warning);
 }
 
-.status-pending, .status-waiting {
+.status-pending, .status-waiting, .status-no, .status-not {
     background: rgba(23,162,184,0.12);
     color: var(--info);
 }
 
-.status-on-hold, .status-hold {
+.status-on-hold, .status-hold, .status-delayed {
     background: rgba(231,76,60,0.12);
     color: var(--danger);
 }
 
 .remarks-cell {
-    max-width: 250px;
+    max-width: 280px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -439,7 +398,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 15px 18px;
     background: var(--light);
     flex-wrap: wrap;
     gap: 10px;
@@ -447,11 +406,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
 #rowCount { color: var(--gray); font-size: 0.85rem; }
 
-.pagination { display: flex; gap: 5px; }
+.pagination { display: flex; gap: 4px; }
 
 .pagination button {
-    width: 35px;
-    height: 35px;
+    width: 34px;
+    height: 34px;
     border: 1px solid var(--gray-light);
     background: var(--white);
     cursor: pointer;
@@ -474,17 +433,17 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
 .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ===== CARDS VIEW ===== */
+/* Cards */
 .cards-section { padding: 10px 0 30px; }
 
 .villa-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 18px;
 }
 
 .villa-card {
-    background: var(--white);
+    background: rgba(255,255,255,0.98);
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
@@ -492,44 +451,42 @@ td:first-child { font-weight: 600; color: var(--primary); }
     cursor: pointer;
 }
 
-.villa-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-}
+.villa-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 
 .villa-card-header {
     background: linear-gradient(135deg, var(--primary), var(--primary-light));
     color: var(--white);
-    padding: 18px;
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .villa-card-header h3 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.villa-card-body { padding: 18px; }
+.villa-card-header h3 i { font-size: 0.9rem; opacity: 0.8; }
+
+.villa-card-body { padding: 16px; }
 
 .villa-card-body .info-row {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px dashed var(--gray-light);
+    font-size: 0.9rem;
 }
 
 .villa-card-body .info-row:last-child { border-bottom: none; }
+.villa-card-body .label { color: var(--gray); display: flex; align-items: center; gap: 6px; }
+.villa-card-body .value { font-weight: 600; color: var(--dark); max-width: 150px; text-align: right; }
 
-.villa-card-body .label { color: var(--gray); font-size: 0.85rem; }
-.villa-card-body .value { font-weight: 600; }
-
-/* ===== TIMELINE ===== */
+/* Timeline */
 .timeline-section { padding: 10px 0 30px; }
-
 .timeline { position: relative; padding-left: 30px; }
 
 .timeline::before {
@@ -539,64 +496,50 @@ td:first-child { font-weight: 600; color: var(--primary); }
     top: 0;
     bottom: 0;
     width: 3px;
-    background: linear-gradient(to bottom, var(--secondary), var(--success));
+    background: linear-gradient(to bottom, var(--secondary), var(--success), var(--warning));
     border-radius: 3px;
 }
 
 .timeline-item {
     position: relative;
-    padding: 18px;
-    background: var(--white);
+    padding: 16px;
+    background: rgba(255,255,255,0.98);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin-bottom: 15px;
-    margin-left: 20px;
+    margin-bottom: 14px;
+    margin-left: 18px;
     transition: var(--transition);
     cursor: pointer;
 }
 
-.timeline-item:hover { transform: translateX(5px); }
+.timeline-item:hover { transform: translateX(5px); box-shadow: var(--shadow-lg); }
 
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: -28px;
-    top: 22px;
+    left: -26px;
+    top: 20px;
     width: 14px;
     height: 14px;
     background: var(--secondary);
     border-radius: 50%;
     border: 3px solid var(--white);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .timeline-item.completed::before { background: var(--success); }
 .timeline-item.in-progress::before { background: var(--warning); }
 .timeline-item.pending::before { background: var(--info); }
 
-.timeline-date {
-    font-size: 0.8rem;
-    color: var(--gray);
-    margin-bottom: 5px;
-}
+.timeline-date { font-size: 0.8rem; color: var(--gray); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.timeline-title { font-size: 1.05rem; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
+.timeline-remarks { font-size: 0.85rem; color: var(--gray); margin-top: 8px; line-height: 1.5; }
 
-.timeline-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 8px;
-}
-
-.timeline-remarks {
-    font-size: 0.85rem;
-    color: var(--gray);
-    margin-top: 8px;
-}
-
-/* ===== LOADING ===== */
+/* Loading */
 .loading-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255,255,255,0.98);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -606,22 +549,39 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
 .loading-overlay.hidden { opacity: 0; pointer-events: none; }
 
-.loader { text-align: center; }
-
-.loader i {
-    font-size: 3rem;
-    color: var(--warning);
-    animation: bounce 1s infinite;
-}
+.loader { text-align: center; color: white; }
+.loader i { font-size: 3.5rem; animation: bounce 1s infinite; }
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-20px); }
 }
 
-.loader p { margin-top: 15px; font-size: 1.1rem; color: var(--primary); }
+.loader p { margin-top: 20px; font-size: 1.1rem; }
 
-/* ===== MODAL ===== */
+.loader-bar {
+    width: 180px;
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    margin: 20px auto 0;
+    overflow: hidden;
+}
+
+.loader-progress {
+    width: 40%;
+    height: 100%;
+    background: white;
+    border-radius: 4px;
+    animation: loading 1.2s infinite ease-in-out;
+}
+
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(350%); }
+}
+
+/* Modal */
 .modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -633,28 +593,30 @@ td:first-child { font-weight: 600; color: var(--primary); }
     opacity: 0;
     pointer-events: none;
     transition: var(--transition);
+    backdrop-filter: blur(5px);
 }
 
 .modal.show { opacity: 1; pointer-events: auto; }
 
 .modal-content {
     background: var(--white);
-    padding: 30px;
+    padding: 28px;
     border-radius: var(--radius);
     text-align: center;
     max-width: 420px;
-    width: 90%;
+    width: 92%;
     transform: scale(0.9);
     transition: var(--transition);
     position: relative;
+    box-shadow: var(--shadow-lg);
 }
 
 .modal.show .modal-content { transform: scale(1); }
 
 .modal-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     width: 32px;
     height: 32px;
     border: none;
@@ -662,58 +624,60 @@ td:first-child { font-weight: 600; color: var(--primary); }
     border-radius: 50%;
     cursor: pointer;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-close:hover { background: var(--danger); color: var(--white); }
 
-.modal-content h3 { margin: 15px 0 10px; }
-.modal-content p { color: var(--gray); margin-bottom: 20px; }
+.modal-content h3 { margin: 12px 0 8px; color: var(--dark); }
+.modal-content > p { color: var(--gray); margin-bottom: 18px; }
 
 .modal-actions { display: flex; gap: 10px; justify-content: center; }
 
 .modal-actions button {
-    padding: 10px 25px;
+    padding: 10px 22px;
     border: none;
     border-radius: var(--radius);
     cursor: pointer;
     font-family: inherit;
     font-weight: 500;
+    transition: var(--transition);
 }
 
 .btn-primary { background: var(--secondary); color: var(--white); }
 .btn-primary:hover { background: #2980b9; }
 .btn-secondary { background: var(--gray-light); color: var(--dark); }
+.btn-secondary:hover { background: #ddd; }
 
-/* ===== FOOTER ===== */
+/* Footer */
 .footer {
-    background: var(--primary);
-    color: rgba(255,255,255,0.8);
+    background: rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.9);
     padding: 20px 0;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
-.footer p { font-size: 0.9rem; }
-.footer i { color: var(--secondary); margin-right: 5px; }
+.footer p { font-size: 0.85rem; }
+.footer i { margin: 0 5px; }
+.footer a { color: white; text-decoration: none; }
 
-/* ===== EMPTY STATE ===== */
-.empty-state {
-    text-align: center;
-    padding: 50px 20px;
-    color: var(--gray);
-}
+/* Empty State */
+.empty-state { text-align: center; padding: 50px 20px; color: var(--gray); }
+.empty-state i { font-size: 3rem; color: var(--gray-light); margin-bottom: 15px; display: block; }
+.empty-state h3 { margin-bottom: 5px; color: var(--dark); }
 
-.empty-state i { font-size: 3rem; color: var(--gray-light); margin-bottom: 15px; }
-
-/* ===== SCROLL TOP ===== */
+/* Scroll Top */
 .scroll-top {
     position: fixed;
     bottom: 25px;
     right: 25px;
     width: 45px;
     height: 45px;
-    background: var(--primary);
-    color: var(--white);
+    background: var(--white);
+    color: var(--primary);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -729,16 +693,26 @@ td:first-child { font-weight: 600; color: var(--primary); }
 }
 
 .scroll-top.visible { opacity: 1; visibility: visible; }
-.scroll-top:hover { background: var(--secondary); transform: translateY(-3px); }
+.scroll-top:hover { transform: translateY(-3px); background: var(--primary); color: var(--white); }
 
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 768px) {
     .header .container { flex-direction: column; text-align: center; }
+    .logo { justify-content: center; }
+    .header-actions { width: 100%; justify-content: center; }
     .filters-wrapper { flex-direction: column; }
     .search-box { width: 100%; min-width: unset; }
     .filter-group { width: 100%; justify-content: center; }
+    .filter-group select { flex: 1; min-width: 100px; }
     .view-toggle { width: 100%; justify-content: center; }
     th, td { padding: 10px 12px; font-size: 0.8rem; }
+    .stat-info h3 { font-size: 1.5rem; }
+}
+
+@media print {
+    .header, .filters-section, .view-toggle-section, .footer, .scroll-top, .pagination { display: none !important; }
+    body { background: white; }
+    .stat-card, .table-wrapper { box-shadow: none; border: 1px solid #ddd; }
 }
 </style>
 </head>
@@ -823,21 +797,13 @@ td:first-child { font-weight: 600; color: var(--primary); }
             <div class="filters-wrapper">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search villa number or remarks...">
+                    <input type="text" id="searchInput" placeholder="Search villa, status, remarks...">
                 </div>
                 <div class="filter-group">
-                    <select id="statusFilter">
-                        <option value="">All Status</option>
-                    </select>
-                    <select id="villaFilter">
-                        <option value="">All Villas</option>
-                    </select>
-                    <select id="yearFilter">
-                        <option value="">All Years</option>
-                    </select>
-                    <button id="clearFilters" class="clear-btn">
-                        <i class="fas fa-times"></i> Clear
-                    </button>
+                    <select id="statusFilter"><option value="">All Status</option></select>
+                    <select id="villaFilter"><option value="">All Villas</option></select>
+                    <select id="yearFilter"><option value="">All Years</option></select>
+                    <button id="clearFilters" class="clear-btn"><i class="fas fa-times"></i> Clear</button>
                 </div>
             </div>
         </div>
@@ -847,15 +813,9 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <section class="view-toggle-section">
         <div class="container">
             <div class="view-toggle">
-                <button class="view-btn active" data-view="table">
-                    <i class="fas fa-table"></i> Table
-                </button>
-                <button class="view-btn" data-view="cards">
-                    <i class="fas fa-th-large"></i> Cards
-                </button>
-                <button class="view-btn" data-view="timeline">
-                    <i class="fas fa-stream"></i> Timeline
-                </button>
+                <button class="view-btn active" data-view="table"><i class="fas fa-table"></i> Table</button>
+                <button class="view-btn" data-view="cards"><i class="fas fa-th-large"></i> Cards</button>
+                <button class="view-btn" data-view="timeline"><i class="fas fa-stream"></i> Timeline</button>
             </div>
         </div>
     </section>
@@ -864,7 +824,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <section class="table-section view-content active" id="tableView">
         <div class="container">
             <div class="table-wrapper">
-                <table id="renovationTable">
+                <table>
                     <thead>
                         <tr>
                             <th data-sort="villaNo">Villa No <i class="fas fa-sort"></i></th>
@@ -902,6 +862,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
         <div class="loader">
             <i class="fas fa-hard-hat"></i>
             <p>Loading renovation data...</p>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
         </div>
     </div>
 
@@ -929,7 +890,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p><i class="fas fa-database"></i> Live data from Google Sheets | Villa Renovation Tracker © 2024</p>
+            <p><i class="fas fa-database"></i> Live data from Google Sheets <i class="fas fa-heart"></i> Villa Renovation Tracker © 2024</p>
         </div>
     </footer>
 
@@ -937,15 +898,24 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <button class="scroll-top" id="scrollTop"><i class="fas fa-chevron-up"></i></button>
 
 <script>
-// ===== YOUR GOOGLE SHEET CONFIGURATION =====
-const SHEET_ID = '1EJazbeMRER-7CtfCNjkweODfcwTtD5hG6hEtqwUwZYY';
-const SHEET_GID = '1397053624';
+// ============================================
+// YOUR GOOGLE SHEET CONFIGURATION
+// ============================================
+const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
+const SHEET_GID = '0';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
 
-// Column mapping (A=0, B=1, C=2, D=3)
-const COLUMNS = { villaNo: 0, status: 1, dateRenovated: 2, remarks: 3 };
+// Column mapping: A=0, B=1, C=2, D=3
+const COLUMNS = {
+    villaNo: 0,        // Column A - VILLA NO
+    status: 1,         // Column B - STATUS
+    dateRenovated: 2,  // Column C - DATE OF RENOVATED
+    remarks: 3         // Column D - REMARKS
+};
 
-// Global variables
+// ============================================
+// GLOBAL VARIABLES
+// ============================================
 let allData = [];
 let filteredData = [];
 let currentPage = 1;
@@ -953,24 +923,35 @@ const rowsPerPage = 20;
 let sortColumn = '';
 let sortDirection = 'asc';
 
-// Initialize
+// ============================================
+// INITIALIZE
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
     fetchData();
     setupEventListeners();
 });
 
-// Fetch data from Google Sheets
+// ============================================
+// FETCH DATA FROM GOOGLE SHEETS
+// ============================================
 async function fetchData() {
     showLoading(true);
     try {
         const response = await fetch(SHEET_URL);
         const text = await response.text();
+        
+        // Parse JSONP response
         const jsonStart = text.indexOf('{');
         const jsonEnd = text.lastIndexOf('}') + 1;
         const json = JSON.parse(text.substring(jsonStart, jsonEnd));
         
-        if (!json.table || !json.table.rows) throw new Error('No data found');
+        if (!json.table || !json.table.rows) {
+            throw new Error('No data found in sheet');
+        }
         
+        console.log('Columns found:', json.table.cols.map(c => c.label || c.id));
+        
+        // Convert rows to data array
         allData = json.table.rows.map((row, index) => {
             const cells = row.c;
             return {
@@ -981,11 +962,21 @@ async function fetchData() {
                 remarks: getCellValue(cells, COLUMNS.remarks)
             };
         }).filter(row => {
+            // Filter out empty rows and header row
             const villa = String(row.villaNo).toLowerCase().trim();
-            return villa && villa !== 'villa no' && villa !== 'villa number';
+            return villa && 
+                   villa !== '' && 
+                   villa !== 'villa no' && 
+                   villa !== 'villa number' &&
+                   villa !== 'villa' &&
+                   !villa.includes('villa no');
         });
         
+        console.log('Loaded', allData.length, 'rows');
+        if (allData.length > 0) console.log('Sample:', allData[0]);
+        
         filteredData = [...allData];
+        
         updateDashboard();
         updateFilters();
         renderTable();
@@ -993,9 +984,10 @@ async function fetchData() {
         renderTimeline();
         updateLastUpdated();
         showLoading(false);
+        
     } catch (error) {
         console.error('Error:', error);
-        showError('Unable to fetch data. Make sure the sheet is published to web.');
+        showError('Unable to fetch data. Please make sure the Google Sheet is published to web. Go to File → Share → Publish to web.');
         showLoading(false);
     }
 }
@@ -1008,37 +1000,59 @@ function getCellValue(cells, index) {
     return '';
 }
 
-// Status helpers
+// ============================================
+// STATUS DETECTION
+// ============================================
 function isCompleted(status) {
     if (!status) return false;
-    const s = String(status).toLowerCase();
-    return s.includes('renovated') || s.includes('complete') || s.includes('done') || s.includes('yes') || s === 'ok';
+    const s = String(status).toLowerCase().trim();
+    return s.includes('renovated') || s.includes('complete') || s.includes('done') || 
+           s.includes('finished') || s.includes('yes') || s === 'ok' || s === 'y';
 }
 
 function isInProgress(status) {
     if (!status) return false;
-    const s = String(status).toLowerCase();
-    return s.includes('progress') || s.includes('ongoing') || s.includes('working');
+    const s = String(status).toLowerCase().trim();
+    return s.includes('progress') || s.includes('ongoing') || s.includes('working') ||
+           s.includes('started') || s.includes('partial');
 }
 
 function isPending(status) {
     if (!status) return false;
-    const s = String(status).toLowerCase();
-    return s.includes('pending') || s.includes('waiting') || s.includes('no') || s.includes('not');
+    const s = String(status).toLowerCase().trim();
+    return s.includes('pending') || s.includes('waiting') || s.includes('not started') ||
+           s.includes('no') || s.includes('planned') || s === 'n';
 }
 
-// Update dashboard
+function getStatusClass(status) {
+    if (!status) return 'status-pending';
+    const s = String(status).toLowerCase().trim();
+    if (isCompleted(status)) return 'status-renovated';
+    if (isInProgress(status)) return 'status-in-progress';
+    if (s.includes('hold') || s.includes('delay') || s.includes('stop')) return 'status-on-hold';
+    return 'status-pending';
+}
+
+function getTimelineClass(status) {
+    if (isCompleted(status)) return 'completed';
+    if (isInProgress(status)) return 'in-progress';
+    return 'pending';
+}
+
+// ============================================
+// UPDATE DASHBOARD
+// ============================================
 function updateDashboard() {
     const total = allData.length;
     const completed = allData.filter(i => isCompleted(i.status)).length;
     const inProgress = allData.filter(i => isInProgress(i.status)).length;
-    const pending = allData.filter(i => isPending(i.status)).length;
+    const pending = total - completed - inProgress;
     const progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
     
     animateCounter('totalVillas', total);
     animateCounter('completedCount', completed);
     animateCounter('inProgressCount', inProgress);
-    animateCounter('pendingCount', pending);
+    animateCounter('pendingCount', pending > 0 ? pending : 0);
     
     setTimeout(() => {
         document.getElementById('overallProgress').style.width = `${progressPercent}%`;
@@ -1055,190 +1069,51 @@ function animateCounter(id, target) {
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        el.textContent = Math.floor(start + (target - start) * progress);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(start + (target - start) * eased);
         if (progress < 1) requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
 }
 
-// Update filters
+// ============================================
+// FILTERS
+// ============================================
 function updateFilters() {
-    const villas = [...new Set(allData.map(i => i.villaNo))].filter(Boolean).sort((a, b) => {
-        return (parseInt(String(a).replace(/\D/g, '')) || 0) - (parseInt(String(b).replace(/\D/g, '')) || 0);
-    });
+    // Get unique villas sorted numerically
+    const villas = [...new Set(allData.map(i => i.villaNo))]
+        .filter(Boolean)
+        .sort((a, b) => {
+            const numA = parseInt(String(a).replace(/\D/g, '')) || 0;
+            const numB = parseInt(String(b).replace(/\D/g, '')) || 0;
+            return numA - numB;
+        });
     
-    const statuses = [...new Set(allData.map(i => String(i.status).trim()))].filter(Boolean).sort();
+    // Get unique statuses
+    const statuses = [...new Set(allData.map(i => String(i.status).trim()))]
+        .filter(Boolean)
+        .sort();
     
+    // Get unique years
     const years = [...new Set(allData.map(i => {
         const match = String(i.dateRenovated).match(/\d{4}/);
         return match ? parseInt(match[0]) : null;
     }).filter(Boolean))].sort((a, b) => b - a);
     
-    const villaFilter = document.getElementById('villaFilter');
-    villaFilter.innerHTML = '<option value="">All Villas</option>' + 
+    // Update dropdowns
+    document.getElementById('villaFilter').innerHTML = 
+        '<option value="">All Villas</option>' + 
         villas.map(v => `<option value="${v}">Villa ${v}</option>`).join('');
     
-    const statusFilter = document.getElementById('statusFilter');
-    statusFilter.innerHTML = '<option value="">All Status</option>' + 
+    document.getElementById('statusFilter').innerHTML = 
+        '<option value="">All Status</option>' + 
         statuses.map(s => `<option value="${s}">${s}</option>`).join('');
     
-    const yearFilter = document.getElementById('yearFilter');
-    yearFilter.innerHTML = '<option value="">All Years</option>' + 
+    document.getElementById('yearFilter').innerHTML = 
+        '<option value="">All Years</option>' + 
         years.map(y => `<option value="${y}">${y}</option>`).join('');
 }
 
-// Render table
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const pageData = filteredData.slice(start, end);
-    
-    if (pageData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3></div></td></tr>`;
-    } else {
-        tbody.innerHTML = pageData.map(item => `
-            <tr onclick="showDetail(${item.id})">
-                <td>Villa ${item.villaNo}</td>
-                <td><span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span></td>
-                <td>${formatDate(item.dateRenovated)}</td>
-                <td class="remarks-cell">${item.remarks || '-'}</td>
-            </tr>
-        `).join('');
-    }
-    
-    document.getElementById('rowCount').textContent = 
-        `Showing ${filteredData.length > 0 ? start + 1 : 0} to ${Math.min(end, filteredData.length)} of ${filteredData.length}`;
-    renderPagination();
-}
-
-function renderPagination() {
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const pagination = document.getElementById('pagination');
-    if (totalPages <= 1) { pagination.innerHTML = ''; return; }
-    
-    let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-            html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
-        } else if (i === currentPage - 2 || i === currentPage + 2) {
-            html += `<button disabled>...</button>`;
-        }
-    }
-    html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
-    pagination.innerHTML = html;
-}
-
-function changePage(page) {
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    if (page >= 1 && page <= totalPages) {
-        currentPage = page;
-        renderTable();
-    }
-}
-
-// Render cards
-function renderVillaCards() {
-    const container = document.getElementById('villaCards');
-    if (filteredData.length === 0) {
-        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-home"></i><h3>No Villas Found</h3></div>';
-        return;
-    }
-    container.innerHTML = filteredData.map(item => `
-        <div class="villa-card" onclick="showDetail(${item.id})">
-            <div class="villa-card-header">
-                <h3><i class="fas fa-home"></i> Villa ${item.villaNo}</h3>
-                <span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span>
-            </div>
-            <div class="villa-card-body">
-                <div class="info-row">
-                    <span class="label"><i class="fas fa-calendar"></i> Date</span>
-                    <span class="value">${formatDate(item.dateRenovated)}</span>
-                </div>
-                <div class="info-row">
-                    <span class="label"><i class="fas fa-comment"></i> Remarks</span>
-                    <span class="value">${truncate(item.remarks, 25) || '-'}</span>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Render timeline
-function renderTimeline() {
-    const container = document.getElementById('timeline');
-    const sorted = [...filteredData].sort((a, b) => new Date(b.dateRenovated) - new Date(a.dateRenovated));
-    
-    if (sorted.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3></div>';
-        return;
-    }
-    container.innerHTML = sorted.map(item => `
-        <div class="timeline-item ${getTimelineClass(item.status)}" onclick="showDetail(${item.id})">
-            <div class="timeline-date"><i class="fas fa-calendar-alt"></i> ${formatDate(item.dateRenovated)}</div>
-            <div class="timeline-title">Villa ${item.villaNo}</div>
-            <span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span>
-            ${item.remarks ? `<div class="timeline-remarks">${truncate(item.remarks, 80)}</div>` : ''}
-        </div>
-    `).join('');
-}
-
-// Helpers
-function formatDate(d) {
-    if (!d) return '-';
-    const date = new Date(d);
-    if (isNaN(date)) return d;
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-}
-
-function getStatusClass(status) {
-    if (!status) return 'status-pending';
-    if (isCompleted(status)) return 'status-renovated';
-    if (isInProgress(status)) return 'status-in-progress';
-    return 'status-pending';
-}
-
-function getTimelineClass(status) {
-    if (isCompleted(status)) return 'completed';
-    if (isInProgress(status)) return 'in-progress';
-    return 'pending';
-}
-
-function truncate(text, len) {
-    if (!text) return '';
-    return text.length <= len ? text : text.substring(0, len) + '...';
-}
-
-// Detail modal
-function showDetail(id) {
-    const item = allData.find(d => d.id === id);
-    if (!item) return;
-    document.getElementById('detailContent').innerHTML = `
-        <div style="text-align:center;margin-bottom:20px;">
-            <div style="width:60px;height:60px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:white;font-size:1.3rem;">
-                <i class="fas fa-home"></i>
-            </div>
-            <h2 style="color:var(--primary);">Villa ${item.villaNo}</h2>
-            <span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span>
-        </div>
-        <div style="background:var(--light);border-radius:var(--radius);padding:15px;">
-            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--gray-light);">
-                <span style="color:var(--gray);"><i class="fas fa-calendar"></i> Date</span>
-                <strong>${formatDate(item.dateRenovated)}</strong>
-            </div>
-            <div style="padding:10px 0;">
-                <span style="color:var(--gray);display:block;margin-bottom:5px;"><i class="fas fa-comment"></i> Remarks</span>
-                <p style="color:var(--dark);">${item.remarks || 'No remarks'}</p>
-            </div>
-        </div>
-    `;
-    document.getElementById('detailModal').classList.add('show');
-}
-
-function closeDetailModal() { document.getElementById('detailModal').classList.remove('show'); }
-function closeModal() { document.getElementById('errorModal').classList.remove('show'); }
-
-// Filtering
 function applyFilters() {
     const search = document.getElementById('searchInput').value.toLowerCase().trim();
     const status = document.getElementById('statusFilter').value;
@@ -1246,17 +1121,26 @@ function applyFilters() {
     const year = document.getElementById('yearFilter').value;
     
     filteredData = allData.filter(item => {
+        // Search match
         const searchMatch = !search || 
             String(item.villaNo).toLowerCase().includes(search) ||
             String(item.status).toLowerCase().includes(search) ||
-            String(item.remarks).toLowerCase().includes(search);
+            String(item.remarks).toLowerCase().includes(search) ||
+            String(item.dateRenovated).toLowerCase().includes(search);
+        
+        // Status match
         const statusMatch = !status || String(item.status).trim() === status;
+        
+        // Villa match
         const villaMatch = !villa || String(item.villaNo) === villa;
+        
+        // Year match
         let yearMatch = true;
         if (year) {
             const match = String(item.dateRenovated).match(/\d{4}/);
             yearMatch = match && parseInt(match[0]) === parseInt(year);
         }
+        
         return searchMatch && statusMatch && villaMatch && yearMatch;
     });
     
@@ -1278,72 +1162,284 @@ function clearFilters() {
     renderTimeline();
 }
 
-// Sorting
+// ============================================
+// RENDER TABLE
+// ============================================
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const pageData = filteredData.slice(start, end);
+    
+    if (pageData.length === 0) {
+        tbody.innerHTML = `
+            <tr><td colspan="4">
+                <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <h3>No Records Found</h3>
+                    <p>Try adjusting your search or filters</p>
+                </div>
+            </td></tr>`;
+    } else {
+        tbody.innerHTML = pageData.map(item => `
+            <tr onclick="showDetail(${item.id})" style="cursor:pointer;">
+                <td>Villa ${item.villaNo}</td>
+                <td><span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span></td>
+                <td>${formatDate(item.dateRenovated)}</td>
+                <td class="remarks-cell" title="${escapeHtml(item.remarks)}">${item.remarks || '-'}</td>
+            </tr>
+        `).join('');
+    }
+    
+    const showing = filteredData.length > 0 ? `${start + 1} - ${Math.min(end, filteredData.length)}` : '0';
+    document.getElementById('rowCount').textContent = `Showing ${showing} of ${filteredData.length} entries`;
+    
+    renderPagination();
+}
+
+function renderPagination() {
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+    const pagination = document.getElementById('pagination');
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+    
+    let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
+    
+    const maxPages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+    let endPage = Math.min(totalPages, startPage + maxPages - 1);
+    if (endPage - startPage < maxPages - 1) startPage = Math.max(1, endPage - maxPages + 1);
+    
+    if (startPage > 1) {
+        html += `<button onclick="changePage(1)">1</button>`;
+        if (startPage > 2) html += `<button disabled>...</button>`;
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) html += `<button disabled>...</button>`;
+        html += `<button onclick="changePage(${totalPages})">${totalPages}</button>`;
+    }
+    
+    html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
+    
+    pagination.innerHTML = html;
+}
+
+function changePage(page) {
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+    if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        renderTable();
+        document.querySelector('.table-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// ============================================
+// RENDER CARDS
+// ============================================
+function renderVillaCards() {
+    const container = document.getElementById('villaCards');
+    
+    if (filteredData.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+                <i class="fas fa-home"></i>
+                <h3>No Villas Found</h3>
+                <p>Try adjusting your filters</p>
+            </div>`;
+        return;
+    }
+    
+    container.innerHTML = filteredData.map(item => `
+        <div class="villa-card" onclick="showDetail(${item.id})">
+            <div class="villa-card-header">
+                <h3><i class="fas fa-home"></i> Villa ${item.villaNo}</h3>
+                <span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span>
+            </div>
+            <div class="villa-card-body">
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-calendar"></i> Date</span>
+                    <span class="value">${formatDate(item.dateRenovated)}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-comment"></i> Remarks</span>
+                    <span class="value">${truncate(item.remarks, 25) || '-'}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// RENDER TIMELINE
+// ============================================
+function renderTimeline() {
+    const container = document.getElementById('timeline');
+    
+    // Sort by date (newest first)
+    const sorted = [...filteredData].sort((a, b) => {
+        const dateA = parseDate(a.dateRenovated);
+        const dateB = parseDate(b.dateRenovated);
+        return dateB - dateA;
+    });
+    
+    if (sorted.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-stream"></i>
+                <h3>No Timeline Data</h3>
+                <p>Renovation history will appear here</p>
+            </div>`;
+        return;
+    }
+    
+    container.innerHTML = sorted.map(item => `
+        <div class="timeline-item ${getTimelineClass(item.status)}" onclick="showDetail(${item.id})">
+            <div class="timeline-date"><i class="fas fa-calendar-alt"></i> ${formatDate(item.dateRenovated)}</div>
+            <div class="timeline-title">Villa ${item.villaNo}</div>
+            <span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span>
+            ${item.remarks ? `<div class="timeline-remarks">${truncate(item.remarks, 100)}</div>` : ''}
+        </div>
+    `).join('');
+}
+
+// ============================================
+// SORTING
+// ============================================
 function sortTable(column) {
-    sortDirection = sortColumn === column && sortDirection === 'asc' ? 'desc' : 'asc';
+    sortDirection = (sortColumn === column && sortDirection === 'asc') ? 'desc' : 'asc';
     sortColumn = column;
     
     filteredData.sort((a, b) => {
-        let valA = a[column], valB = b[column];
+        let valA = a[column];
+        let valB = b[column];
+        
+        // Numeric sort for villa numbers
         if (column === 'villaNo') {
             valA = parseInt(String(valA).replace(/\D/g, '')) || 0;
             valB = parseInt(String(valB).replace(/\D/g, '')) || 0;
         }
+        
+        // Date sort
         if (column === 'dateRenovated') {
-            valA = new Date(valA).getTime() || 0;
-            valB = new Date(valB).getTime() || 0;
+            valA = parseDate(valA);
+            valB = parseDate(valB);
         }
+        
+        // String comparison
         if (typeof valA === 'string') valA = valA.toLowerCase();
         if (typeof valB === 'string') valB = valB.toLowerCase();
+        
         if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
         if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
         return 0;
     });
+    
+    // Update sort icons
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+        const icon = th.querySelector('i');
+        if (th.dataset.sort === column) {
+            icon.className = sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+        } else {
+            icon.className = 'fas fa-sort';
+        }
+    });
+    
     renderTable();
 }
 
-// View toggle
+// ============================================
+// VIEW TOGGLE
+// ============================================
 function switchView(view) {
-    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
-    document.querySelectorAll('.view-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.view-btn').forEach(btn => 
+        btn.classList.toggle('active', btn.dataset.view === view));
+    document.querySelectorAll('.view-content').forEach(c => 
+        c.classList.remove('active'));
     document.getElementById(`${view}View`).classList.add('active');
 }
 
-// Event listeners
-function setupEventListeners() {
-    document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
-    document.getElementById('villaFilter').addEventListener('change', applyFilters);
-    document.getElementById('yearFilter').addEventListener('change', applyFilters);
-    document.getElementById('clearFilters').addEventListener('click', clearFilters);
+// ============================================
+// DETAIL MODAL
+// ============================================
+function showDetail(id) {
+    const item = allData.find(d => d.id === id);
+    if (!item) return;
     
-    document.getElementById('refreshBtn').addEventListener('click', () => {
-        const btn = document.getElementById('refreshBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i><span>Refreshing...</span>';
-        fetchData().finally(() => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>';
-        });
-    });
+    document.getElementById('detailContent').innerHTML = `
+        <div style="text-align:center;margin-bottom:20px;">
+            <div style="width:65px;height:65px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:1.5rem;">
+                <i class="fas fa-home"></i>
+            </div>
+            <h2 style="color:var(--primary);margin-bottom:8px;">Villa ${item.villaNo}</h2>
+            <span class="status-badge ${getStatusClass(item.status)}" style="font-size:0.8rem;">${item.status || 'N/A'}</span>
+        </div>
+        <div style="background:var(--light);border-radius:var(--radius);padding:18px;">
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--gray-light);">
+                <span style="color:var(--gray);"><i class="fas fa-calendar" style="margin-right:8px;color:var(--secondary);"></i>Renovation Date</span>
+                <strong style="color:var(--dark);">${formatDate(item.dateRenovated)}</strong>
+            </div>
+            <div style="padding:12px 0;">
+                <span style="color:var(--gray);display:block;margin-bottom:8px;"><i class="fas fa-comment" style="margin-right:8px;color:var(--secondary);"></i>Remarks</span>
+                <p style="color:var(--dark);line-height:1.6;background:white;padding:12px;border-radius:8px;">${item.remarks || 'No remarks available'}</p>
+            </div>
+        </div>
+    `;
     
-    document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', () => sortTable(th.dataset.sort)));
-    document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click', () => switchView(btn.dataset.view)));
-    
-    const scrollBtn = document.getElementById('scrollTop');
-    window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 300));
-    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    
-    document.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }
-        if (e.key === 'Escape') { closeDetailModal(); closeModal(); }
-    });
-    
-    document.getElementById('detailModal').addEventListener('click', e => { if (e.target.id === 'detailModal') closeDetailModal(); });
-    document.getElementById('errorModal').addEventListener('click', e => { if (e.target.id === 'errorModal') closeModal(); });
+    document.getElementById('detailModal').classList.add('show');
 }
 
-// Utilities
+function closeDetailModal() {
+    document.getElementById('detailModal').classList.remove('show');
+}
+
+function closeModal() {
+    document.getElementById('errorModal').classList.remove('show');
+}
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+function formatDate(dateStr) {
+    if (!dateStr) return '-';
+    
+    // If it's already a formatted string, return it
+    if (typeof dateStr === 'string') {
+        const d = new Date(dateStr);
+        if (!isNaN(d.getTime())) {
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+        return dateStr; // Return as-is if can't parse
+    }
+    
+    return '-';
+}
+
+function parseDate(dateStr) {
+    if (!dateStr) return 0;
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? 0 : d.getTime();
+}
+
+function truncate(text, len) {
+    if (!text) return '';
+    return text.length <= len ? text : text.substring(0, len) + '...';
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 function debounce(func, wait) {
     let timeout;
     return function(...args) {
@@ -1354,8 +1450,11 @@ function debounce(func, wait) {
 
 function showLoading(show) {
     const overlay = document.getElementById('loadingOverlay');
-    if (show) overlay.classList.remove('hidden');
-    else setTimeout(() => overlay.classList.add('hidden'), 500);
+    if (show) {
+        overlay.classList.remove('hidden');
+    } else {
+        setTimeout(() => overlay.classList.add('hidden'), 500);
+    }
 }
 
 function showError(msg) {
@@ -1364,8 +1463,80 @@ function showError(msg) {
 }
 
 function updateLastUpdated() {
-    document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    document.getElementById('lastUpdated').textContent = 
+        new Date().toLocaleString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
 }
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+function setupEventListeners() {
+    // Search
+    document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
+    
+    // Filters
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('villaFilter').addEventListener('change', applyFilters);
+    document.getElementById('yearFilter').addEventListener('change', applyFilters);
+    document.getElementById('clearFilters').addEventListener('click', clearFilters);
+    
+    // Refresh
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+        const btn = document.getElementById('refreshBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i><span>Refreshing...</span>';
+        fetchData().finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>';
+        });
+    });
+    
+    // Table sorting
+    document.querySelectorAll('th[data-sort]').forEach(th => 
+        th.addEventListener('click', () => sortTable(th.dataset.sort)));
+    
+    // View toggle
+    document.querySelectorAll('.view-btn').forEach(btn => 
+        btn.addEventListener('click', () => switchView(btn.dataset.view)));
+    
+    // Scroll to top
+    const scrollBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => 
+        scrollBtn.classList.toggle('visible', window.scrollY > 300));
+    scrollBtn.addEventListener('click', () => 
+        window.scrollTo({ top: 0, behavior: 'smooth' }));
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+        }
+        if (e.key === 'Escape') {
+            closeDetailModal();
+            closeModal();
+        }
+    });
+    
+    // Click outside modal to close
+    document.getElementById('detailModal').addEventListener('click', e => {
+        if (e.target.id === 'detailModal') closeDetailModal();
+    });
+    document.getElementById('errorModal').addEventListener('click', e => {
+        if (e.target.id === 'errorModal') closeModal();
+    });
+}
+
+// Make functions global for onclick handlers
+window.changePage = changePage;
+window.showDetail = showDetail;
+window.closeDetailModal = closeDetailModal;
+window.closeModal = closeModal;
 </script>
 </body>
 </html>
