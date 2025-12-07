@@ -42,7 +42,6 @@ body {
 
 .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-/* Header */
 .header {
     background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
@@ -108,7 +107,6 @@ body {
 .refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(52,152,219,0.4); }
 .refresh-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
-/* Stats Grid */
 .dashboard { padding: 25px 0 15px; }
 
 .stats-grid {
@@ -133,9 +131,9 @@ body {
 .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
 .stat-card.total { border-left-color: var(--secondary); }
-.stat-card.completed { border-left-color: var(--success); }
+.stat-card.renovated { border-left-color: var(--success); }
 .stat-card.in-progress { border-left-color: var(--warning); }
-.stat-card.pending { border-left-color: var(--info); }
+.stat-card.non-renovated { border-left-color: var(--danger); }
 
 .stat-icon {
     width: 55px;
@@ -148,14 +146,13 @@ body {
 }
 
 .stat-card.total .stat-icon { background: rgba(52,152,219,0.15); color: var(--secondary); }
-.stat-card.completed .stat-icon { background: rgba(39,174,96,0.15); color: var(--success); }
+.stat-card.renovated .stat-icon { background: rgba(39,174,96,0.15); color: var(--success); }
 .stat-card.in-progress .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
-.stat-card.pending .stat-icon { background: rgba(23,162,184,0.15); color: var(--info); }
+.stat-card.non-renovated .stat-icon { background: rgba(231,76,60,0.15); color: var(--danger); }
 
 .stat-info h3 { font-size: 1.9rem; font-weight: 700; line-height: 1; color: var(--dark); }
 .stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
 
-/* Progress */
 .progress-section { padding: 10px 0 15px; }
 
 .progress-card {
@@ -183,7 +180,6 @@ body {
 }
 
 .progress-header h2 i { color: var(--secondary); }
-
 .progress-percentage { font-size: 1.6rem; font-weight: 700; color: var(--success); }
 
 .progress-bar-container {
@@ -212,7 +208,33 @@ body {
 
 @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-/* Filters */
+.progress-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--gray-light);
+}
+
+.progress-stat {
+    text-align: center;
+}
+
+.progress-stat .number {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.progress-stat .label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    text-transform: uppercase;
+}
+
+.progress-stat.renovated .number { color: var(--success); }
+.progress-stat.non-renovated .number { color: var(--danger); }
+
 .filters-section { padding: 10px 0; }
 
 .filters-wrapper {
@@ -278,7 +300,6 @@ body {
 
 .clear-btn:hover { background: var(--danger); color: var(--white); }
 
-/* View Toggle */
 .view-toggle-section { padding: 12px 0; }
 
 .view-toggle {
@@ -317,7 +338,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Table */
 .table-section { padding: 10px 0 30px; }
 
 .table-wrapper {
@@ -328,7 +348,6 @@ body {
 }
 
 table { width: 100%; border-collapse: collapse; }
-
 th, td { padding: 14px 18px; text-align: left; }
 
 th {
@@ -355,7 +374,6 @@ tbody tr:nth-child(even):hover { background: rgba(52,152,219,0.05); }
 
 td:first-child { font-weight: 600; color: var(--primary); }
 
-/* Status Badges */
 .status-badge {
     padding: 5px 14px;
     border-radius: var(--radius-xl);
@@ -366,24 +384,24 @@ td:first-child { font-weight: 600; color: var(--primary); }
     display: inline-block;
 }
 
-.status-renovated, .status-completed, .status-done, .status-yes {
-    background: rgba(39,174,96,0.12);
+.status-full-renovated, .status-renovated {
+    background: rgba(39,174,96,0.15);
     color: var(--success);
 }
 
-.status-in-progress, .status-ongoing, .status-working {
-    background: rgba(243,156,18,0.12);
+.status-in-progress, .status-partial {
+    background: rgba(243,156,18,0.15);
     color: var(--warning);
 }
 
-.status-pending, .status-waiting, .status-no, .status-not {
-    background: rgba(23,162,184,0.12);
-    color: var(--info);
+.status-non-renovated, .status-pending {
+    background: rgba(231,76,60,0.15);
+    color: var(--danger);
 }
 
-.status-on-hold, .status-hold, .status-delayed {
-    background: rgba(231,76,60,0.12);
-    color: var(--danger);
+.status-on-hold {
+    background: rgba(108,117,125,0.15);
+    color: var(--gray);
 }
 
 .remarks-cell {
@@ -433,7 +451,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
 .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Cards */
 .cards-section { padding: 10px 0 30px; }
 
 .villa-cards {
@@ -454,13 +471,16 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .villa-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 
 .villa-card-header {
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    color: var(--white);
     padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
+.villa-card-header.renovated { background: linear-gradient(135deg, var(--success), #2ecc71); color: white; }
+.villa-card-header.non-renovated { background: linear-gradient(135deg, var(--danger), #c0392b); color: white; }
+.villa-card-header.in-progress { background: linear-gradient(135deg, var(--warning), #e67e22); color: white; }
+.villa-card-header.default { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; }
 
 .villa-card-header h3 {
     font-size: 1.15rem;
@@ -485,7 +505,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .villa-card-body .label { color: var(--gray); display: flex; align-items: center; gap: 6px; }
 .villa-card-body .value { font-weight: 600; color: var(--dark); max-width: 150px; text-align: right; }
 
-/* Timeline */
 .timeline-section { padding: 10px 0 30px; }
 .timeline { position: relative; padding-left: 30px; }
 
@@ -496,7 +515,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     top: 0;
     bottom: 0;
     width: 3px;
-    background: linear-gradient(to bottom, var(--secondary), var(--success), var(--warning));
+    background: linear-gradient(to bottom, var(--success), var(--warning), var(--danger));
     border-radius: 3px;
 }
 
@@ -521,21 +540,19 @@ td:first-child { font-weight: 600; color: var(--primary); }
     top: 20px;
     width: 14px;
     height: 14px;
-    background: var(--secondary);
     border-radius: 50%;
     border: 3px solid var(--white);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.timeline-item.completed::before { background: var(--success); }
+.timeline-item.renovated::before { background: var(--success); }
+.timeline-item.non-renovated::before { background: var(--danger); }
 .timeline-item.in-progress::before { background: var(--warning); }
-.timeline-item.pending::before { background: var(--info); }
 
 .timeline-date { font-size: 0.8rem; color: var(--gray); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
 .timeline-title { font-size: 1.05rem; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
 .timeline-remarks { font-size: 0.85rem; color: var(--gray); margin-top: 8px; line-height: 1.5; }
 
-/* Loading */
 .loading-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -581,7 +598,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
     100% { transform: translateX(350%); }
 }
 
-/* Modal */
 .modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -651,7 +667,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .btn-secondary { background: var(--gray-light); color: var(--dark); }
 .btn-secondary:hover { background: #ddd; }
 
-/* Footer */
 .footer {
     background: rgba(0,0,0,0.2);
     color: rgba(255,255,255,0.9);
@@ -662,14 +677,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
 .footer p { font-size: 0.85rem; }
 .footer i { margin: 0 5px; }
-.footer a { color: white; text-decoration: none; }
 
-/* Empty State */
 .empty-state { text-align: center; padding: 50px 20px; color: var(--gray); }
 .empty-state i { font-size: 3rem; color: var(--gray-light); margin-bottom: 15px; display: block; }
 .empty-state h3 { margin-bottom: 5px; color: var(--dark); }
 
-/* Scroll Top */
 .scroll-top {
     position: fixed;
     bottom: 25px;
@@ -695,7 +707,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .scroll-top.visible { opacity: 1; visibility: visible; }
 .scroll-top:hover { transform: translateY(-3px); background: var(--primary); color: var(--white); }
 
-/* Responsive */
 @media (max-width: 768px) {
     .header .container { flex-direction: column; text-align: center; }
     .logo { justify-content: center; }
@@ -707,17 +718,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
     .view-toggle { width: 100%; justify-content: center; }
     th, td { padding: 10px 12px; font-size: 0.8rem; }
     .stat-info h3 { font-size: 1.5rem; }
-}
-
-@media print {
-    .header, .filters-section, .view-toggle-section, .footer, .scroll-top, .pagination { display: none !important; }
-    body { background: white; }
-    .stat-card, .table-wrapper { box-shadow: none; border: 1px solid #ddd; }
+    .progress-stats { gap: 20px; }
 }
 </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -740,7 +745,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </header>
 
-    <!-- Dashboard Stats -->
     <section class="dashboard">
         <div class="container">
             <div class="stats-grid">
@@ -751,11 +755,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
                         <p>Total Villas</p>
                     </div>
                 </div>
-                <div class="stat-card completed">
+                <div class="stat-card renovated">
                     <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                     <div class="stat-info">
-                        <h3 id="completedCount">0</h3>
-                        <p>Renovated</p>
+                        <h3 id="renovatedCount">0</h3>
+                        <p>Full Renovated</p>
                     </div>
                 </div>
                 <div class="stat-card in-progress">
@@ -765,33 +769,41 @@ td:first-child { font-weight: 600; color: var(--primary); }
                         <p>In Progress</p>
                     </div>
                 </div>
-                <div class="stat-card pending">
-                    <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+                <div class="stat-card non-renovated">
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
                     <div class="stat-info">
-                        <h3 id="pendingCount">0</h3>
-                        <p>Pending</p>
+                        <h3 id="nonRenovatedCount">0</h3>
+                        <p>Non Renovated</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Progress Bar -->
     <section class="progress-section">
         <div class="container">
             <div class="progress-card">
                 <div class="progress-header">
-                    <h2><i class="fas fa-chart-pie"></i> Overall Renovation Progress</h2>
+                    <h2><i class="fas fa-chart-pie"></i> Renovation Progress</h2>
                     <span class="progress-percentage" id="progressPercent">0%</span>
                 </div>
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="overallProgress"></div>
                 </div>
+                <div class="progress-stats">
+                    <div class="progress-stat renovated">
+                        <div class="number" id="statsRenovated">0</div>
+                        <div class="label">Renovated</div>
+                    </div>
+                    <div class="progress-stat non-renovated">
+                        <div class="number" id="statsNonRenovated">0</div>
+                        <div class="label">Non Renovated</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Filters -->
     <section class="filters-section">
         <div class="container">
             <div class="filters-wrapper">
@@ -809,7 +821,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- View Toggle -->
     <section class="view-toggle-section">
         <div class="container">
             <div class="view-toggle">
@@ -820,7 +831,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- Table View -->
     <section class="table-section view-content active" id="tableView">
         <div class="container">
             <div class="table-wrapper">
@@ -843,21 +853,18 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- Cards View -->
     <section class="cards-section view-content" id="cardsView">
         <div class="container">
             <div class="villa-cards" id="villaCards"></div>
         </div>
     </section>
 
-    <!-- Timeline View -->
     <section class="timeline-section view-content" id="timelineView">
         <div class="container">
             <div class="timeline" id="timeline"></div>
         </div>
     </section>
 
-    <!-- Loading -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader">
             <i class="fas fa-hard-hat"></i>
@@ -866,7 +873,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </div>
 
-    <!-- Error Modal -->
     <div class="modal" id="errorModal">
         <div class="modal-content">
             <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--danger);"></i>
@@ -879,7 +885,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </div>
 
-    <!-- Detail Modal -->
     <div class="modal" id="detailModal">
         <div class="modal-content" style="text-align:left;max-width:450px;">
             <button class="modal-close" onclick="closeDetailModal()"><i class="fas fa-times"></i></button>
@@ -887,14 +892,12 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p><i class="fas fa-database"></i> Live data from Google Sheets <i class="fas fa-heart"></i> Villa Renovation Tracker © 2024</p>
         </div>
     </footer>
 
-    <!-- Scroll Top -->
     <button class="scroll-top" id="scrollTop"><i class="fas fa-chevron-up"></i></button>
 
 <script>
@@ -907,10 +910,10 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tq
 
 // Column mapping: A=0, B=1, C=2, D=3
 const COLUMNS = {
-    villaNo: 0,        // Column A - VILLA NO
-    status: 1,         // Column B - STATUS
-    dateRenovated: 2,  // Column C - DATE OF RENOVATED
-    remarks: 3         // Column D - REMARKS
+    villaNo: 0,
+    status: 1,
+    dateRenovated: 2,
+    remarks: 3
 };
 
 // ============================================
@@ -932,26 +935,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// FETCH DATA FROM GOOGLE SHEETS
+// FETCH DATA
 // ============================================
 async function fetchData() {
     showLoading(true);
     try {
         const response = await fetch(SHEET_URL);
         const text = await response.text();
-        
-        // Parse JSONP response
         const jsonStart = text.indexOf('{');
         const jsonEnd = text.lastIndexOf('}') + 1;
         const json = JSON.parse(text.substring(jsonStart, jsonEnd));
         
-        if (!json.table || !json.table.rows) {
-            throw new Error('No data found in sheet');
-        }
+        if (!json.table || !json.table.rows) throw new Error('No data found');
         
-        console.log('Columns found:', json.table.cols.map(c => c.label || c.id));
-        
-        // Convert rows to data array
         allData = json.table.rows.map((row, index) => {
             const cells = row.c;
             return {
@@ -962,21 +958,13 @@ async function fetchData() {
                 remarks: getCellValue(cells, COLUMNS.remarks)
             };
         }).filter(row => {
-            // Filter out empty rows and header row
             const villa = String(row.villaNo).toLowerCase().trim();
-            return villa && 
-                   villa !== '' && 
-                   villa !== 'villa no' && 
-                   villa !== 'villa number' &&
-                   villa !== 'villa' &&
-                   !villa.includes('villa no');
+            return villa && villa !== 'villa no' && villa !== 'villa number' && !villa.includes('villa no');
         });
         
-        console.log('Loaded', allData.length, 'rows');
-        if (allData.length > 0) console.log('Sample:', allData[0]);
+        console.log('Loaded', allData.length, 'villas');
         
         filteredData = [...allData];
-        
         updateDashboard();
         updateFilters();
         renderTable();
@@ -984,10 +972,9 @@ async function fetchData() {
         renderTimeline();
         updateLastUpdated();
         showLoading(false);
-        
     } catch (error) {
         console.error('Error:', error);
-        showError('Unable to fetch data. Please make sure the Google Sheet is published to web. Go to File → Share → Publish to web.');
+        showError('Unable to fetch data. Please publish the Google Sheet: File → Share → Publish to web');
         showLoading(false);
     }
 }
@@ -1001,67 +988,136 @@ function getCellValue(cells, index) {
 }
 
 // ============================================
-// STATUS DETECTION
+// STATUS DETECTION - FIXED FOR YOUR DATA
 // ============================================
-function isCompleted(status) {
+function isFullRenovated(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
-    return s.includes('renovated') || s.includes('complete') || s.includes('done') || 
-           s.includes('finished') || s.includes('yes') || s === 'ok' || s === 'y';
+    
+    // First check if it's NON RENOVATED - return false
+    if (s.includes('non') || s.startsWith('not ') || s.includes('unrenovated')) {
+        return false;
+    }
+    
+    // Check for FULL RENOVATED or similar
+    return s.includes('full renovated') || 
+           s.includes('fully renovated') ||
+           s.includes('renovated') || 
+           s.includes('complete') || 
+           s.includes('done') ||
+           s.includes('finished') ||
+           s === 'yes' || 
+           s === 'y';
+}
+
+function isNonRenovated(status) {
+    if (!status) return true; // Empty = non renovated
+    const s = String(status).toLowerCase().trim();
+    
+    return s.includes('non renovated') ||
+           s.includes('non-renovated') ||
+           s.includes('not renovated') ||
+           s.includes('unrenovated') ||
+           s.includes('not done') ||
+           s === 'no' || 
+           s === 'n' ||
+           s === 'pending' ||
+           s === '';
 }
 
 function isInProgress(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
-    return s.includes('progress') || s.includes('ongoing') || s.includes('working') ||
-           s.includes('started') || s.includes('partial');
-}
-
-function isPending(status) {
-    if (!status) return false;
-    const s = String(status).toLowerCase().trim();
-    return s.includes('pending') || s.includes('waiting') || s.includes('not started') ||
-           s.includes('no') || s.includes('planned') || s === 'n';
+    
+    return s.includes('progress') || 
+           s.includes('ongoing') || 
+           s.includes('partial') ||
+           s.includes('working') ||
+           s.includes('started');
 }
 
 function getStatusClass(status) {
-    if (!status) return 'status-pending';
+    if (!status) return 'status-non-renovated';
     const s = String(status).toLowerCase().trim();
-    if (isCompleted(status)) return 'status-renovated';
-    if (isInProgress(status)) return 'status-in-progress';
-    if (s.includes('hold') || s.includes('delay') || s.includes('stop')) return 'status-on-hold';
+    
+    // Check NON RENOVATED first (before checking "renovated")
+    if (s.includes('non') || s.startsWith('not ') || s.includes('unrenovated')) {
+        return 'status-non-renovated';
+    }
+    
+    // Check FULL RENOVATED
+    if (s.includes('renovated') || s.includes('complete') || s.includes('done') || s.includes('finished')) {
+        return 'status-full-renovated';
+    }
+    
+    // Check IN PROGRESS
+    if (s.includes('progress') || s.includes('partial') || s.includes('ongoing')) {
+        return 'status-in-progress';
+    }
+    
+    // Check ON HOLD
+    if (s.includes('hold') || s.includes('delay')) {
+        return 'status-on-hold';
+    }
+    
     return 'status-pending';
 }
 
+function getCardHeaderClass(status) {
+    if (!status) return 'non-renovated';
+    const s = String(status).toLowerCase().trim();
+    
+    if (s.includes('non') || s.startsWith('not ')) return 'non-renovated';
+    if (s.includes('renovated') || s.includes('complete') || s.includes('done')) return 'renovated';
+    if (s.includes('progress') || s.includes('partial')) return 'in-progress';
+    return 'default';
+}
+
 function getTimelineClass(status) {
-    if (isCompleted(status)) return 'completed';
-    if (isInProgress(status)) return 'in-progress';
-    return 'pending';
+    if (!status) return 'non-renovated';
+    const s = String(status).toLowerCase().trim();
+    
+    if (s.includes('non') || s.startsWith('not ')) return 'non-renovated';
+    if (s.includes('renovated') || s.includes('complete') || s.includes('done')) return 'renovated';
+    if (s.includes('progress') || s.includes('partial')) return 'in-progress';
+    return 'non-renovated';
 }
 
 // ============================================
-// UPDATE DASHBOARD
+// UPDATE DASHBOARD - FIXED CALCULATION
 // ============================================
 function updateDashboard() {
     const total = allData.length;
-    const completed = allData.filter(i => isCompleted(i.status)).length;
+    
+    // Count each status correctly
+    const renovated = allData.filter(i => isFullRenovated(i.status)).length;
     const inProgress = allData.filter(i => isInProgress(i.status)).length;
-    const pending = total - completed - inProgress;
-    const progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
+    const nonRenovated = allData.filter(i => isNonRenovated(i.status)).length;
     
+    // Calculate progress (only fully renovated counts as complete)
+    const progressPercent = total > 0 ? Math.round((renovated / total) * 100) : 0;
+    
+    console.log(`Stats: Total=${total}, Renovated=${renovated}, InProgress=${inProgress}, NonRenovated=${nonRenovated}`);
+    
+    // Animate counters
     animateCounter('totalVillas', total);
-    animateCounter('completedCount', completed);
+    animateCounter('renovatedCount', renovated);
     animateCounter('inProgressCount', inProgress);
-    animateCounter('pendingCount', pending > 0 ? pending : 0);
+    animateCounter('nonRenovatedCount', nonRenovated);
     
+    // Update progress bar
     setTimeout(() => {
         document.getElementById('overallProgress').style.width = `${progressPercent}%`;
         document.getElementById('progressPercent').textContent = `${progressPercent}%`;
+        document.getElementById('statsRenovated').textContent = renovated;
+        document.getElementById('statsNonRenovated').textContent = nonRenovated;
     }, 300);
 }
 
 function animateCounter(id, target) {
     const el = document.getElementById(id);
+    if (!el) return;
+    
     const start = parseInt(el.textContent) || 0;
     const duration = 1000;
     const startTime = performance.now();
@@ -1080,7 +1136,6 @@ function animateCounter(id, target) {
 // FILTERS
 // ============================================
 function updateFilters() {
-    // Get unique villas sorted numerically
     const villas = [...new Set(allData.map(i => i.villaNo))]
         .filter(Boolean)
         .sort((a, b) => {
@@ -1089,18 +1144,15 @@ function updateFilters() {
             return numA - numB;
         });
     
-    // Get unique statuses
     const statuses = [...new Set(allData.map(i => String(i.status).trim()))]
         .filter(Boolean)
         .sort();
     
-    // Get unique years
     const years = [...new Set(allData.map(i => {
         const match = String(i.dateRenovated).match(/\d{4}/);
         return match ? parseInt(match[0]) : null;
     }).filter(Boolean))].sort((a, b) => b - a);
     
-    // Update dropdowns
     document.getElementById('villaFilter').innerHTML = 
         '<option value="">All Villas</option>' + 
         villas.map(v => `<option value="${v}">Villa ${v}</option>`).join('');
@@ -1121,20 +1173,14 @@ function applyFilters() {
     const year = document.getElementById('yearFilter').value;
     
     filteredData = allData.filter(item => {
-        // Search match
         const searchMatch = !search || 
             String(item.villaNo).toLowerCase().includes(search) ||
             String(item.status).toLowerCase().includes(search) ||
-            String(item.remarks).toLowerCase().includes(search) ||
-            String(item.dateRenovated).toLowerCase().includes(search);
+            String(item.remarks).toLowerCase().includes(search);
         
-        // Status match
         const statusMatch = !status || String(item.status).trim() === status;
-        
-        // Villa match
         const villaMatch = !villa || String(item.villaNo) === villa;
         
-        // Year match
         let yearMatch = true;
         if (year) {
             const match = String(item.dateRenovated).match(/\d{4}/);
@@ -1172,14 +1218,7 @@ function renderTable() {
     const pageData = filteredData.slice(start, end);
     
     if (pageData.length === 0) {
-        tbody.innerHTML = `
-            <tr><td colspan="4">
-                <div class="empty-state">
-                    <i class="fas fa-search"></i>
-                    <h3>No Records Found</h3>
-                    <p>Try adjusting your search or filters</p>
-                </div>
-            </td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3></div></td></tr>`;
     } else {
         tbody.innerHTML = pageData.map(item => `
             <tr onclick="showDetail(${item.id})" style="cursor:pointer;">
@@ -1191,8 +1230,8 @@ function renderTable() {
         `).join('');
     }
     
-    const showing = filteredData.length > 0 ? `${start + 1} - ${Math.min(end, filteredData.length)}` : '0';
-    document.getElementById('rowCount').textContent = `Showing ${showing} of ${filteredData.length} entries`;
+    document.getElementById('rowCount').textContent = 
+        `Showing ${filteredData.length > 0 ? start + 1 : 0} - ${Math.min(end, filteredData.length)} of ${filteredData.length}`;
     
     renderPagination();
 }
@@ -1201,34 +1240,19 @@ function renderPagination() {
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const pagination = document.getElementById('pagination');
     
-    if (totalPages <= 1) {
-        pagination.innerHTML = '';
-        return;
-    }
+    if (totalPages <= 1) { pagination.innerHTML = ''; return; }
     
     let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
     
-    const maxPages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
-    let endPage = Math.min(totalPages, startPage + maxPages - 1);
-    if (endPage - startPage < maxPages - 1) startPage = Math.max(1, endPage - maxPages + 1);
-    
-    if (startPage > 1) {
-        html += `<button onclick="changePage(1)">1</button>`;
-        if (startPage > 2) html += `<button disabled>...</button>`;
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-        html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
-    }
-    
-    if (endPage < totalPages) {
-        if (endPage < totalPages - 1) html += `<button disabled>...</button>`;
-        html += `<button onclick="changePage(${totalPages})">${totalPages}</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            html += `<button disabled>...</button>`;
+        }
     }
     
     html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
-    
     pagination.innerHTML = html;
 }
 
@@ -1237,7 +1261,6 @@ function changePage(page) {
     if (page >= 1 && page <= totalPages) {
         currentPage = page;
         renderTable();
-        document.querySelector('.table-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -1248,20 +1271,15 @@ function renderVillaCards() {
     const container = document.getElementById('villaCards');
     
     if (filteredData.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state" style="grid-column:1/-1;">
-                <i class="fas fa-home"></i>
-                <h3>No Villas Found</h3>
-                <p>Try adjusting your filters</p>
-            </div>`;
+        container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-home"></i><h3>No Villas Found</h3></div>`;
         return;
     }
     
     container.innerHTML = filteredData.map(item => `
         <div class="villa-card" onclick="showDetail(${item.id})">
-            <div class="villa-card-header">
+            <div class="villa-card-header ${getCardHeaderClass(item.status)}">
                 <h3><i class="fas fa-home"></i> Villa ${item.villaNo}</h3>
-                <span class="status-badge ${getStatusClass(item.status)}">${item.status || 'N/A'}</span>
+                <span class="status-badge" style="background:rgba(255,255,255,0.2);color:white;">${item.status || 'N/A'}</span>
             </div>
             <div class="villa-card-body">
                 <div class="info-row">
@@ -1282,21 +1300,10 @@ function renderVillaCards() {
 // ============================================
 function renderTimeline() {
     const container = document.getElementById('timeline');
-    
-    // Sort by date (newest first)
-    const sorted = [...filteredData].sort((a, b) => {
-        const dateA = parseDate(a.dateRenovated);
-        const dateB = parseDate(b.dateRenovated);
-        return dateB - dateA;
-    });
+    const sorted = [...filteredData].sort((a, b) => parseDate(b.dateRenovated) - parseDate(a.dateRenovated));
     
     if (sorted.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-stream"></i>
-                <h3>No Timeline Data</h3>
-                <p>Renovation history will appear here</p>
-            </div>`;
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3></div>`;
         return;
     }
     
@@ -1318,38 +1325,24 @@ function sortTable(column) {
     sortColumn = column;
     
     filteredData.sort((a, b) => {
-        let valA = a[column];
-        let valB = b[column];
+        let valA = a[column], valB = b[column];
         
-        // Numeric sort for villa numbers
         if (column === 'villaNo') {
             valA = parseInt(String(valA).replace(/\D/g, '')) || 0;
             valB = parseInt(String(valB).replace(/\D/g, '')) || 0;
         }
         
-        // Date sort
         if (column === 'dateRenovated') {
             valA = parseDate(valA);
             valB = parseDate(valB);
         }
         
-        // String comparison
         if (typeof valA === 'string') valA = valA.toLowerCase();
         if (typeof valB === 'string') valB = valB.toLowerCase();
         
         if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
         if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
         return 0;
-    });
-    
-    // Update sort icons
-    document.querySelectorAll('th[data-sort]').forEach(th => {
-        const icon = th.querySelector('i');
-        if (th.dataset.sort === column) {
-            icon.className = sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
-        } else {
-            icon.className = 'fas fa-sort';
-        }
     });
     
     renderTable();
@@ -1359,10 +1352,8 @@ function sortTable(column) {
 // VIEW TOGGLE
 // ============================================
 function switchView(view) {
-    document.querySelectorAll('.view-btn').forEach(btn => 
-        btn.classList.toggle('active', btn.dataset.view === view));
-    document.querySelectorAll('.view-content').forEach(c => 
-        c.classList.remove('active'));
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+    document.querySelectorAll('.view-content').forEach(c => c.classList.remove('active'));
     document.getElementById(`${view}View`).classList.add('active');
 }
 
@@ -1373,59 +1364,50 @@ function showDetail(id) {
     const item = allData.find(d => d.id === id);
     if (!item) return;
     
+    const headerColor = getCardHeaderClass(item.status) === 'renovated' ? 'var(--success)' : 
+                        getCardHeaderClass(item.status) === 'non-renovated' ? 'var(--danger)' : 'var(--primary)';
+    
     document.getElementById('detailContent').innerHTML = `
         <div style="text-align:center;margin-bottom:20px;">
-            <div style="width:65px;height:65px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:1.5rem;">
+            <div style="width:65px;height:65px;background:${headerColor};border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:1.5rem;">
                 <i class="fas fa-home"></i>
             </div>
             <h2 style="color:var(--primary);margin-bottom:8px;">Villa ${item.villaNo}</h2>
-            <span class="status-badge ${getStatusClass(item.status)}" style="font-size:0.8rem;">${item.status || 'N/A'}</span>
+            <span class="status-badge ${getStatusClass(item.status)}" style="font-size:0.85rem;">${item.status || 'N/A'}</span>
         </div>
         <div style="background:var(--light);border-radius:var(--radius);padding:18px;">
             <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--gray-light);">
-                <span style="color:var(--gray);"><i class="fas fa-calendar" style="margin-right:8px;color:var(--secondary);"></i>Renovation Date</span>
-                <strong style="color:var(--dark);">${formatDate(item.dateRenovated)}</strong>
+                <span style="color:var(--gray);"><i class="fas fa-calendar" style="margin-right:8px;color:var(--secondary);"></i>Date</span>
+                <strong>${formatDate(item.dateRenovated)}</strong>
             </div>
             <div style="padding:12px 0;">
                 <span style="color:var(--gray);display:block;margin-bottom:8px;"><i class="fas fa-comment" style="margin-right:8px;color:var(--secondary);"></i>Remarks</span>
-                <p style="color:var(--dark);line-height:1.6;background:white;padding:12px;border-radius:8px;">${item.remarks || 'No remarks available'}</p>
+                <p style="background:white;padding:12px;border-radius:8px;line-height:1.6;">${item.remarks || 'No remarks'}</p>
             </div>
         </div>
     `;
-    
     document.getElementById('detailModal').classList.add('show');
 }
 
-function closeDetailModal() {
-    document.getElementById('detailModal').classList.remove('show');
-}
-
-function closeModal() {
-    document.getElementById('errorModal').classList.remove('show');
-}
+function closeDetailModal() { document.getElementById('detailModal').classList.remove('show'); }
+function closeModal() { document.getElementById('errorModal').classList.remove('show'); }
 
 // ============================================
-// HELPER FUNCTIONS
+// HELPERS
 // ============================================
-function formatDate(dateStr) {
-    if (!dateStr) return '-';
-    
-    // If it's already a formatted string, return it
-    if (typeof dateStr === 'string') {
-        const d = new Date(dateStr);
-        if (!isNaN(d.getTime())) {
-            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-        return dateStr; // Return as-is if can't parse
+function formatDate(d) {
+    if (!d) return '-';
+    const date = new Date(d);
+    if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     }
-    
-    return '-';
+    return d;
 }
 
-function parseDate(dateStr) {
-    if (!dateStr) return 0;
-    const d = new Date(dateStr);
-    return isNaN(d.getTime()) ? 0 : d.getTime();
+function parseDate(d) {
+    if (!d) return 0;
+    const date = new Date(d);
+    return isNaN(date.getTime()) ? 0 : date.getTime();
 }
 
 function truncate(text, len) {
@@ -1442,7 +1424,7 @@ function escapeHtml(text) {
 
 function debounce(func, wait) {
     let timeout;
-    return function(...args) {
+    return (...args) => {
         clearTimeout(timeout);
         timeout = setTimeout(() => func(...args), wait);
     };
@@ -1450,11 +1432,8 @@ function debounce(func, wait) {
 
 function showLoading(show) {
     const overlay = document.getElementById('loadingOverlay');
-    if (show) {
-        overlay.classList.remove('hidden');
-    } else {
-        setTimeout(() => overlay.classList.add('hidden'), 500);
-    }
+    if (show) overlay.classList.remove('hidden');
+    else setTimeout(() => overlay.classList.add('hidden'), 500);
 }
 
 function showError(msg) {
@@ -1463,29 +1442,19 @@ function showError(msg) {
 }
 
 function updateLastUpdated() {
-    document.getElementById('lastUpdated').textContent = 
-        new Date().toLocaleString('en-US', { 
-            month: 'short', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
+    document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 // ============================================
 // EVENT LISTENERS
 // ============================================
 function setupEventListeners() {
-    // Search
     document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
-    
-    // Filters
     document.getElementById('statusFilter').addEventListener('change', applyFilters);
     document.getElementById('villaFilter').addEventListener('change', applyFilters);
     document.getElementById('yearFilter').addEventListener('change', applyFilters);
     document.getElementById('clearFilters').addEventListener('click', clearFilters);
     
-    // Refresh
     document.getElementById('refreshBtn').addEventListener('click', () => {
         const btn = document.getElementById('refreshBtn');
         btn.disabled = true;
@@ -1496,43 +1465,22 @@ function setupEventListeners() {
         });
     });
     
-    // Table sorting
-    document.querySelectorAll('th[data-sort]').forEach(th => 
-        th.addEventListener('click', () => sortTable(th.dataset.sort)));
+    document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', () => sortTable(th.dataset.sort)));
+    document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click', () => switchView(btn.dataset.view)));
     
-    // View toggle
-    document.querySelectorAll('.view-btn').forEach(btn => 
-        btn.addEventListener('click', () => switchView(btn.dataset.view)));
-    
-    // Scroll to top
     const scrollBtn = document.getElementById('scrollTop');
-    window.addEventListener('scroll', () => 
-        scrollBtn.classList.toggle('visible', window.scrollY > 300));
-    scrollBtn.addEventListener('click', () => 
-        window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 300));
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     
-    // Keyboard shortcuts
     document.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-            e.preventDefault();
-            document.getElementById('searchInput').focus();
-        }
-        if (e.key === 'Escape') {
-            closeDetailModal();
-            closeModal();
-        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('searchInput').focus(); }
+        if (e.key === 'Escape') { closeDetailModal(); closeModal(); }
     });
     
-    // Click outside modal to close
-    document.getElementById('detailModal').addEventListener('click', e => {
-        if (e.target.id === 'detailModal') closeDetailModal();
-    });
-    document.getElementById('errorModal').addEventListener('click', e => {
-        if (e.target.id === 'errorModal') closeModal();
-    });
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target.id === 'detailModal') closeDetailModal(); });
+    document.getElementById('errorModal').addEventListener('click', e => { if (e.target.id === 'errorModal') closeModal(); });
 }
 
-// Make functions global for onclick handlers
 window.changePage = changePage;
 window.showDetail = showDetail;
 window.closeDetailModal = closeDetailModal;
