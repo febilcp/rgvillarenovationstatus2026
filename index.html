@@ -6,6 +6,8 @@
     <title>Villa Compound Renovation Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
 <style>
 :root {
@@ -42,6 +44,132 @@ body {
     line-height: 1.6;
 }
 
+/* LOGIN SCREEN */
+.login-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    transition: opacity 0.5s ease;
+}
+
+.login-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.login-box {
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box .logo-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    color: white;
+}
+
+.login-box h2 {
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-size: 1.5rem;
+}
+
+.login-box p {
+    color: var(--gray);
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+.login-box .input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.login-box .input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+}
+
+.login-box input {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+.login-box .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.login-box .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(52,152,219,0.4);
+}
+
+.login-box .error-msg {
+    color: var(--danger);
+    font-size: 0.85rem;
+    margin-top: 15px;
+    display: none;
+}
+
+.login-box .error-msg.show {
+    display: block;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* MAIN CONTENT - Hidden until login */
+.main-content {
+    display: none;
+}
+
+.main-content.visible {
+    display: block;
+}
+
 .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
 .header {
@@ -75,7 +203,7 @@ body {
 .logo-text h1 { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 .logo-text span { font-size: 0.75rem; color: var(--gray); }
 
-.header-actions { display: flex; align-items: center; gap: 12px; }
+.header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 .last-updated {
     display: flex;
@@ -90,13 +218,11 @@ body {
 
 .last-updated i { color: var(--success); }
 
-.refresh-btn {
+.header-btn {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 10px 18px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: var(--white);
+    padding: 10px 16px;
     border: none;
     border-radius: var(--radius-xl);
     font-size: 0.85rem;
@@ -106,29 +232,115 @@ body {
     font-family: inherit;
 }
 
+.refresh-btn {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
+}
+
 .refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(52,152,219,0.4); }
-.refresh-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+.export-btn {
+    background: linear-gradient(135deg, var(--success), var(--success-light));
+    color: var(--white);
+}
+
+.export-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(39,174,96,0.4); }
+
+.logout-btn {
+    background: var(--gray-light);
+    color: var(--gray);
+}
+
+.logout-btn:hover { background: var(--danger); color: white; }
+
+.header-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* Export Dropdown */
+.export-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.export-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    min-width: 220px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: var(--transition);
+}
+
+.export-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(5px);
+}
+
+.export-menu-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--gray-light);
+    font-weight: 600;
+    color: var(--dark);
+    font-size: 0.85rem;
+}
+
+.export-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.85rem;
+    color: var(--dark);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+}
+
+.export-menu-item:hover {
+    background: var(--light);
+}
+
+.export-menu-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.export-menu-item.all i { color: var(--secondary); }
+.export-menu-item.full i { color: var(--success); }
+.export-menu-item.half i { color: var(--half); }
+.export-menu-item.under i { color: var(--warning); }
+.export-menu-item.non i { color: var(--danger); }
+
+.export-menu-item .count {
+    margin-left: auto;
+    background: var(--gray-light);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: var(--gray);
+}
 
 .dashboard { padding: 25px 0 15px; }
 
-/* 5 COLUMN GRID FOR STATS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 15px;
 }
 
-@media (max-width: 1200px) {
-    .stats-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 768px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 480px) {
-    .stats-grid { grid-template-columns: 1fr; }
-}
+@media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
 
 .stat-card {
     background: rgba(255,255,255,0.95);
@@ -158,17 +370,10 @@ body {
 }
 
 .stat-card:hover::after { opacity: 1; }
-
-.stat-card:hover { 
-    transform: translateY(-5px) scale(1.02); 
-    box-shadow: var(--shadow-lg); 
-}
-
+.stat-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: var(--shadow-lg); }
 .stat-card:active { transform: translateY(-2px) scale(0.98); }
-
 .stat-card.active { box-shadow: 0 0 0 3px var(--secondary), var(--shadow-lg); }
 
-/* Card Colors */
 .stat-card.total { border-left-color: var(--secondary); }
 .stat-card.total:hover { background: rgba(52,152,219,0.1); }
 .stat-card.total.active { background: rgba(52,152,219,0.15); }
@@ -293,6 +498,36 @@ body {
 .progress-segment.half { background: var(--half); }
 .progress-segment.under { background: var(--warning); }
 .progress-segment.non { background: var(--danger); }
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    border-radius: var(--radius);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--dark);
+}
+
+.legend-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+}
+
+.legend-color.full { background: var(--success); }
+.legend-color.half { background: var(--half); }
+.legend-color.under { background: var(--warning); }
+.legend-color.non { background: var(--danger); }
 
 .progress-stats {
     display: flex;
@@ -451,7 +686,6 @@ tbody tr:nth-child(even):hover { background: rgba(52,152,219,0.05); }
 
 td:first-child { font-weight: 600; color: var(--primary); }
 
-/* STATUS BADGES */
 .status-badge {
     padding: 5px 12px;
     border-radius: var(--radius-xl);
@@ -463,30 +697,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
     white-space: nowrap;
 }
 
-.status-full-renovated {
-    background: rgba(39,174,96,0.15);
-    color: var(--success);
-}
-
-.status-half-renovated {
-    background: rgba(155,89,182,0.15);
-    color: var(--half);
-}
-
-.status-in-progress, .status-under-renovation {
-    background: rgba(243,156,18,0.15);
-    color: var(--warning);
-}
-
-.status-non-renovated {
-    background: rgba(231,76,60,0.15);
-    color: var(--danger);
-}
-
-.status-on-hold {
-    background: rgba(108,117,125,0.15);
-    color: var(--gray);
-}
+.status-full-renovated { background: rgba(39,174,96,0.15); color: var(--success); }
+.status-half-renovated { background: rgba(155,89,182,0.15); color: var(--half); }
+.status-in-progress, .status-under-renovation { background: rgba(243,156,18,0.15); color: var(--warning); }
+.status-non-renovated { background: rgba(231,76,60,0.15); color: var(--danger); }
+.status-on-hold { background: rgba(108,117,125,0.15); color: var(--gray); }
 
 .remarks-cell {
     max-width: 250px;
@@ -567,13 +782,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .villa-card-header.non-renovated { background: linear-gradient(135deg, var(--danger), #c0392b); color: white; }
 .villa-card-header.default { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; }
 
-.villa-card-header h3 {
-    font-size: 1.15rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
+.villa-card-header h3 { font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
 .villa-card-header h3 i { font-size: 0.9rem; opacity: 0.8; }
 
 .villa-card-body { padding: 16px; }
@@ -793,41 +1002,37 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .scroll-top.visible { opacity: 1; visibility: visible; }
 .scroll-top:hover { transform: translateY(-3px); background: var(--primary); color: var(--white); }
 
-/* Legend */
-.legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(255,255,255,0.5);
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--dark);
+    color: white;
+    padding: 15px 25px;
     border-radius: var(--radius);
-}
-
-.legend-item {
+    box-shadow: var(--shadow-lg);
+    z-index: 10001;
+    opacity: 0;
+    transition: var(--transition);
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    color: var(--dark);
+    gap: 10px;
 }
 
-.legend-color {
-    width: 14px;
-    height: 14px;
-    border-radius: 4px;
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
 }
 
-.legend-color.full { background: var(--success); }
-.legend-color.half { background: var(--half); }
-.legend-color.under { background: var(--warning); }
-.legend-color.non { background: var(--danger); }
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
 
 @media (max-width: 768px) {
     .header .container { flex-direction: column; text-align: center; }
     .logo { justify-content: center; }
-    .header-actions { width: 100%; justify-content: center; }
+    .header-actions { width: 100%; justify-content: center; flex-wrap: wrap; }
     .filters-wrapper { flex-direction: column; }
     .search-box { width: 100%; min-width: unset; }
     .filter-group { width: 100%; justify-content: center; }
@@ -838,10 +1043,42 @@ td:first-child { font-weight: 600; color: var(--primary); }
     .stat-info p { font-size: 0.7rem; }
     .progress-stats { gap: 15px; }
     .stat-card::after { display: none; }
+    .login-box { padding: 30px 20px; }
 }
 </style>
 </head>
 <body>
+
+<!-- ============================================ -->
+<!-- LOGIN SCREEN -->
+<!-- ============================================ -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <div class="logo-icon">
+            <i class="fas fa-building"></i>
+        </div>
+        <h2>Villa Renovation Tracker</h2>
+        <p>Enter password to access the dashboard</p>
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="passwordInput" placeholder="Enter Password" autocomplete="off" required>
+            </div>
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        <p class="error-msg" id="loginError">
+            <i class="fas fa-exclamation-circle"></i> Incorrect password. Please try again.
+        </p>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- MAIN CONTENT (Hidden until login) -->
+<!-- ============================================ -->
+<div class="main-content" id="mainContent">
+
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -856,9 +1093,54 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <i class="fas fa-clock"></i>
                     <span id="lastUpdated">Loading...</span>
                 </div>
-                <button id="refreshBtn" class="refresh-btn">
+                
+                <!-- EXPORT DROPDOWN -->
+                <div class="export-dropdown">
+                    <button class="header-btn export-btn" onclick="toggleExportMenu()">
+                        <i class="fas fa-file-excel"></i>
+                        <span>Export</span>
+                        <i class="fas fa-chevron-down" style="font-size:0.7rem;margin-left:3px;"></i>
+                    </button>
+                    <div class="export-menu" id="exportMenu">
+                        <div class="export-menu-header">
+                            <i class="fas fa-download"></i> Export to Excel
+                        </div>
+                        <button class="export-menu-item all" onclick="exportToExcel('all')">
+                            <i class="fas fa-list"></i>
+                            <span>All Villas</span>
+                            <span class="count" id="exportCountAll">0</span>
+                        </button>
+                        <button class="export-menu-item full" onclick="exportToExcel('full-renovated')">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Full Renovated</span>
+                            <span class="count" id="exportCountFull">0</span>
+                        </button>
+                        <button class="export-menu-item half" onclick="exportToExcel('half-renovated')">
+                            <i class="fas fa-adjust"></i>
+                            <span>Half Renovated</span>
+                            <span class="count" id="exportCountHalf">0</span>
+                        </button>
+                        <button class="export-menu-item under" onclick="exportToExcel('in-progress')">
+                            <i class="fas fa-tools"></i>
+                            <span>Under Renovation</span>
+                            <span class="count" id="exportCountUnder">0</span>
+                        </button>
+                        <button class="export-menu-item non" onclick="exportToExcel('non-renovated')">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Non Renovated</span>
+                            <span class="count" id="exportCountNon">0</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <button id="refreshBtn" class="header-btn refresh-btn">
                     <i class="fas fa-sync-alt"></i>
                     <span>Refresh</span>
+                </button>
+                
+                <button class="header-btn logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
                 </button>
             </div>
         </div>
@@ -866,7 +1148,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
     <section class="dashboard">
         <div class="container">
-            <!-- 5 CLICKABLE STAT CARDS -->
             <div class="stats-grid">
                 <div class="stat-card total" onclick="filterByCategory('all')" title="Click to show all villas">
                     <div class="stat-icon"><i class="fas fa-home"></i></div>
@@ -921,7 +1202,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <span class="progress-percentage" id="progressPercent">0%</span>
                 </div>
                 
-                <!-- MULTI-SEGMENT PROGRESS BAR -->
                 <div class="progress-bar-container" id="progressBarContainer">
                     <div class="progress-segment full" id="progressFull" style="width:0%"></div>
                     <div class="progress-segment half" id="progressHalf" style="width:0%"></div>
@@ -929,7 +1209,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <div class="progress-segment non" id="progressNon" style="width:0%"></div>
                 </div>
                 
-                <!-- LEGEND -->
                 <div class="legend">
                     <div class="legend-item"><span class="legend-color full"></span> Full Renovated</div>
                     <div class="legend-item"><span class="legend-color half"></span> Half Renovated</div>
@@ -1020,33 +1299,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader">
-            <i class="fas fa-hard-hat"></i>
-            <p>Loading renovation data...</p>
-            <div class="loader-bar"><div class="loader-progress"></div></div>
-        </div>
-    </div>
-
-    <div class="modal" id="errorModal">
-        <div class="modal-content">
-            <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--danger);"></i>
-            <h3>Connection Error</h3>
-            <p id="errorMessage">Unable to fetch data from Google Sheet.</p>
-            <div class="modal-actions">
-                <button onclick="closeModal()" class="btn-secondary">Close</button>
-                <button onclick="location.reload()" class="btn-primary">Try Again</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="detailModal">
-        <div class="modal-content" style="text-align:left;max-width:450px;">
-            <button class="modal-close" onclick="closeDetailModal()"><i class="fas fa-times"></i></button>
-            <div id="detailContent"></div>
-        </div>
-    </div>
-
     <footer class="footer">
         <div class="container">
             <p><i class="fas fa-database"></i> Live data from Google Sheets <i class="fas fa-heart"></i> Villa Renovation Tracker © 2024</p>
@@ -1055,9 +1307,60 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
     <button class="scroll-top" id="scrollTop"><i class="fas fa-chevron-up"></i></button>
 
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="loader">
+        <i class="fas fa-hard-hat"></i>
+        <p>Loading renovation data...</p>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal" id="errorModal">
+    <div class="modal-content">
+        <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--danger);"></i>
+        <h3>Connection Error</h3>
+        <p id="errorMessage">Unable to fetch data from Google Sheet.</p>
+        <div class="modal-actions">
+            <button onclick="closeModal()" class="btn-secondary">Close</button>
+            <button onclick="location.reload()" class="btn-primary">Try Again</button>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal" id="detailModal">
+    <div class="modal-content" style="text-align:left;max-width:450px;">
+        <button class="modal-close" onclick="closeDetailModal()"><i class="fas fa-times"></i></button>
+        <div id="detailContent"></div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Success!</span>
+</div>
+
 <script>
 // ============================================
-// YOUR GOOGLE SHEET CONFIGURATION
+// PASSWORD CONFIGURATION
+// ============================================
+// Change this password to whatever you want
+const VALID_PASSWORD = 'villa2024';
+
+// You can also add multiple users:
+const VALID_USERS = {
+    'admin': 'admin123',
+    'manager': 'manager456',
+    'viewer': 'villa2024'
+};
+
+// ============================================
+// GOOGLE SHEET CONFIGURATION
 // ============================================
 const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
 const SHEET_GID = '0';
@@ -1082,12 +1385,192 @@ let sortDirection = 'asc';
 let activeCategory = 'all';
 
 // ============================================
+// LOGIN FUNCTIONS
+// ============================================
+function checkLogin() {
+    const isLoggedIn = sessionStorage.getItem('villaTrackerLoggedIn');
+    if (isLoggedIn === 'true') {
+        showMainContent();
+    }
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    const password = document.getElementById('passwordInput').value;
+    const errorMsg = document.getElementById('loginError');
+    
+    // Check single password
+    if (password === VALID_PASSWORD) {
+        loginSuccess();
+        return;
+    }
+    
+    // Check multiple users (password only mode)
+    for (const [user, pass] of Object.entries(VALID_USERS)) {
+        if (password === pass) {
+            loginSuccess(user);
+            return;
+        }
+    }
+    
+    // Wrong password
+    errorMsg.classList.add('show');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+    
+    setTimeout(() => {
+        errorMsg.classList.remove('show');
+    }, 3000);
+}
+
+function loginSuccess(username = 'User') {
+    sessionStorage.setItem('villaTrackerLoggedIn', 'true');
+    sessionStorage.setItem('villaTrackerUser', username);
+    showMainContent();
+    showToast(`Welcome! Login successful`, 'success');
+}
+
+function showMainContent() {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('mainContent').classList.add('visible');
+    fetchData();
+}
+
+function logout() {
+    sessionStorage.removeItem('villaTrackerLoggedIn');
+    sessionStorage.removeItem('villaTrackerUser');
+    document.getElementById('mainContent').classList.remove('visible');
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    document.getElementById('passwordInput').value = '';
+    showToast('Logged out successfully', 'success');
+}
+
+// ============================================
 // INITIALIZE
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    fetchData();
+    checkLogin();
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
     setupEventListeners();
+    
+    // Close export menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.export-dropdown')) {
+            document.getElementById('exportMenu').classList.remove('show');
+        }
+    });
 });
+
+// ============================================
+// EXPORT FUNCTIONS
+// ============================================
+function toggleExportMenu() {
+    const menu = document.getElementById('exportMenu');
+    menu.classList.toggle('show');
+    
+    // Update counts
+    document.getElementById('exportCountAll').textContent = allData.length;
+    document.getElementById('exportCountFull').textContent = allData.filter(i => isFullRenovated(i.status)).length;
+    document.getElementById('exportCountHalf').textContent = allData.filter(i => isHalfRenovated(i.status)).length;
+    document.getElementById('exportCountUnder').textContent = allData.filter(i => isInProgress(i.status)).length;
+    document.getElementById('exportCountNon').textContent = allData.filter(i => isNonRenovated(i.status)).length;
+}
+
+function exportToExcel(category) {
+    let dataToExport = [];
+    let fileName = 'Villa_Renovation_Report';
+    
+    switch(category) {
+        case 'all':
+            dataToExport = allData;
+            fileName = 'All_Villas_Report';
+            break;
+        case 'full-renovated':
+            dataToExport = allData.filter(i => isFullRenovated(i.status));
+            fileName = 'Full_Renovated_Villas_Report';
+            break;
+        case 'half-renovated':
+            dataToExport = allData.filter(i => isHalfRenovated(i.status));
+            fileName = 'Half_Renovated_Villas_Report';
+            break;
+        case 'in-progress':
+            dataToExport = allData.filter(i => isInProgress(i.status));
+            fileName = 'Under_Renovation_Villas_Report';
+            break;
+        case 'non-renovated':
+            dataToExport = allData.filter(i => isNonRenovated(i.status));
+            fileName = 'Non_Renovated_Villas_Report';
+            break;
+    }
+    
+    if (dataToExport.length === 0) {
+        showToast('No data to export', 'error');
+        return;
+    }
+    
+    // Prepare data for Excel
+    const excelData = dataToExport.map(item => ({
+        'Villa No': item.villaNo,
+        'Status': item.status || 'N/A',
+        'Date Renovated': item.dateRenovated || '-',
+        'Remarks': item.remarks || '-'
+    }));
+    
+    // Add summary row
+    const summaryData = [
+        {},
+        { 'Villa No': 'SUMMARY' },
+        { 'Villa No': 'Total Villas:', 'Status': allData.length },
+        { 'Villa No': 'Full Renovated:', 'Status': allData.filter(i => isFullRenovated(i.status)).length },
+        { 'Villa No': 'Half Renovated:', 'Status': allData.filter(i => isHalfRenovated(i.status)).length },
+        { 'Villa No': 'Under Renovation:', 'Status': allData.filter(i => isInProgress(i.status)).length },
+        { 'Villa No': 'Non Renovated:', 'Status': allData.filter(i => isNonRenovated(i.status)).length },
+        {},
+        { 'Villa No': 'Generated:', 'Status': new Date().toLocaleString() }
+    ];
+    
+    const finalData = [...excelData, ...summaryData];
+    
+    // Create workbook
+    const ws = XLSX.utils.json_to_sheet(finalData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Renovation Report');
+    
+    // Set column widths
+    ws['!cols'] = [
+        { wch: 12 },  // Villa No
+        { wch: 20 },  // Status
+        { wch: 18 },  // Date
+        { wch: 40 }   // Remarks
+    ];
+    
+    // Download file
+    const date = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `${fileName}_${date}.xlsx`);
+    
+    // Hide menu and show toast
+    document.getElementById('exportMenu').classList.remove('show');
+    showToast(`Exported ${dataToExport.length} villas to Excel`, 'success');
+}
+
+// ============================================
+// TOAST NOTIFICATION
+// ============================================
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    toastMessage.textContent = message;
+    toast.className = `toast ${type}`;
+    
+    toast.querySelector('i').className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
 
 // ============================================
 // FETCH DATA
@@ -1143,90 +1626,49 @@ function getCellValue(cells, index) {
 }
 
 // ============================================
-// STATUS DETECTION - WITH HALF RENOVATED
+// STATUS DETECTION
 // ============================================
 function isFullRenovated(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
-    
-    // Exclude non, half, under
-    if (s.includes('non') || s.includes('not ') || s.includes('half') || s.includes('under') || s.includes('partial')) {
-        return false;
-    }
-    
-    return s.includes('full renovated') || 
-           s.includes('fully renovated') ||
-           s.includes('full-renovated') ||
-           s === 'renovated' ||
-           s.includes('complete') || 
-           s.includes('done') ||
-           s.includes('finished') ||
-           s === 'yes' || 
-           s === 'y';
+    if (s.includes('non') || s.includes('not ') || s.includes('half') || s.includes('under') || s.includes('partial')) return false;
+    return s.includes('full renovated') || s.includes('fully renovated') || s.includes('full-renovated') ||
+           s === 'renovated' || s.includes('complete') || s.includes('done') || s.includes('finished') ||
+           s === 'yes' || s === 'y';
 }
 
 function isHalfRenovated(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
-    
-    return s.includes('half renovated') ||
-           s.includes('half-renovated') ||
-           s.includes('partially renovated') ||
-           s.includes('50%') ||
-           s === 'half';
+    return s.includes('half renovated') || s.includes('half-renovated') || s.includes('partially renovated') ||
+           s.includes('50%') || s === 'half';
 }
 
 function isInProgress(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
-    
-    // Exclude half renovated
     if (s.includes('half')) return false;
-    
-    return s.includes('under renovation') ||
-           s.includes('under-renovation') ||
-           s.includes('under ') ||
-           s.includes('progress') || 
-           s.includes('ongoing') || 
-           s.includes('working') ||
-           s.includes('started') ||
-           s.includes('renovation in');
+    return s.includes('under renovation') || s.includes('under-renovation') || s.includes('under ') ||
+           s.includes('progress') || s.includes('ongoing') || s.includes('working') ||
+           s.includes('started') || s.includes('renovation in');
 }
 
 function isNonRenovated(status) {
     if (!status) return true;
+    if (isFullRenovated(status) || isHalfRenovated(status) || isInProgress(status)) return false;
     const s = String(status).toLowerCase().trim();
-    
-    // If it matches any other category, it's not "non renovated"
-    if (isFullRenovated(status) || isHalfRenovated(status) || isInProgress(status)) {
-        return false;
-    }
-    
-    return s.includes('non renovated') ||
-           s.includes('non-renovated') ||
-           s.includes('not renovated') ||
-           s.includes('not done') ||
-           s === 'no' || 
-           s === 'n' ||
-           s === 'pending' ||
-           s === '';
+    return s.includes('non renovated') || s.includes('non-renovated') || s.includes('not renovated') ||
+           s.includes('not done') || s === 'no' || s === 'n' || s === 'pending' || s === '';
 }
 
 function getStatusClass(status) {
-    if (!status) return 'status-non-renovated';
-    const s = String(status).toLowerCase().trim();
-    
     if (isHalfRenovated(status)) return 'status-half-renovated';
     if (isInProgress(status)) return 'status-in-progress';
     if (isFullRenovated(status)) return 'status-full-renovated';
-    if (isNonRenovated(status)) return 'status-non-renovated';
-    
     return 'status-non-renovated';
 }
 
 function getCardHeaderClass(status) {
-    if (!status) return 'non-renovated';
-    
     if (isHalfRenovated(status)) return 'half-renovated';
     if (isInProgress(status)) return 'in-progress';
     if (isFullRenovated(status)) return 'full-renovated';
@@ -1234,8 +1676,6 @@ function getCardHeaderClass(status) {
 }
 
 function getTimelineClass(status) {
-    if (!status) return 'non-renovated';
-    
     if (isHalfRenovated(status)) return 'half-renovated';
     if (isInProgress(status)) return 'in-progress';
     if (isFullRenovated(status)) return 'full-renovated';
@@ -1243,11 +1683,10 @@ function getTimelineClass(status) {
 }
 
 // ============================================
-// FILTER BY CATEGORY (CLICKABLE CARDS)
+// FILTER BY CATEGORY
 // ============================================
 function filterByCategory(category) {
     activeCategory = category;
-    
     document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
     
     const badge = document.getElementById('activeFilterBadge');
@@ -1282,7 +1721,6 @@ function filterByCategory(category) {
     renderTable();
     renderVillaCards();
     renderTimeline();
-    
     document.querySelector('.filters-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1295,20 +1733,14 @@ function updateDashboard() {
     const halfRenovated = allData.filter(i => isHalfRenovated(i.status)).length;
     const inProgress = allData.filter(i => isInProgress(i.status)).length;
     const nonRenovated = allData.filter(i => isNonRenovated(i.status)).length;
-    
-    // Calculate progress (full = 100%, half = 50%)
     const progressPercent = total > 0 ? Math.round(((fullRenovated + (halfRenovated * 0.5)) / total) * 100) : 0;
     
-    console.log(`Stats: Total=${total}, Full=${fullRenovated}, Half=${halfRenovated}, Under=${inProgress}, Non=${nonRenovated}`);
-    
-    // Animate counters
     animateCounter('totalVillas', total);
     animateCounter('fullRenovatedCount', fullRenovated);
     animateCounter('halfRenovatedCount', halfRenovated);
     animateCounter('inProgressCount', inProgress);
     animateCounter('nonRenovatedCount', nonRenovated);
     
-    // Update progress bar segments
     setTimeout(() => {
         const fullPct = total > 0 ? (fullRenovated / total) * 100 : 0;
         const halfPct = total > 0 ? (halfRenovated / total) * 100 : 0;
@@ -1331,7 +1763,6 @@ function updateDashboard() {
 function animateCounter(id, target) {
     const el = document.getElementById(id);
     if (!el) return;
-    
     const start = parseInt(el.textContent) || 0;
     const duration = 1000;
     const startTime = performance.now();
@@ -1350,33 +1781,26 @@ function animateCounter(id, target) {
 // FILTERS
 // ============================================
 function updateFilters() {
-    const villas = [...new Set(allData.map(i => i.villaNo))]
-        .filter(Boolean)
-        .sort((a, b) => {
-            const numA = parseInt(String(a).replace(/\D/g, '')) || 0;
-            const numB = parseInt(String(b).replace(/\D/g, '')) || 0;
-            return numA - numB;
-        });
+    const villas = [...new Set(allData.map(i => i.villaNo))].filter(Boolean).sort((a, b) => {
+        const numA = parseInt(String(a).replace(/\D/g, '')) || 0;
+        const numB = parseInt(String(b).replace(/\D/g, '')) || 0;
+        return numA - numB;
+    });
     
-    const statuses = [...new Set(allData.map(i => String(i.status).trim()))]
-        .filter(Boolean)
-        .sort();
+    const statuses = [...new Set(allData.map(i => String(i.status).trim()))].filter(Boolean).sort();
     
     const years = [...new Set(allData.map(i => {
         const match = String(i.dateRenovated).match(/\d{4}/);
         return match ? parseInt(match[0]) : null;
     }).filter(Boolean))].sort((a, b) => b - a);
     
-    document.getElementById('villaFilter').innerHTML = 
-        '<option value="">All Villas</option>' + 
+    document.getElementById('villaFilter').innerHTML = '<option value="">All Villas</option>' + 
         villas.map(v => `<option value="${v}">Villa ${v}</option>`).join('');
     
-    document.getElementById('statusFilter').innerHTML = 
-        '<option value="">All Status</option>' + 
+    document.getElementById('statusFilter').innerHTML = '<option value="">All Status</option>' + 
         statuses.map(s => `<option value="${s}">${s}</option>`).join('');
     
-    document.getElementById('yearFilter').innerHTML = 
-        '<option value="">All Years</option>' + 
+    document.getElementById('yearFilter').innerHTML = '<option value="">All Years</option>' + 
         years.map(y => `<option value="${y}">${y}</option>`).join('');
 }
 
@@ -1398,20 +1822,15 @@ function applyFilters() {
     }
     
     filteredData = baseData.filter(item => {
-        const searchMatch = !search || 
-            String(item.villaNo).toLowerCase().includes(search) ||
-            String(item.status).toLowerCase().includes(search) ||
-            String(item.remarks).toLowerCase().includes(search);
-        
+        const searchMatch = !search || String(item.villaNo).toLowerCase().includes(search) ||
+            String(item.status).toLowerCase().includes(search) || String(item.remarks).toLowerCase().includes(search);
         const statusMatch = !status || String(item.status).trim() === status;
         const villaMatch = !villa || String(item.villaNo) === villa;
-        
         let yearMatch = true;
         if (year) {
             const match = String(item.dateRenovated).match(/\d{4}/);
             yearMatch = match && parseInt(match[0]) === parseInt(year);
         }
-        
         return searchMatch && statusMatch && villaMatch && yearMatch;
     });
     
@@ -1426,11 +1845,9 @@ function clearFilters() {
     document.getElementById('statusFilter').value = '';
     document.getElementById('villaFilter').value = '';
     document.getElementById('yearFilter').value = '';
-    
     activeCategory = 'all';
     document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
     document.getElementById('activeFilterBadge').classList.remove('show');
-    
     filteredData = [...allData];
     currentPage = 1;
     renderTable();
@@ -1448,7 +1865,7 @@ function renderTable() {
     const pageData = filteredData.slice(start, end);
     
     if (pageData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3><p>Try adjusting your filters</p></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3></div></td></tr>`;
     } else {
         tbody.innerHTML = pageData.map(item => `
             <tr onclick="showDetail(${item.id})" style="cursor:pointer;">
@@ -1462,18 +1879,15 @@ function renderTable() {
     
     document.getElementById('rowCount').textContent = 
         `Showing ${filteredData.length > 0 ? start + 1 : 0} - ${Math.min(end, filteredData.length)} of ${filteredData.length} villas`;
-    
     renderPagination();
 }
 
 function renderPagination() {
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
     const pagination = document.getElementById('pagination');
-    
     if (totalPages <= 1) { pagination.innerHTML = ''; return; }
     
     let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
-    
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
             html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
@@ -1481,17 +1895,13 @@ function renderPagination() {
             html += `<button disabled>...</button>`;
         }
     }
-    
     html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
     pagination.innerHTML = html;
 }
 
 function changePage(page) {
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    if (page >= 1 && page <= totalPages) {
-        currentPage = page;
-        renderTable();
-    }
+    if (page >= 1 && page <= totalPages) { currentPage = page; renderTable(); }
 }
 
 // ============================================
@@ -1499,12 +1909,10 @@ function changePage(page) {
 // ============================================
 function renderVillaCards() {
     const container = document.getElementById('villaCards');
-    
     if (filteredData.length === 0) {
-        container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-home"></i><h3>No Villas Found</h3><p>Try adjusting your filters</p></div>`;
+        container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-home"></i><h3>No Villas Found</h3></div>`;
         return;
     }
-    
     container.innerHTML = filteredData.map(item => `
         <div class="villa-card" onclick="showDetail(${item.id})">
             <div class="villa-card-header ${getCardHeaderClass(item.status)}">
@@ -1512,14 +1920,8 @@ function renderVillaCards() {
                 <span class="status-badge" style="background:rgba(255,255,255,0.2);color:white;font-size:0.65rem;">${item.status || 'N/A'}</span>
             </div>
             <div class="villa-card-body">
-                <div class="info-row">
-                    <span class="label"><i class="fas fa-calendar"></i> Date</span>
-                    <span class="value">${formatDate(item.dateRenovated)}</span>
-                </div>
-                <div class="info-row">
-                    <span class="label"><i class="fas fa-comment"></i> Remarks</span>
-                    <span class="value">${truncate(item.remarks, 25) || '-'}</span>
-                </div>
+                <div class="info-row"><span class="label"><i class="fas fa-calendar"></i> Date</span><span class="value">${formatDate(item.dateRenovated)}</span></div>
+                <div class="info-row"><span class="label"><i class="fas fa-comment"></i> Remarks</span><span class="value">${truncate(item.remarks, 25) || '-'}</span></div>
             </div>
         </div>
     `).join('');
@@ -1531,12 +1933,10 @@ function renderVillaCards() {
 function renderTimeline() {
     const container = document.getElementById('timeline');
     const sorted = [...filteredData].sort((a, b) => parseDate(b.dateRenovated) - parseDate(a.dateRenovated));
-    
     if (sorted.length === 0) {
-        container.innerHTML = `<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3><p>Try adjusting your filters</p></div>`;
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3></div>`;
         return;
     }
-    
     container.innerHTML = sorted.map(item => `
         <div class="timeline-item ${getTimelineClass(item.status)}" onclick="showDetail(${item.id})">
             <div class="timeline-date"><i class="fas fa-calendar-alt"></i> ${formatDate(item.dateRenovated)}</div>
@@ -1553,34 +1953,19 @@ function renderTimeline() {
 function sortTable(column) {
     sortDirection = (sortColumn === column && sortDirection === 'asc') ? 'desc' : 'asc';
     sortColumn = column;
-    
     filteredData.sort((a, b) => {
         let valA = a[column], valB = b[column];
-        
-        if (column === 'villaNo') {
-            valA = parseInt(String(valA).replace(/\D/g, '')) || 0;
-            valB = parseInt(String(valB).replace(/\D/g, '')) || 0;
-        }
-        
-        if (column === 'dateRenovated') {
-            valA = parseDate(valA);
-            valB = parseDate(valB);
-        }
-        
+        if (column === 'villaNo') { valA = parseInt(String(valA).replace(/\D/g, '')) || 0; valB = parseInt(String(valB).replace(/\D/g, '')) || 0; }
+        if (column === 'dateRenovated') { valA = parseDate(valA); valB = parseDate(valB); }
         if (typeof valA === 'string') valA = valA.toLowerCase();
         if (typeof valB === 'string') valB = valB.toLowerCase();
-        
         if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
         if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
         return 0;
     });
-    
     renderTable();
 }
 
-// ============================================
-// VIEW TOGGLE
-// ============================================
 function switchView(view) {
     document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
     document.querySelectorAll('.view-content').forEach(c => c.classList.remove('active'));
@@ -1593,33 +1978,19 @@ function switchView(view) {
 function showDetail(id) {
     const item = allData.find(d => d.id === id);
     if (!item) return;
-    
     const headerClass = getCardHeaderClass(item.status);
-    const colors = {
-        'full-renovated': 'var(--success)',
-        'half-renovated': 'var(--half)',
-        'in-progress': 'var(--warning)',
-        'non-renovated': 'var(--danger)'
-    };
+    const colors = { 'full-renovated': 'var(--success)', 'half-renovated': 'var(--half)', 'in-progress': 'var(--warning)', 'non-renovated': 'var(--danger)' };
     const headerColor = colors[headerClass] || 'var(--primary)';
     
     document.getElementById('detailContent').innerHTML = `
         <div style="text-align:center;margin-bottom:20px;">
-            <div style="width:65px;height:65px;background:${headerColor};border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:1.5rem;">
-                <i class="fas fa-home"></i>
-            </div>
+            <div style="width:65px;height:65px;background:${headerColor};border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:1.5rem;"><i class="fas fa-home"></i></div>
             <h2 style="color:var(--primary);margin-bottom:8px;">Villa ${item.villaNo}</h2>
             <span class="status-badge ${getStatusClass(item.status)}" style="font-size:0.85rem;">${item.status || 'N/A'}</span>
         </div>
         <div style="background:var(--light);border-radius:var(--radius);padding:18px;">
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--gray-light);">
-                <span style="color:var(--gray);"><i class="fas fa-calendar" style="margin-right:8px;color:var(--secondary);"></i>Date</span>
-                <strong>${formatDate(item.dateRenovated)}</strong>
-            </div>
-            <div style="padding:12px 0;">
-                <span style="color:var(--gray);display:block;margin-bottom:8px;"><i class="fas fa-comment" style="margin-right:8px;color:var(--secondary);"></i>Remarks</span>
-                <p style="background:white;padding:12px;border-radius:8px;line-height:1.6;">${item.remarks || 'No remarks'}</p>
-            </div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--gray-light);"><span style="color:var(--gray);"><i class="fas fa-calendar" style="margin-right:8px;color:var(--secondary);"></i>Date</span><strong>${formatDate(item.dateRenovated)}</strong></div>
+            <div style="padding:12px 0;"><span style="color:var(--gray);display:block;margin-bottom:8px;"><i class="fas fa-comment" style="margin-right:8px;color:var(--secondary);"></i>Remarks</span><p style="background:white;padding:12px;border-radius:8px;line-height:1.6;">${item.remarks || 'No remarks'}</p></div>
         </div>
     `;
     document.getElementById('detailModal').classList.add('show');
@@ -1631,55 +2002,14 @@ function closeModal() { document.getElementById('errorModal').classList.remove('
 // ============================================
 // HELPERS
 // ============================================
-function formatDate(d) {
-    if (!d) return '-';
-    const date = new Date(d);
-    if (!isNaN(date.getTime())) {
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-    }
-    return d;
-}
-
-function parseDate(d) {
-    if (!d) return 0;
-    const date = new Date(d);
-    return isNaN(date.getTime()) ? 0 : date.getTime();
-}
-
-function truncate(text, len) {
-    if (!text) return '';
-    return text.length <= len ? text : text.substring(0, len) + '...';
-}
-
-function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), wait);
-    };
-}
-
-function showLoading(show) {
-    const overlay = document.getElementById('loadingOverlay');
-    if (show) overlay.classList.remove('hidden');
-    else setTimeout(() => overlay.classList.add('hidden'), 500);
-}
-
-function showError(msg) {
-    document.getElementById('errorMessage').textContent = msg;
-    document.getElementById('errorModal').classList.add('show');
-}
-
-function updateLastUpdated() {
-    document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-}
+function formatDate(d) { if (!d) return '-'; const date = new Date(d); if (!isNaN(date.getTime())) return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); return d; }
+function parseDate(d) { if (!d) return 0; const date = new Date(d); return isNaN(date.getTime()) ? 0 : date.getTime(); }
+function truncate(text, len) { if (!text) return ''; return text.length <= len ? text : text.substring(0, len) + '...'; }
+function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+function debounce(func, wait) { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => func(...args), wait); }; }
+function showLoading(show) { const overlay = document.getElementById('loadingOverlay'); if (show) overlay.classList.remove('hidden'); else setTimeout(() => overlay.classList.add('hidden'), 500); }
+function showError(msg) { document.getElementById('errorMessage').textContent = msg; document.getElementById('errorModal').classList.add('show'); }
+function updateLastUpdated() { document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
 
 // ============================================
 // EVENT LISTENERS
@@ -1695,10 +2025,7 @@ function setupEventListeners() {
         const btn = document.getElementById('refreshBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i><span>Refreshing...</span>';
-        fetchData().finally(() => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>';
-        });
+        fetchData().finally(() => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>'; });
     });
     
     document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', () => sortTable(th.dataset.sort)));
@@ -1722,6 +2049,9 @@ window.showDetail = showDetail;
 window.closeDetailModal = closeDetailModal;
 window.closeModal = closeModal;
 window.filterByCategory = filterByCategory;
+window.toggleExportMenu = toggleExportMenu;
+window.exportToExcel = exportToExcel;
+window.logout = logout;
 </script>
 </body>
 </html>
