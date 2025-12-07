@@ -115,6 +115,7 @@ body {
     gap: 20px;
 }
 
+/* CLICKABLE STAT CARDS */
 .stat-card {
     background: rgba(255,255,255,0.95);
     backdrop-filter: blur(10px);
@@ -126,14 +127,54 @@ body {
     box-shadow: var(--shadow);
     transition: var(--transition);
     border-left: 4px solid var(--secondary);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.stat-card::after {
+    content: 'Click to filter';
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 0.65rem;
+    color: var(--gray);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.stat-card:hover::after {
+    opacity: 1;
+}
+
+.stat-card:hover { 
+    transform: translateY(-5px) scale(1.02); 
+    box-shadow: var(--shadow-lg); 
+}
+
+.stat-card:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.stat-card.active {
+    box-shadow: 0 0 0 3px var(--secondary), var(--shadow-lg);
+}
 
 .stat-card.total { border-left-color: var(--secondary); }
+.stat-card.total:hover { background: rgba(52,152,219,0.1); }
+.stat-card.total.active { background: rgba(52,152,219,0.15); }
+
 .stat-card.renovated { border-left-color: var(--success); }
+.stat-card.renovated:hover { background: rgba(39,174,96,0.1); }
+.stat-card.renovated.active { background: rgba(39,174,96,0.15); box-shadow: 0 0 0 3px var(--success), var(--shadow-lg); }
+
 .stat-card.in-progress { border-left-color: var(--warning); }
+.stat-card.in-progress:hover { background: rgba(243,156,18,0.1); }
+.stat-card.in-progress.active { background: rgba(243,156,18,0.15); box-shadow: 0 0 0 3px var(--warning), var(--shadow-lg); }
+
 .stat-card.non-renovated { border-left-color: var(--danger); }
+.stat-card.non-renovated:hover { background: rgba(231,76,60,0.1); }
+.stat-card.non-renovated.active { background: rgba(231,76,60,0.15); box-shadow: 0 0 0 3px var(--danger), var(--shadow-lg); }
 
 .stat-icon {
     width: 55px;
@@ -152,6 +193,38 @@ body {
 
 .stat-info h3 { font-size: 1.9rem; font-weight: 700; line-height: 1; color: var(--dark); }
 .stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
+
+/* Active Filter Badge */
+.active-filter-badge {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: var(--secondary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-xl);
+    font-size: 0.85rem;
+    margin-top: 15px;
+}
+
+.active-filter-badge.show { display: inline-flex; }
+
+.active-filter-badge button {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: var(--transition);
+}
+
+.active-filter-badge button:hover { background: rgba(255,255,255,0.4); }
 
 .progress-section { padding: 10px 0 15px; }
 
@@ -217,23 +290,12 @@ body {
     border-top: 1px dashed var(--gray-light);
 }
 
-.progress-stat {
-    text-align: center;
-}
-
-.progress-stat .number {
-    font-size: 1.3rem;
-    font-weight: 700;
-}
-
-.progress-stat .label {
-    font-size: 0.75rem;
-    color: var(--gray);
-    text-transform: uppercase;
-}
-
+.progress-stat { text-align: center; }
+.progress-stat .number { font-size: 1.3rem; font-weight: 700; }
+.progress-stat .label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; }
 .progress-stat.renovated .number { color: var(--success); }
 .progress-stat.non-renovated .number { color: var(--danger); }
+.progress-stat.in-progress .number { color: var(--warning); }
 
 .filters-section { padding: 10px 0; }
 
@@ -389,7 +451,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     color: var(--success);
 }
 
-.status-in-progress, .status-partial {
+.status-in-progress, .status-partial, .status-under-renovation {
     background: rgba(243,156,18,0.15);
     color: var(--warning);
 }
@@ -719,6 +781,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     th, td { padding: 10px 12px; font-size: 0.8rem; }
     .stat-info h3 { font-size: 1.5rem; }
     .progress-stats { gap: 20px; }
+    .stat-card::after { display: none; }
 }
 </style>
 </head>
@@ -748,34 +811,42 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <section class="dashboard">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-card total">
+                <!-- CLICKABLE STAT CARDS -->
+                <div class="stat-card total" onclick="filterByCategory('all')" title="Click to show all villas">
                     <div class="stat-icon"><i class="fas fa-home"></i></div>
                     <div class="stat-info">
                         <h3 id="totalVillas">0</h3>
                         <p>Total Villas</p>
                     </div>
                 </div>
-                <div class="stat-card renovated">
+                <div class="stat-card renovated" onclick="filterByCategory('renovated')" title="Click to show renovated villas">
                     <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                     <div class="stat-info">
                         <h3 id="renovatedCount">0</h3>
                         <p>Full Renovated</p>
                     </div>
                 </div>
-                <div class="stat-card in-progress">
+                <div class="stat-card in-progress" onclick="filterByCategory('in-progress')" title="Click to show villas under renovation">
                     <div class="stat-icon"><i class="fas fa-tools"></i></div>
                     <div class="stat-info">
                         <h3 id="inProgressCount">0</h3>
-                        <p>In Progress</p>
+                        <p>Under Renovation</p>
                     </div>
                 </div>
-                <div class="stat-card non-renovated">
+                <div class="stat-card non-renovated" onclick="filterByCategory('non-renovated')" title="Click to show non-renovated villas">
                     <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
                     <div class="stat-info">
                         <h3 id="nonRenovatedCount">0</h3>
                         <p>Non Renovated</p>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Active Filter Badge -->
+            <div class="active-filter-badge" id="activeFilterBadge">
+                <i class="fas fa-filter"></i>
+                <span id="activeFilterText">Showing: All Villas</span>
+                <button onclick="filterByCategory('all')" title="Clear filter"><i class="fas fa-times"></i></button>
             </div>
         </div>
     </section>
@@ -794,6 +865,10 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <div class="progress-stat renovated">
                         <div class="number" id="statsRenovated">0</div>
                         <div class="label">Renovated</div>
+                    </div>
+                    <div class="progress-stat in-progress">
+                        <div class="number" id="statsInProgress">0</div>
+                        <div class="label">Under Renovation</div>
                     </div>
                     <div class="progress-stat non-renovated">
                         <div class="number" id="statsNonRenovated">0</div>
@@ -815,7 +890,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <select id="statusFilter"><option value="">All Status</option></select>
                     <select id="villaFilter"><option value="">All Villas</option></select>
                     <select id="yearFilter"><option value="">All Years</option></select>
-                    <button id="clearFilters" class="clear-btn"><i class="fas fa-times"></i> Clear</button>
+                    <button id="clearFilters" class="clear-btn"><i class="fas fa-times"></i> Clear All</button>
                 </div>
             </div>
         </div>
@@ -925,6 +1000,7 @@ let currentPage = 1;
 const rowsPerPage = 20;
 let sortColumn = '';
 let sortDirection = 'asc';
+let activeCategory = 'all'; // Track active filter category
 
 // ============================================
 // INITIALIZE
@@ -988,14 +1064,19 @@ function getCellValue(cells, index) {
 }
 
 // ============================================
-// STATUS DETECTION - FIXED FOR YOUR DATA
+// STATUS DETECTION - UPDATED WITH "UNDER RENOVATION"
 // ============================================
 function isFullRenovated(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
     
-    // First check if it's NON RENOVATED - return false
+    // First check if it's NOT renovated - return false
     if (s.includes('non') || s.startsWith('not ') || s.includes('unrenovated')) {
+        return false;
+    }
+    
+    // Check if it's UNDER RENOVATION (in progress) - return false
+    if (s.includes('under') || s.includes('progress') || s.includes('partial') || s.includes('ongoing')) {
         return false;
     }
     
@@ -1029,30 +1110,35 @@ function isInProgress(status) {
     if (!status) return false;
     const s = String(status).toLowerCase().trim();
     
-    return s.includes('progress') || 
+    // UPDATED: Added "under" and "under renovation"
+    return s.includes('under renovation') ||
+           s.includes('under-renovation') ||
+           s.includes('under ') ||
+           s.includes('progress') || 
            s.includes('ongoing') || 
            s.includes('partial') ||
            s.includes('working') ||
-           s.includes('started');
+           s.includes('started') ||
+           s.includes('renovation in');
 }
 
 function getStatusClass(status) {
     if (!status) return 'status-non-renovated';
     const s = String(status).toLowerCase().trim();
     
-    // Check NON RENOVATED first (before checking "renovated")
+    // Check NON RENOVATED first
     if (s.includes('non') || s.startsWith('not ') || s.includes('unrenovated')) {
         return 'status-non-renovated';
+    }
+    
+    // Check UNDER RENOVATION / IN PROGRESS
+    if (s.includes('under') || s.includes('progress') || s.includes('partial') || s.includes('ongoing')) {
+        return 'status-in-progress';
     }
     
     // Check FULL RENOVATED
     if (s.includes('renovated') || s.includes('complete') || s.includes('done') || s.includes('finished')) {
         return 'status-full-renovated';
-    }
-    
-    // Check IN PROGRESS
-    if (s.includes('progress') || s.includes('partial') || s.includes('ongoing')) {
-        return 'status-in-progress';
     }
     
     // Check ON HOLD
@@ -1068,8 +1154,8 @@ function getCardHeaderClass(status) {
     const s = String(status).toLowerCase().trim();
     
     if (s.includes('non') || s.startsWith('not ')) return 'non-renovated';
+    if (s.includes('under') || s.includes('progress') || s.includes('partial')) return 'in-progress';
     if (s.includes('renovated') || s.includes('complete') || s.includes('done')) return 'renovated';
-    if (s.includes('progress') || s.includes('partial')) return 'in-progress';
     return 'default';
 }
 
@@ -1078,9 +1164,55 @@ function getTimelineClass(status) {
     const s = String(status).toLowerCase().trim();
     
     if (s.includes('non') || s.startsWith('not ')) return 'non-renovated';
+    if (s.includes('under') || s.includes('progress') || s.includes('partial')) return 'in-progress';
     if (s.includes('renovated') || s.includes('complete') || s.includes('done')) return 'renovated';
-    if (s.includes('progress') || s.includes('partial')) return 'in-progress';
     return 'non-renovated';
+}
+
+// ============================================
+// FILTER BY CATEGORY (CLICKABLE DASHBOARD CARDS)
+// ============================================
+function filterByCategory(category) {
+    activeCategory = category;
+    
+    // Update active state on cards
+    document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
+    
+    const badge = document.getElementById('activeFilterBadge');
+    const badgeText = document.getElementById('activeFilterText');
+    
+    if (category === 'all') {
+        filteredData = [...allData];
+        badge.classList.remove('show');
+    } else {
+        // Add active class to clicked card
+        document.querySelector(`.stat-card.${category === 'in-progress' ? 'in-progress' : category}`).classList.add('active');
+        
+        // Filter data based on category
+        filteredData = allData.filter(item => {
+            if (category === 'renovated') return isFullRenovated(item.status);
+            if (category === 'in-progress') return isInProgress(item.status);
+            if (category === 'non-renovated') return isNonRenovated(item.status);
+            return true;
+        });
+        
+        // Show badge
+        badge.classList.add('show');
+        const categoryNames = {
+            'renovated': 'Full Renovated',
+            'in-progress': 'Under Renovation',
+            'non-renovated': 'Non Renovated'
+        };
+        badgeText.textContent = `Showing: ${categoryNames[category]} (${filteredData.length} villas)`;
+    }
+    
+    currentPage = 1;
+    renderTable();
+    renderVillaCards();
+    renderTimeline();
+    
+    // Scroll to table
+    document.querySelector('.filters-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ============================================
@@ -1110,6 +1242,7 @@ function updateDashboard() {
         document.getElementById('overallProgress').style.width = `${progressPercent}%`;
         document.getElementById('progressPercent').textContent = `${progressPercent}%`;
         document.getElementById('statsRenovated').textContent = renovated;
+        document.getElementById('statsInProgress').textContent = inProgress;
         document.getElementById('statsNonRenovated').textContent = nonRenovated;
     }, 300);
 }
@@ -1172,7 +1305,18 @@ function applyFilters() {
     const villa = document.getElementById('villaFilter').value;
     const year = document.getElementById('yearFilter').value;
     
-    filteredData = allData.filter(item => {
+    // Start with category filter if active
+    let baseData = allData;
+    if (activeCategory !== 'all') {
+        baseData = allData.filter(item => {
+            if (activeCategory === 'renovated') return isFullRenovated(item.status);
+            if (activeCategory === 'in-progress') return isInProgress(item.status);
+            if (activeCategory === 'non-renovated') return isNonRenovated(item.status);
+            return true;
+        });
+    }
+    
+    filteredData = baseData.filter(item => {
         const searchMatch = !search || 
             String(item.villaNo).toLowerCase().includes(search) ||
             String(item.status).toLowerCase().includes(search) ||
@@ -1201,6 +1345,12 @@ function clearFilters() {
     document.getElementById('statusFilter').value = '';
     document.getElementById('villaFilter').value = '';
     document.getElementById('yearFilter').value = '';
+    
+    // Also clear category filter
+    activeCategory = 'all';
+    document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
+    document.getElementById('activeFilterBadge').classList.remove('show');
+    
     filteredData = [...allData];
     currentPage = 1;
     renderTable();
@@ -1218,7 +1368,7 @@ function renderTable() {
     const pageData = filteredData.slice(start, end);
     
     if (pageData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3><p>Try adjusting your filters</p></div></td></tr>`;
     } else {
         tbody.innerHTML = pageData.map(item => `
             <tr onclick="showDetail(${item.id})" style="cursor:pointer;">
@@ -1231,7 +1381,7 @@ function renderTable() {
     }
     
     document.getElementById('rowCount').textContent = 
-        `Showing ${filteredData.length > 0 ? start + 1 : 0} - ${Math.min(end, filteredData.length)} of ${filteredData.length}`;
+        `Showing ${filteredData.length > 0 ? start + 1 : 0} - ${Math.min(end, filteredData.length)} of ${filteredData.length} villas`;
     
     renderPagination();
 }
@@ -1271,7 +1421,7 @@ function renderVillaCards() {
     const container = document.getElementById('villaCards');
     
     if (filteredData.length === 0) {
-        container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-home"></i><h3>No Villas Found</h3></div>`;
+        container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-home"></i><h3>No Villas Found</h3><p>Try adjusting your filters</p></div>`;
         return;
     }
     
@@ -1303,7 +1453,7 @@ function renderTimeline() {
     const sorted = [...filteredData].sort((a, b) => parseDate(b.dateRenovated) - parseDate(a.dateRenovated));
     
     if (sorted.length === 0) {
-        container.innerHTML = `<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3></div>`;
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3><p>Try adjusting your filters</p></div>`;
         return;
     }
     
@@ -1364,8 +1514,10 @@ function showDetail(id) {
     const item = allData.find(d => d.id === id);
     if (!item) return;
     
-    const headerColor = getCardHeaderClass(item.status) === 'renovated' ? 'var(--success)' : 
-                        getCardHeaderClass(item.status) === 'non-renovated' ? 'var(--danger)' : 'var(--primary)';
+    const headerClass = getCardHeaderClass(item.status);
+    const headerColor = headerClass === 'renovated' ? 'var(--success)' : 
+                        headerClass === 'non-renovated' ? 'var(--danger)' : 
+                        headerClass === 'in-progress' ? 'var(--warning)' : 'var(--primary)';
     
     document.getElementById('detailContent').innerHTML = `
         <div style="text-align:center;margin-bottom:20px;">
@@ -1481,10 +1633,12 @@ function setupEventListeners() {
     document.getElementById('errorModal').addEventListener('click', e => { if (e.target.id === 'errorModal') closeModal(); });
 }
 
+// Make functions globally accessible
 window.changePage = changePage;
 window.showDetail = showDetail;
 window.closeDetailModal = closeDetailModal;
 window.closeModal = closeModal;
+window.filterByCategory = filterByCategory;
 </script>
 </body>
 </html>
