@@ -25,7 +25,6 @@ html { scroll-behavior: smooth; }
 body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: var(--dark); line-height: 1.6; }
 .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-/* Login */
 .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.5s ease; }
 .login-overlay.hidden { opacity: 0; pointer-events: none; }
 .login-box { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-lg); width: 90%; max-width: 400px; text-align: center; }
@@ -45,7 +44,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .main-content { display: none; }
 .main-content.visible { display: block; }
 
-/* Header */
 .header { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow); }
 .header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
 .logo { display: flex; align-items: center; gap: 12px; }
@@ -63,7 +61,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .header-btn:hover { transform: translateY(-2px); }
 .header-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* Export Dropdown */
 .export-dropdown { position: relative; }
 .export-menu { position: absolute; top: 100%; right: 0; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); min-width: 220px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: var(--transition); }
 .export-menu.show { opacity: 1; visibility: visible; transform: translateY(5px); }
@@ -72,7 +69,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .export-menu-item:hover { background: var(--light); }
 .export-menu-item .count { margin-left: auto; background: var(--gray-light); padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; }
 
-/* Dashboard - 5 Cards Only */
 .dashboard { padding: 25px 0 15px; }
 .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
 @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -106,14 +102,12 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .active-filter-badge.show { display: inline-flex; }
 .active-filter-badge button { background: rgba(255,255,255,0.2); border: none; color: white; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; }
 
-/* Chart Section - Only Pie Chart */
 .charts-section { padding: 15px 0; }
 .chart-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); max-width: 450px; margin: 0 auto; }
 .chart-card h3 { font-size: 1rem; color: var(--dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; justify-content: center; }
 .chart-card h3 i { color: var(--secondary); }
 .chart-container { position: relative; height: 280px; }
 
-/* Progress Section */
 .progress-section { padding: 10px 0 15px; }
 .progress-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
 .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -134,7 +128,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .legend-color.under { background: var(--warning); }
 .legend-color.non { background: var(--danger); }
 
-/* Filters */
 .filters-section { padding: 10px 0; }
 .filters-wrapper { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .search-box { flex: 1; min-width: 220px; position: relative; }
@@ -146,7 +139,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .clear-btn { padding: 10px 16px; background: var(--gray-light); color: var(--gray); border: none; border-radius: var(--radius); cursor: pointer; font-family: inherit; }
 .clear-btn:hover { background: var(--danger); color: var(--white); }
 
-/* View Toggle */
 .view-toggle-section { padding: 12px 0; }
 .view-toggle { display: flex; gap: 6px; background: rgba(255,255,255,0.95); padding: 5px; border-radius: var(--radius); box-shadow: var(--shadow); width: fit-content; }
 .view-btn { padding: 9px 16px; background: transparent; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: inherit; color: var(--gray); display: flex; align-items: center; gap: 6px; }
@@ -156,7 +148,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .view-content.active { display: block; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Table */
 .table-section { padding: 10px 0 30px; }
 .table-wrapper { background: rgba(255,255,255,0.98); border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; min-width: 900px; }
@@ -189,7 +180,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .pagination button.active { background: var(--primary); color: var(--white); }
 .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Cards */
 .cards-section { padding: 10px 0 30px; }
 .villa-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .villa-card { background: rgba(255,255,255,0.98); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; }
@@ -207,7 +197,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .villa-card-body .value { font-weight: 600; color: var(--dark); }
 .villa-card-body .value.cost { color: var(--cost); }
 
-/* Timeline */
 .timeline-section { padding: 10px 0 30px; }
 .timeline { position: relative; padding-left: 30px; }
 .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--success), var(--half), var(--warning), var(--danger)); border-radius: 3px; }
@@ -225,7 +214,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .timeline-info .cost { color: var(--cost); font-weight: 600; }
 .timeline-info .duration { color: var(--secondary); }
 
-/* Modals */
 .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; pointer-events: none; transition: var(--transition); backdrop-filter: blur(5px); }
 .modal.show { opacity: 1; pointer-events: auto; }
 .modal-content { background: var(--white); padding: 28px; border-radius: var(--radius); max-width: 500px; width: 92%; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: var(--transition); position: relative; box-shadow: var(--shadow-lg); }
@@ -233,13 +221,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .modal-close { position: absolute; top: 12px; right: 12px; width: 35px; height: 35px; border: none; background: var(--gray-light); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
 .modal-close:hover { background: var(--danger); color: var(--white); }
 
-/* QR Modal */
 .qr-container { text-align: center; margin: 25px 0; }
 .qr-container canvas { margin: 0 auto !important; }
 .qr-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
 .qr-actions button { padding: 12px 24px; border: none; border-radius: var(--radius); cursor: pointer; font-family: inherit; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 
-/* Loading & Toast */
 .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s; }
 .loading-overlay.hidden { opacity: 0; pointer-events: none; }
 .loader { text-align: center; color: white; }
@@ -252,7 +238,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .toast.success { background: var(--success); }
 .toast.error { background: var(--danger); }
 
-/* Footer */
 .footer { background: rgba(0,0,0,0.2); color: rgba(255,255,255,0.9); padding: 20px 0; text-align: center; margin-top: 20px; }
 .footer p { font-size: 0.85rem; }
 
@@ -276,7 +261,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
         <div class="logo-icon"><i class="fas fa-building"></i></div>
@@ -293,9 +277,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="main-content" id="mainContent">
-
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -324,7 +306,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </header>
 
-    <!-- DASHBOARD - 5 Cards Only -->
     <section class="dashboard">
         <div class="container">
             <div class="stats-grid">
@@ -357,7 +338,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- CHART - Only Pie Chart -->
     <section class="charts-section">
         <div class="container">
             <div class="chart-card">
@@ -367,7 +347,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- PROGRESS BAR -->
     <section class="progress-section">
         <div class="container">
             <div class="progress-card">
@@ -391,7 +370,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- FILTERS -->
     <section class="filters-section">
         <div class="container">
             <div class="filters-wrapper">
@@ -409,7 +387,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- VIEW TOGGLE -->
     <section class="view-toggle-section">
         <div class="container">
             <div class="view-toggle">
@@ -420,7 +397,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- TABLE VIEW -->
     <section class="table-section view-content active" id="tableView">
         <div class="container">
             <div class="table-wrapper">
@@ -446,14 +422,12 @@ td:first-child { font-weight: 600; color: var(--primary); }
         </div>
     </section>
 
-    <!-- CARDS VIEW -->
     <section class="cards-section view-content" id="cardsView">
         <div class="container">
             <div class="villa-cards" id="villaCards"></div>
         </div>
     </section>
 
-    <!-- TIMELINE VIEW -->
     <section class="timeline-section view-content" id="timelineView">
         <div class="container">
             <div class="timeline" id="timeline"></div>
@@ -469,7 +443,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <button class="scroll-top" id="scrollTop"><i class="fas fa-chevron-up"></i></button>
 </div>
 
-<!-- LOADING -->
 <div class="loading-overlay hidden" id="loadingOverlay">
     <div class="loader">
         <i class="fas fa-hard-hat"></i>
@@ -477,7 +450,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </div>
 </div>
 
-<!-- ERROR MODAL -->
 <div class="modal" id="errorModal">
     <div class="modal-content" style="text-align:center;">
         <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--danger);"></i>
@@ -487,7 +459,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </div>
 </div>
 
-<!-- DETAIL MODAL -->
 <div class="modal" id="detailModal">
     <div class="modal-content">
         <button class="modal-close" onclick="closeDetailModal()"><i class="fas fa-times"></i></button>
@@ -495,7 +466,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </div>
 </div>
 
-<!-- QR MODAL -->
 <div class="modal" id="qrModal">
     <div class="modal-content" style="text-align:center;">
         <button class="modal-close" onclick="closeQrModal()"><i class="fas fa-times"></i></button>
@@ -509,28 +479,22 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
     <i class="fas fa-check-circle"></i>
     <span id="toastMessage">Success!</span>
 </div>
 
 <script>
-// ===== CONFIGURATION =====
 const VALID_PASSWORD = 'villa2024';
 const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
 const SHEET_GID = '0';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
-
-// Column mapping - Updated with new columns
 const COLUMNS = { villaNo: 0, status: 1, dateRenovated: 2, remarks: 3, cost: 4, startDate: 5, endDate: 6 };
 
-// Global variables
 let allData = [], filteredData = [], currentPage = 1, rowsPerPage = 15;
 let sortColumn = '', sortDirection = 'asc', activeCategory = 'all';
 let statusChart = null, currentQRVilla = null;
 
-// ===== INITIALIZE =====
 document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('villaLoggedIn') === 'true') showMainContent();
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
@@ -538,7 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', e => { if (!e.target.closest('.export-dropdown')) document.getElementById('exportMenu').classList.remove('show'); });
 });
 
-// ===== LOGIN =====
 function handleLogin(e) {
     e.preventDefault();
     if (document.getElementById('passwordInput').value === VALID_PASSWORD) {
@@ -557,19 +520,14 @@ function showMainContent() {
     fetchData();
 }
 
-function logout() {
-    sessionStorage.removeItem('villaLoggedIn');
-    location.reload();
-}
+function logout() { sessionStorage.removeItem('villaLoggedIn'); location.reload(); }
 
-// ===== FETCH DATA =====
 async function fetchData() {
     showLoading(true);
     try {
         const res = await fetch(SHEET_URL);
         const text = await res.text();
         const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-        
         allData = json.table.rows.map((row, i) => {
             const c = row.c;
             return {
@@ -583,7 +541,6 @@ async function fetchData() {
                 endDate: getVal(c, COLUMNS.endDate)
             };
         }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa no'));
-        
         filteredData = [...allData];
         updateAll();
         showLoading(false);
@@ -594,68 +551,18 @@ async function fetchData() {
     }
 }
 
-function getVal(cells, i) {
-    if (!cells || !cells[i]) return '';
-    const c = cells[i];
-    return c.f || c.v || '';
-}
+function getVal(cells, i) { if (!cells || !cells[i]) return ''; const c = cells[i]; return c.f || c.v || ''; }
 
-// ===== STATUS DETECTION =====
-function isFullRenovated(s) {
-    if (!s) return false;
-    const x = String(s).toLowerCase();
-    return !x.includes('non') && !x.includes('half') && !x.includes('under') && !x.includes('partial') &&
-           (x.includes('full') || x.includes('renovated') || x.includes('complete') || x.includes('done'));
-}
+function isFullRenovated(s) { if (!s) return false; const x = String(s).toLowerCase(); return !x.includes('non') && !x.includes('half') && !x.includes('under') && !x.includes('partial') && (x.includes('full') || x.includes('renovated') || x.includes('complete') || x.includes('done')); }
+function isHalfRenovated(s) { return s && String(s).toLowerCase().includes('half'); }
+function isInProgress(s) { if (!s) return false; const x = String(s).toLowerCase(); return !x.includes('half') && (x.includes('under') || x.includes('progress') || x.includes('ongoing')); }
+function isNonRenovated(s) { if (!s) return true; return !isFullRenovated(s) && !isHalfRenovated(s) && !isInProgress(s); }
+function getStatusClass(s) { if (isHalfRenovated(s)) return 'status-half-renovated'; if (isInProgress(s)) return 'status-in-progress'; if (isFullRenovated(s)) return 'status-full-renovated'; return 'status-non-renovated'; }
+function getHeaderClass(s) { if (isHalfRenovated(s)) return 'half-renovated'; if (isInProgress(s)) return 'in-progress'; if (isFullRenovated(s)) return 'full-renovated'; return 'non-renovated'; }
 
-function isHalfRenovated(s) {
-    return s && String(s).toLowerCase().includes('half');
-}
+function calcDuration(start, end) { if (!start) return null; const s = new Date(start); const e = end ? new Date(end) : new Date(); if (isNaN(s)) return null; return Math.max(0, Math.ceil((e - s) / (1000 * 60 * 60 * 24))); }
 
-function isInProgress(s) {
-    if (!s) return false;
-    const x = String(s).toLowerCase();
-    return !x.includes('half') && (x.includes('under') || x.includes('progress') || x.includes('ongoing'));
-}
-
-function isNonRenovated(s) {
-    if (!s) return true;
-    return !isFullRenovated(s) && !isHalfRenovated(s) && !isInProgress(s);
-}
-
-function getStatusClass(s) {
-    if (isHalfRenovated(s)) return 'status-half-renovated';
-    if (isInProgress(s)) return 'status-in-progress';
-    if (isFullRenovated(s)) return 'status-full-renovated';
-    return 'status-non-renovated';
-}
-
-function getHeaderClass(s) {
-    if (isHalfRenovated(s)) return 'half-renovated';
-    if (isInProgress(s)) return 'in-progress';
-    if (isFullRenovated(s)) return 'full-renovated';
-    return 'non-renovated';
-}
-
-// ===== DURATION CALCULATION =====
-function calcDuration(start, end) {
-    if (!start) return null;
-    const s = new Date(start);
-    const e = end ? new Date(end) : new Date();
-    if (isNaN(s)) return null;
-    return Math.max(0, Math.ceil((e - s) / (1000 * 60 * 60 * 24)));
-}
-
-// ===== UPDATE ALL =====
-function updateAll() {
-    updateDashboard();
-    updateFilters();
-    updateChart();
-    renderTable();
-    renderCards();
-    renderTimeline();
-    updateLastUpdated();
-}
+function updateAll() { updateDashboard(); updateFilters(); updateChart(); renderTable(); renderCards(); renderTimeline(); updateLastUpdated(); }
 
 function updateDashboard() {
     const t = allData.length;
@@ -664,14 +571,9 @@ function updateDashboard() {
     const prog = allData.filter(i => isInProgress(i.status)).length;
     const non = allData.filter(i => isNonRenovated(i.status)).length;
     const pct = t > 0 ? Math.round(((full + half * 0.5) / t) * 100) : 0;
-
-    animateNum('totalVillas', t);
-    animateNum('fullRenovatedCount', full);
-    animateNum('halfRenovatedCount', half);
-    animateNum('inProgressCount', prog);
-    animateNum('nonRenovatedCount', non);
+    animateNum('totalVillas', t); animateNum('fullRenovatedCount', full); animateNum('halfRenovatedCount', half);
+    animateNum('inProgressCount', prog); animateNum('nonRenovatedCount', non);
     document.getElementById('progressPercent').textContent = pct + '%';
-
     setTimeout(() => {
         document.getElementById('progressFull').style.width = (t > 0 ? full / t * 100 : 0) + '%';
         document.getElementById('progressHalf').style.width = (t > 0 ? half / t * 100 : 0) + '%';
@@ -680,64 +582,28 @@ function updateDashboard() {
     }, 300);
 }
 
-function animateNum(id, target) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const start = parseInt(el.textContent) || 0;
-    const dur = 800, startTime = performance.now();
-    function upd(t) {
-        const p = Math.min((t - startTime) / dur, 1);
-        el.textContent = Math.floor(start + (target - start) * p);
-        if (p < 1) requestAnimationFrame(upd);
-    }
-    requestAnimationFrame(upd);
-}
+function animateNum(id, target) { const el = document.getElementById(id); if (!el) return; const start = parseInt(el.textContent) || 0; const dur = 800, startTime = performance.now(); function upd(t) { const p = Math.min((t - startTime) / dur, 1); el.textContent = Math.floor(start + (target - start) * p); if (p < 1) requestAnimationFrame(upd); } requestAnimationFrame(upd); }
 
-// ===== CHART - Only Pie Chart =====
 function updateChart() {
     const full = allData.filter(i => isFullRenovated(i.status)).length;
     const half = allData.filter(i => isHalfRenovated(i.status)).length;
     const prog = allData.filter(i => isInProgress(i.status)).length;
     const non = allData.filter(i => isNonRenovated(i.status)).length;
-
     if (statusChart) statusChart.destroy();
-    
     statusChart = new Chart(document.getElementById('statusChart'), {
         type: 'doughnut',
-        data: {
-            labels: ['Full Renovated', 'Half Renovated', 'Under Renovation', 'Non Renovated'],
-            datasets: [{
-                data: [full, half, prog, non],
-                backgroundColor: ['#27ae60', '#9b59b6', '#f39c12', '#e74c3c'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } }
-            }
-        }
+        data: { labels: ['Full Renovated', 'Half Renovated', 'Under Renovation', 'Non Renovated'], datasets: [{ data: [full, half, prog, non], backgroundColor: ['#27ae60', '#9b59b6', '#f39c12', '#e74c3c'], borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } } } }
     });
 }
 
-// ===== FILTERS =====
 function updateFilters() {
-    const villas = [...new Set(allData.map(i => i.villaNo))].sort((a, b) => 
-        (parseInt(String(a).replace(/\D/g, '')) || 0) - (parseInt(String(b).replace(/\D/g, '')) || 0));
+    const villas = [...new Set(allData.map(i => i.villaNo))].sort((a, b) => (parseInt(String(a).replace(/\D/g, '')) || 0) - (parseInt(String(b).replace(/\D/g, '')) || 0));
     const statuses = [...new Set(allData.map(i => i.status))].filter(Boolean).sort();
-    const years = [...new Set(allData.map(i => {
-        const m = String(i.startDate || i.dateRenovated).match(/\d{4}/);
-        return m ? parseInt(m[0]) : null;
-    }).filter(Boolean))].sort((a, b) => b - a);
-
-    document.getElementById('villaFilter').innerHTML = '<option value="">All Villas</option>' + 
-        villas.map(v => `<option value="${v}">Villa ${v}</option>`).join('');
-    document.getElementById('statusFilter').innerHTML = '<option value="">All Status</option>' + 
-        statuses.map(s => `<option value="${s}">${s}</option>`).join('');
-    document.getElementById('yearFilter').innerHTML = '<option value="">All Years</option>' + 
-        years.map(y => `<option value="${y}">${y}</option>`).join('');
+    const years = [...new Set(allData.map(i => { const m = String(i.startDate || i.dateRenovated).match(/\d{4}/); return m ? parseInt(m[0]) : null; }).filter(Boolean))].sort((a, b) => b - a);
+    document.getElementById('villaFilter').innerHTML = '<option value="">All Villas</option>' + villas.map(v => `<option value="${v}">Villa ${v}</option>`).join('');
+    document.getElementById('statusFilter').innerHTML = '<option value="">All Status</option>' + statuses.map(s => `<option value="${s}">${s}</option>`).join('');
+    document.getElementById('yearFilter').innerHTML = '<option value="">All Years</option>' + years.map(y => `<option value="${y}">${y}</option>`).join('');
 }
 
 function applyFilters() {
@@ -745,94 +611,51 @@ function applyFilters() {
     const status = document.getElementById('statusFilter').value;
     const villa = document.getElementById('villaFilter').value;
     const year = document.getElementById('yearFilter').value;
-
-    let base = activeCategory === 'all' ? allData : allData.filter(i => {
-        if (activeCategory === 'full-renovated') return isFullRenovated(i.status);
-        if (activeCategory === 'half-renovated') return isHalfRenovated(i.status);
-        if (activeCategory === 'in-progress') return isInProgress(i.status);
-        return isNonRenovated(i.status);
-    });
-
+    let base = activeCategory === 'all' ? allData : allData.filter(i => { if (activeCategory === 'full-renovated') return isFullRenovated(i.status); if (activeCategory === 'half-renovated') return isHalfRenovated(i.status); if (activeCategory === 'in-progress') return isInProgress(i.status); return isNonRenovated(i.status); });
     filteredData = base.filter(i => {
-        const sm = !search || String(i.villaNo).toLowerCase().includes(search) || 
-                   String(i.status).toLowerCase().includes(search) || String(i.remarks).toLowerCase().includes(search);
-        const stm = !status || i.status === status;
-        const vm = !villa || String(i.villaNo) === villa;
-        let ym = true;
-        if (year) {
-            const m = String(i.startDate || i.dateRenovated).match(/\d{4}/);
-            ym = m && parseInt(m[0]) === parseInt(year);
-        }
+        const sm = !search || String(i.villaNo).toLowerCase().includes(search) || String(i.status).toLowerCase().includes(search) || String(i.remarks).toLowerCase().includes(search);
+        const stm = !status || i.status === status; const vm = !villa || String(i.villaNo) === villa;
+        let ym = true; if (year) { const m = String(i.startDate || i.dateRenovated).match(/\d{4}/); ym = m && parseInt(m[0]) === parseInt(year); }
         return sm && stm && vm && ym;
     });
-
-    currentPage = 1;
-    renderTable();
-    renderCards();
-    renderTimeline();
+    currentPage = 1; renderTable(); renderCards(); renderTimeline();
 }
 
 function clearFilters() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('statusFilter').value = '';
-    document.getElementById('villaFilter').value = '';
-    document.getElementById('yearFilter').value = '';
-    activeCategory = 'all';
-    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('searchInput').value = ''; document.getElementById('statusFilter').value = '';
+    document.getElementById('villaFilter').value = ''; document.getElementById('yearFilter').value = '';
+    activeCategory = 'all'; document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
     document.getElementById('activeFilterBadge').classList.remove('show');
-    filteredData = [...allData];
-    currentPage = 1;
-    renderTable();
-    renderCards();
-    renderTimeline();
+    filteredData = [...allData]; currentPage = 1; renderTable(); renderCards(); renderTimeline();
 }
 
 function filterByCategory(cat) {
-    activeCategory = cat;
-    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+    activeCategory = cat; document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
     const badge = document.getElementById('activeFilterBadge');
-
-    if (cat === 'all') {
-        filteredData = [...allData];
-        badge.classList.remove('show');
-    } else {
+    if (cat === 'all') { filteredData = [...allData]; badge.classList.remove('show'); }
+    else {
         document.querySelector(`.stat-card.${cat === 'full-renovated' ? 'renovated' : cat}`).classList.add('active');
-        filteredData = allData.filter(i => {
-            if (cat === 'full-renovated') return isFullRenovated(i.status);
-            if (cat === 'half-renovated') return isHalfRenovated(i.status);
-            if (cat === 'in-progress') return isInProgress(i.status);
-            return isNonRenovated(i.status);
-        });
+        filteredData = allData.filter(i => { if (cat === 'full-renovated') return isFullRenovated(i.status); if (cat === 'half-renovated') return isHalfRenovated(i.status); if (cat === 'in-progress') return isInProgress(i.status); return isNonRenovated(i.status); });
         badge.classList.add('show');
-        const names = { 'full-renovated': 'Full Renovated', 'half-renovated': 'Half Renovated', 
-                        'in-progress': 'Under Renovation', 'non-renovated': 'Non Renovated' };
+        const names = { 'full-renovated': 'Full Renovated', 'half-renovated': 'Half Renovated', 'in-progress': 'Under Renovation', 'non-renovated': 'Non Renovated' };
         document.getElementById('activeFilterText').textContent = `${names[cat]} (${filteredData.length})`;
     }
-
-    currentPage = 1;
-    renderTable();
-    renderCards();
-    renderTimeline();
+    currentPage = 1; renderTable(); renderCards(); renderTimeline();
     document.querySelector('.filters-section').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ===== RENDER TABLE =====
 function renderTable() {
     const tbody = document.getElementById('tableBody');
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
+    const start = (currentPage - 1) * rowsPerPage, end = start + rowsPerPage;
     const page = filteredData.slice(start, end);
-
-    if (page.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3></div></td></tr>';
-    } else {
+    if (page.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-search"></i><h3>No Records Found</h3></div></td></tr>'; }
+    else {
         tbody.innerHTML = page.map(i => {
             const dur = calcDuration(i.startDate, i.endDate);
-            return `
-            <tr onclick="showDetail(${i.id})">
+            return `<tr onclick="showDetail(${i.id})">
                 <td>Villa ${i.villaNo}</td>
                 <td><span class="status-badge ${getStatusClass(i.status)}">${i.status || 'N/A'}</span></td>
-                <td class="cost-cell">$${i.cost.toLocaleString()}</td>
+                <td class="cost-cell">${i.cost.toLocaleString()}</td>
                 <td><span class="duration-badge">${dur !== null ? dur + ' days' : '-'}</span></td>
                 <td>${formatDate(i.dateRenovated)}</td>
                 <td class="remarks-cell" title="${i.remarks || ''}">${i.remarks || '-'}</td>
@@ -840,52 +663,31 @@ function renderTable() {
             </tr>`;
         }).join('');
     }
-
-    document.getElementById('rowCount').textContent = 
-        `Showing ${page.length > 0 ? start + 1 : 0} - ${Math.min(end, filteredData.length)} of ${filteredData.length}`;
+    document.getElementById('rowCount').textContent = `Showing ${page.length > 0 ? start + 1 : 0} - ${Math.min(end, filteredData.length)} of ${filteredData.length}`;
     renderPagination();
 }
 
 function renderPagination() {
-    const total = Math.ceil(filteredData.length / rowsPerPage);
-    const pag = document.getElementById('pagination');
+    const total = Math.ceil(filteredData.length / rowsPerPage), pag = document.getElementById('pagination');
     if (total <= 1) { pag.innerHTML = ''; return; }
-
     let h = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>`;
-    for (let i = 1; i <= total; i++) {
-        if (i === 1 || i === total || (i >= currentPage - 1 && i <= currentPage + 1)) {
-            h += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
-        } else if (i === currentPage - 2 || i === currentPage + 2) {
-            h += '<button disabled>...</button>';
-        }
-    }
+    for (let i = 1; i <= total; i++) { if (i === 1 || i === total || (i >= currentPage - 1 && i <= currentPage + 1)) h += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`; else if (i === currentPage - 2 || i === currentPage + 2) h += '<button disabled>...</button>'; }
     h += `<button onclick="changePage(${currentPage + 1})" ${currentPage === total ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>`;
     pag.innerHTML = h;
 }
 
-function changePage(p) {
-    const t = Math.ceil(filteredData.length / rowsPerPage);
-    if (p >= 1 && p <= t) { currentPage = p; renderTable(); }
-}
+function changePage(p) { const t = Math.ceil(filteredData.length / rowsPerPage); if (p >= 1 && p <= t) { currentPage = p; renderTable(); } }
 
-// ===== RENDER CARDS =====
 function renderCards() {
     const c = document.getElementById('villaCards');
-    if (filteredData.length === 0) {
-        c.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-home"></i><h3>No Villas Found</h3></div>';
-        return;
-    }
-
+    if (filteredData.length === 0) { c.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-home"></i><h3>No Villas Found</h3></div>'; return; }
     c.innerHTML = filteredData.map(i => {
         const dur = calcDuration(i.startDate, i.endDate);
-        return `
-        <div class="villa-card" onclick="showDetail(${i.id})">
-            <div class="villa-card-header ${getHeaderClass(i.status)}">
-                <h3><i class="fas fa-home"></i> Villa ${i.villaNo}</h3>
-            </div>
+        return `<div class="villa-card" onclick="showDetail(${i.id})">
+            <div class="villa-card-header ${getHeaderClass(i.status)}"><h3><i class="fas fa-home"></i> Villa ${i.villaNo}</h3></div>
             <div class="villa-card-body">
                 <div class="info-row"><span class="label"><i class="fas fa-info-circle"></i> Status</span><span class="value">${i.status || 'N/A'}</span></div>
-                <div class="info-row"><span class="label"><i class="fas fa-dollar-sign"></i> Cost</span><span class="value cost">$${i.cost.toLocaleString()}</span></div>
+                <div class="info-row"><span class="label"><i class="fas fa-coins"></i> Cost</span><span class="value cost">${i.cost.toLocaleString()}</span></div>
                 <div class="info-row"><span class="label"><i class="fas fa-clock"></i> Duration</span><span class="value">${dur !== null ? dur + ' days' : '-'}</span></div>
                 <div class="info-row"><span class="label"><i class="fas fa-calendar"></i> Date</span><span class="value">${formatDate(i.dateRenovated)}</span></div>
             </div>
@@ -893,110 +695,70 @@ function renderCards() {
     }).join('');
 }
 
-// ===== RENDER TIMELINE =====
 function renderTimeline() {
     const c = document.getElementById('timeline');
     const sorted = [...filteredData].sort((a, b) => parseDate(b.startDate || b.dateRenovated) - parseDate(a.startDate || a.dateRenovated));
-
-    if (sorted.length === 0) {
-        c.innerHTML = '<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3></div>';
-        return;
-    }
-
+    if (sorted.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-stream"></i><h3>No Timeline Data</h3></div>'; return; }
     c.innerHTML = sorted.map(i => {
         const dur = calcDuration(i.startDate, i.endDate);
-        return `
-        <div class="timeline-item ${getHeaderClass(i.status)}" onclick="showDetail(${i.id})">
+        return `<div class="timeline-item ${getHeaderClass(i.status)}" onclick="showDetail(${i.id})">
             <div class="timeline-date"><i class="fas fa-calendar"></i> ${formatDate(i.startDate || i.dateRenovated)}</div>
             <div class="timeline-title">Villa ${i.villaNo}</div>
             <span class="status-badge ${getStatusClass(i.status)}">${i.status || 'N/A'}</span>
             <div class="timeline-info">
-                <span class="cost"><i class="fas fa-dollar-sign"></i> ${i.cost.toLocaleString()}</span>
+                <span class="cost"><i class="fas fa-coins"></i> ${i.cost.toLocaleString()}</span>
                 <span class="duration"><i class="fas fa-clock"></i> ${dur !== null ? dur + ' days' : '-'}</span>
             </div>
         </div>`;
     }).join('');
 }
 
-// ===== QR CODE =====
 function showQR(id) {
-    const item = allData.find(i => i.id === id);
-    if (!item) return;
+    const item = allData.find(i => i.id === id); if (!item) return;
     currentQRVilla = item;
-
     document.getElementById('qrTitle').textContent = `Villa ${item.villaNo}`;
     const container = document.getElementById('qrContainer');
     container.innerHTML = '';
-
-    const qrData = `Villa: ${item.villaNo}\nStatus: ${item.status || 'N/A'}\nCost: $${item.cost.toLocaleString()}\nDate: ${item.dateRenovated || 'N/A'}\nRemarks: ${item.remarks || 'None'}`;
-    
-    new QRCode(container, {
-        text: qrData,
-        width: 200,
-        height: 200,
-        colorDark: '#1e3a5f',
-        colorLight: '#ffffff'
-    });
-
+    const qrData = `Villa: ${item.villaNo}\nStatus: ${item.status || 'N/A'}\nCost: ${item.cost.toLocaleString()}\nDate: ${item.dateRenovated || 'N/A'}\nRemarks: ${item.remarks || 'None'}`;
+    new QRCode(container, { text: qrData, width: 200, height: 200, colorDark: '#1e3a5f', colorLight: '#ffffff' });
     document.getElementById('qrModal').classList.add('show');
 }
 
-function closeQrModal() {
-    document.getElementById('qrModal').classList.remove('show');
-}
+function closeQrModal() { document.getElementById('qrModal').classList.remove('show'); }
 
 function downloadQR() {
     const canvas = document.querySelector('#qrContainer canvas');
-    if (canvas) {
-        const link = document.createElement('a');
-        link.download = `Villa_${currentQRVilla.villaNo}_QR.png`;
-        link.href = canvas.toDataURL();
-        link.click();
-        showToast('QR Code Downloaded!', 'success');
-    }
+    if (canvas) { const link = document.createElement('a'); link.download = `Villa_${currentQRVilla.villaNo}_QR.png`; link.href = canvas.toDataURL(); link.click(); showToast('QR Code Downloaded!', 'success'); }
 }
 
 function printQR() {
     const canvas = document.querySelector('#qrContainer canvas');
     if (canvas) {
         const w = window.open('');
-        w.document.write(`
-            <html>
-            <head><title>Villa ${currentQRVilla.villaNo} QR Code</title></head>
-            <body style="text-align:center;padding:50px;font-family:Arial,sans-serif;">
-                <h1 style="color:#1e3a5f;">Villa ${currentQRVilla.villaNo}</h1>
-                <img src="${canvas.toDataURL()}" style="margin:20px 0;" />
-                <p><strong>Status:</strong> ${currentQRVilla.status || 'N/A'}</p>
-                <p><strong>Cost:</strong> $${currentQRVilla.cost.toLocaleString()}</p>
-                <script>window.print();window.close();<\/script>
-            </body>
-            </html>
-        `);
+        w.document.write(`<html><head><title>Villa ${currentQRVilla.villaNo} QR Code</title></head><body style="text-align:center;padding:50px;font-family:Arial,sans-serif;">
+            <h1 style="color:#1e3a5f;">Villa ${currentQRVilla.villaNo}</h1>
+            <img src="${canvas.toDataURL()}" style="margin:20px 0;" />
+            <p><strong>Status:</strong> ${currentQRVilla.status || 'N/A'}</p>
+            <p><strong>Cost:</strong> ${currentQRVilla.cost.toLocaleString()}</p>
+            <script>window.print();window.close();<\/script></body></html>`);
         w.document.close();
     }
 }
 
-// ===== DETAIL MODAL =====
 function showDetail(id) {
-    const i = allData.find(d => d.id === id);
-    if (!i) return;
-
+    const i = allData.find(d => d.id === id); if (!i) return;
     const dur = calcDuration(i.startDate, i.endDate);
     const colors = { 'full-renovated': '#27ae60', 'half-renovated': '#9b59b6', 'in-progress': '#f39c12', 'non-renovated': '#e74c3c' };
     const color = colors[getHeaderClass(i.status)] || '#1e3a5f';
-
     document.getElementById('detailContent').innerHTML = `
         <div style="text-align:center;margin-bottom:25px;">
-            <div style="width:75px;height:75px;background:${color};border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;color:white;font-size:1.8rem;">
-                <i class="fas fa-home"></i>
-            </div>
+            <div style="width:75px;height:75px;background:${color};border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;color:white;font-size:1.8rem;"><i class="fas fa-home"></i></div>
             <h2 style="color:#1e3a5f;margin-bottom:8px;">Villa ${i.villaNo}</h2>
             <span class="status-badge ${getStatusClass(i.status)}" style="font-size:0.85rem;">${i.status || 'N/A'}</span>
         </div>
-        
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;">
             <div style="text-align:center;padding:18px;background:#f8f9fa;border-radius:12px;">
-                <div style="font-size:1.6rem;font-weight:700;color:#e91e63;">$${i.cost.toLocaleString()}</div>
+                <div style="font-size:1.6rem;font-weight:700;color:#e91e63;">${i.cost.toLocaleString()}</div>
                 <div style="font-size:0.8rem;color:#6c757d;margin-top:5px;">Total Cost</div>
             </div>
             <div style="text-align:center;padding:18px;background:#f8f9fa;border-radius:12px;">
@@ -1004,32 +766,22 @@ function showDetail(id) {
                 <div style="font-size:0.8rem;color:#6c757d;margin-top:5px;">Days</div>
             </div>
         </div>
-        
         <div style="background:#f8f9fa;border-radius:12px;padding:20px;">
             <div style="margin-bottom:12px;"><strong style="color:#6c757d;">Date Renovated:</strong><br>${formatDate(i.dateRenovated)}</div>
             <div style="margin-bottom:12px;"><strong style="color:#6c757d;">Start Date:</strong><br>${formatDate(i.startDate)}</div>
             <div style="margin-bottom:12px;"><strong style="color:#6c757d;">End Date:</strong><br>${formatDate(i.endDate)}</div>
             <div><strong style="color:#6c757d;">Remarks:</strong><br>${i.remarks || 'No remarks'}</div>
         </div>
-        
         <div style="text-align:center;margin-top:25px;">
-            <button onclick="showQR(${i.id})" style="padding:12px 30px;background:#3498db;color:white;border:none;border-radius:25px;cursor:pointer;font-weight:600;font-size:0.95rem;">
-                <i class="fas fa-qrcode"></i> Generate QR Code
-            </button>
-        </div>
-    `;
-
+            <button onclick="showQR(${i.id})" style="padding:12px 30px;background:#3498db;color:white;border:none;border-radius:25px;cursor:pointer;font-weight:600;font-size:0.95rem;"><i class="fas fa-qrcode"></i> Generate QR Code</button>
+        </div>`;
     document.getElementById('detailModal').classList.add('show');
 }
 
-function closeDetailModal() {
-    document.getElementById('detailModal').classList.remove('show');
-}
+function closeDetailModal() { document.getElementById('detailModal').classList.remove('show'); }
 
-// ===== EXPORT =====
 function toggleExportMenu() {
-    const m = document.getElementById('exportMenu');
-    m.classList.toggle('show');
+    const m = document.getElementById('exportMenu'); m.classList.toggle('show');
     document.getElementById('exportCountAll').textContent = allData.length;
     document.getElementById('exportCountFull').textContent = allData.filter(i => isFullRenovated(i.status)).length;
     document.getElementById('exportCountHalf').textContent = allData.filter(i => isHalfRenovated(i.status)).length;
@@ -1039,97 +791,38 @@ function toggleExportMenu() {
 
 function exportToExcel(cat) {
     let data = allData, name = 'All_Villas';
-    
     if (cat === 'full-renovated') { data = allData.filter(i => isFullRenovated(i.status)); name = 'Full_Renovated'; }
     else if (cat === 'half-renovated') { data = allData.filter(i => isHalfRenovated(i.status)); name = 'Half_Renovated'; }
     else if (cat === 'in-progress') { data = allData.filter(i => isInProgress(i.status)); name = 'Under_Renovation'; }
     else if (cat === 'non-renovated') { data = allData.filter(i => isNonRenovated(i.status)); name = 'Non_Renovated'; }
-
     if (data.length === 0) { showToast('No data to export', 'error'); return; }
-
-    const excel = data.map(i => ({
-        'Villa No': i.villaNo,
-        'Status': i.status || 'N/A',
-        'Cost': i.cost,
-        'Duration (Days)': calcDuration(i.startDate, i.endDate) || '-',
-        'Start Date': i.startDate || '-',
-        'End Date': i.endDate || '-',
-        'Date Renovated': i.dateRenovated || '-',
-        'Remarks': i.remarks || '-'
-    }));
-
-    const ws = XLSX.utils.json_to_sheet(excel);
-    const wb = XLSX.utils.book_new();
+    const excel = data.map(i => ({ 'Villa No': i.villaNo, 'Status': i.status || 'N/A', 'Cost': i.cost, 'Duration (Days)': calcDuration(i.startDate, i.endDate) || '-', 'Start Date': i.startDate || '-', 'End Date': i.endDate || '-', 'Date Renovated': i.dateRenovated || '-', 'Remarks': i.remarks || '-' }));
+    const ws = XLSX.utils.json_to_sheet(excel); const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Report');
     XLSX.writeFile(wb, `${name}_${new Date().toISOString().split('T')[0]}.xlsx`);
-
     document.getElementById('exportMenu').classList.remove('show');
     showToast(`Exported ${data.length} villas to Excel`, 'success');
 }
 
-// ===== HELPERS =====
-function formatDate(d) {
-    if (!d) return '-';
-    const date = new Date(d);
-    return isNaN(date) ? d : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-}
+function formatDate(d) { if (!d) return '-'; const date = new Date(d); return isNaN(date) ? d : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); }
+function parseDate(d) { if (!d) return 0; const date = new Date(d); return isNaN(date) ? 0 : date.getTime(); }
+function showLoading(s) { document.getElementById('loadingOverlay').classList.toggle('hidden', !s); }
+function showError(m) { document.getElementById('errorMessage').textContent = m; document.getElementById('errorModal').classList.add('show'); }
+function showToast(m, t = 'success') { const toast = document.getElementById('toast'); document.getElementById('toastMessage').textContent = m; toast.className = `toast ${t} show`; setTimeout(() => toast.classList.remove('show'), 3000); }
+function updateLastUpdated() { document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+function switchView(v) { document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v)); document.querySelectorAll('.view-content').forEach(c => c.classList.remove('active')); document.getElementById(v + 'View').classList.add('active'); }
 
-function parseDate(d) {
-    if (!d) return 0;
-    const date = new Date(d);
-    return isNaN(date) ? 0 : date.getTime();
-}
-
-function showLoading(s) {
-    document.getElementById('loadingOverlay').classList.toggle('hidden', !s);
-}
-
-function showError(m) {
-    document.getElementById('errorMessage').textContent = m;
-    document.getElementById('errorModal').classList.add('show');
-}
-
-function showToast(m, t = 'success') {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastMessage').textContent = m;
-    toast.className = `toast ${t} show`;
-    setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-function updateLastUpdated() {
-    document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
-    });
-}
-
-function switchView(v) {
-    document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v));
-    document.querySelectorAll('.view-content').forEach(c => c.classList.remove('active'));
-    document.getElementById(v + 'View').classList.add('active');
-}
-
-// ===== EVENT LISTENERS =====
 function setupEventListeners() {
-    document.getElementById('searchInput').addEventListener('input', () => {
-        clearTimeout(window.searchTimeout);
-        window.searchTimeout = setTimeout(applyFilters, 300);
-    });
-
+    document.getElementById('searchInput').addEventListener('input', () => { clearTimeout(window.searchTimeout); window.searchTimeout = setTimeout(applyFilters, 300); });
     document.getElementById('statusFilter').addEventListener('change', applyFilters);
     document.getElementById('villaFilter').addEventListener('change', applyFilters);
     document.getElementById('yearFilter').addEventListener('change', applyFilters);
     document.getElementById('clearFilters').addEventListener('click', clearFilters);
-
     document.getElementById('refreshBtn').addEventListener('click', () => {
-        const btn = document.getElementById('refreshBtn');
-        btn.disabled = true;
+        const btn = document.getElementById('refreshBtn'); btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i><span>Refreshing...</span>';
-        fetchData().finally(() => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>';
-        });
+        fetchData().finally(() => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>'; });
     });
-
     document.querySelectorAll('th[data-sort]').forEach(th => {
         th.addEventListener('click', () => {
             sortDirection = sortColumn === th.dataset.sort && sortDirection === 'asc' ? 'desc' : 'asc';
@@ -1139,37 +832,24 @@ function setupEventListeners() {
                 if (sortColumn === 'cost') { va = parseFloat(va) || 0; vb = parseFloat(vb) || 0; }
                 if (sortColumn === 'villaNo') { va = parseInt(String(va).replace(/\D/g, '')) || 0; vb = parseInt(String(vb).replace(/\D/g, '')) || 0; }
                 if (sortColumn === 'duration') { va = calcDuration(a.startDate, a.endDate) || 0; vb = calcDuration(b.startDate, b.endDate) || 0; }
-                if (typeof va === 'string') va = va.toLowerCase();
-                if (typeof vb === 'string') vb = vb.toLowerCase();
+                if (typeof va === 'string') va = va.toLowerCase(); if (typeof vb === 'string') vb = vb.toLowerCase();
                 return (va < vb ? -1 : va > vb ? 1 : 0) * (sortDirection === 'asc' ? 1 : -1);
             });
             renderTable();
         });
     });
-
     document.querySelectorAll('.view-btn').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
-
     const scrollBtn = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 300));
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
     document.getElementById('detailModal').addEventListener('click', e => { if (e.target.id === 'detailModal') closeDetailModal(); });
     document.getElementById('qrModal').addEventListener('click', e => { if (e.target.id === 'qrModal') closeQrModal(); });
     document.getElementById('errorModal').addEventListener('click', e => { if (e.target.id === 'errorModal') document.getElementById('errorModal').classList.remove('show'); });
 }
 
-// Global functions
-window.changePage = changePage;
-window.showDetail = showDetail;
-window.closeDetailModal = closeDetailModal;
-window.filterByCategory = filterByCategory;
-window.toggleExportMenu = toggleExportMenu;
-window.exportToExcel = exportToExcel;
-window.showQR = showQR;
-window.closeQrModal = closeQrModal;
-window.downloadQR = downloadQR;
-window.printQR = printQR;
-window.logout = logout;
+window.changePage = changePage; window.showDetail = showDetail; window.closeDetailModal = closeDetailModal;
+window.filterByCategory = filterByCategory; window.toggleExportMenu = toggleExportMenu; window.exportToExcel = exportToExcel;
+window.showQR = showQR; window.closeQrModal = closeQrModal; window.downloadQR = downloadQR; window.printQR = printQR; window.logout = logout;
 </script>
 </body>
 </html>
