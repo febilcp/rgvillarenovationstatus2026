@@ -9,8 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
-<style>
+    <style>
 :root {
     --primary: #1e3a5f; --primary-light: #2d5a87; --secondary: #3498db;
     --success: #27ae60; --success-light: #2ecc71; --warning: #f39c12;
@@ -24,7 +23,6 @@
 html { scroll-behavior: smooth; }
 body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: var(--dark); line-height: 1.6; }
 .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
-
 .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.5s ease; }
 .login-overlay.hidden { opacity: 0; pointer-events: none; }
 .login-box { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-lg); width: 90%; max-width: 400px; text-align: center; }
@@ -36,14 +34,10 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .login-box input { width: 100%; padding: 14px 14px 14px 45px; border: 2px solid var(--gray-light); border-radius: var(--radius); font-size: 1rem; font-family: inherit; }
 .login-box input:focus { outline: none; border-color: var(--secondary); }
 .login-box .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 600; cursor: pointer; }
-.login-box .login-btn:hover { transform: translateY(-2px); }
 .login-box .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; }
-.login-box .error-msg.show { display: block; animation: shake 0.5s ease; }
-@keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-10px);} 75%{transform:translateX(10px);} }
-
+.login-box .error-msg.show { display: block; }
 .main-content { display: none; }
 .main-content.visible { display: block; }
-
 .header { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow); }
 .header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
 .logo { display: flex; align-items: center; gap: 12px; }
@@ -51,201 +45,426 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .logo-text h1 { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 .logo-text span { font-size: 0.75rem; color: var(--gray); }
 .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.last-updated { display: flex; align-items: center; gap: 6px; background: var(--light); padding: 8px 14px; border-radius: var(--radius-xl); font-size: 0.8rem; color: var(--gray); }
-.last-updated i { color: var(--success); }
 .header-btn { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border: none; border-radius: var(--radius-xl); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; }
 .refresh-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
 .export-btn { background: linear-gradient(135deg, var(--success), var(--success-light)); color: var(--white); }
 .logout-btn { background: var(--gray-light); color: var(--gray); }
-.logout-btn:hover { background: var(--danger); color: white; }
-.header-btn:hover { transform: translateY(-2px); }
-.header-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-.export-dropdown { position: relative; }
-.export-menu { position: absolute; top: 100%; right: 0; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); min-width: 220px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: var(--transition); }
-.export-menu.show { opacity: 1; visibility: visible; transform: translateY(5px); }
-.export-menu-header { padding: 12px 15px; border-bottom: 1px solid var(--gray-light); font-weight: 600; font-size: 0.85rem; }
-.export-menu-item { display: flex; align-items: center; gap: 10px; padding: 12px 15px; cursor: pointer; font-size: 0.85rem; border: none; background: none; width: 100%; text-align: left; font-family: inherit; }
-.export-menu-item:hover { background: var(--light); }
-.export-menu-item .count { margin-left: auto; background: var(--gray-light); padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; }
-
-.tab-navigation { background: rgba(255,255,255,0.95); padding: 0; margin-top: 20px; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; overflow-x: auto; }
-.tab-btn { flex: 1; min-width: 150px; padding: 16px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
-.tab-btn:hover { background: var(--light); color: var(--dark); }
+.tab-navigation { background: rgba(255,255,255,0.95); padding: 0; margin: 20px 0 0; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; }
+.tab-btn { flex: 1; padding: 16px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
+.tab-btn:hover { background: var(--light); }
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: rgba(52,152,219,0.05); }
 .tab-content { display: none; }
-.tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-
-.dashboard { padding: 25px 0 15px; }
-.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+.tab-content.active { display: block; }
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 25px 0 15px; }
+.stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--secondary); cursor: pointer; }
+.stat-card:hover { transform: translateY(-5px); }
+.stat-icon { width: 55px; height: 55px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; background: rgba(52,152,219,0.15); color: var(--secondary); }
+.stat-info h3 { font-size: 1.8rem; font-weight: 700; color: var(--dark); }
+.stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
+.table-wrapper { background: rgba(255,255,255,0.98); border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; margin: 20px 0; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 14px 16px; text-align: left; }
+th { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); font-weight: 600; font-size: 0.85rem; }
+td { border-bottom: 1px solid var(--gray-light); font-size: 0.9rem; }
+.loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.loading-overlay.hidden { display: none; }
+.loader { text-align: center; color: white; }
+.loader i { font-size: 3.5rem; animation: spin 1s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loader p { margin-top: 20px; font-size: 1.1rem; }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 15px 25px; border-radius: var(--radius); z-index: 10001; opacity: 0; transition: var(--transition); }
+.toast.show { opacity: 1; }
+.toast.success { background: var(--success); }
 @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
 
-.stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--secondary); cursor: pointer; }
-.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-.stat-card.active { box-shadow: 0 0 0 3px var(--secondary), var(--shadow-lg); }
-.stat-card.total { border-left-color: var(--secondary); }
-.stat-card.renovated { border-left-color: var(--success); }
-.stat-card.half-renovated { border-left-color: var(--half); }
-.stat-card.in-progress { border-left-color: var(--warning); }
-.stat-card.non-renovated { border-left-color: var(--danger); }
-.stat-card.total:hover, .stat-card.total.active { background: rgba(52,152,219,0.1); }
-.stat-card.renovated:hover, .stat-card.renovated.active { background: rgba(39,174,96,0.1); }
-.stat-card.half-renovated:hover, .stat-card.half-renovated.active { background: rgba(155,89,182,0.1); }
-.stat-card.in-progress:hover, .stat-card.in-progress.active { background: rgba(243,156,18,0.1); }
-.stat-card.non-renovated:hover, .stat-card.non-renovated.active { background: rgba(231,76,60,0.1); }
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <div class="logo-icon"><i class="fas fa-building"></i></div>
+        <h2>Villa Renovation Tracker</h2>
+        <p>Enter password to access</p>
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="passwordInput" placeholder="Enter Password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="error-msg" id="loginError">Incorrect password</p>
+    </div>
+</div>
 
-.stat-icon { width: 55px; height: 55px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-.stat-card.total .stat-icon { background: rgba(52,152,219,0.15); color: var(--secondary); }
-.stat-card.renovated .stat-icon { background: rgba(39,174,96,0.15); color: var(--success); }
-.stat-card.half-renovated .stat-icon { background: rgba(155,89,182,0.15); color: var(--half); }
-.stat-card.in-progress .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
-.stat-card.non-renovated .stat-icon { background: rgba(231,76,60,0.15); color: var(--danger); }
-.stat-info h3 { font-size: 1.8rem; font-weight: 700; line-height: 1; color: var(--dark); }
-.stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
+<div class="main-content" id="mainContent">
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-building"></i>
+                <div class="logo-text">
+                    <h1>Villa Compound Tracker</h1>
+                    <span>Renovation & AC Management</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="refreshBtn" class="header-btn refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button onclick="exportData()" class="header-btn export-btn"><i class="fas fa-file-excel"></i> Export</button>
+                <button class="header-btn logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+    </header>
 
-.ac-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-.ac-stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); text-align: center; border-top: 4px solid var(--info); }
-.ac-stat-card h4 { font-size: 2rem; color: var(--info); margin-bottom: 5px; }
-.ac-stat-card p { color: var(--gray); font-size: 0.85rem; }
+    <div class="container">
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="switchTab('renovation')">
+                <i class="fas fa-tools"></i> Renovation Status
+            </button>
+            <button class="tab-btn" onclick="switchTab('ac')">
+                <i class="fas fa-wind"></i> AC Replacement
+            </button>
+        </div>
 
-.active-filter-badge { display: none; align-items: center; gap: 8px; background: var(--secondary); color: white; padding: 8px 16px; border-radius: var(--radius-xl); font-size: 0.85rem; margin-top: 15px; }
-.active-filter-badge.show { display: inline-flex; }
-.active-filter-badge button { background: rgba(255,255,255,0.2); border: none; color: white; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; }
+        <div class="tab-content active" id="renovationTab">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-home"></i></div>
+                    <div class="stat-info"><h3 id="totalVillas">0</h3><p>Total Villas</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info"><h3 id="fullRenovated">0</h3><p>Full Renovated</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-adjust"></i></div>
+                    <div class="stat-info"><h3 id="halfRenovated">0</h3><p>Half Renovated</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-tools"></i></div>
+                    <div class="stat-info"><h3 id="inProgress">0</h3><p>Under Renovation</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="stat-info"><h3 id="nonRenovated">0</h3><p>Non Renovated</p></div>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Villa No</th>
+                            <th>Status</th>
+                            <th>Cost</th>
+                            <th>Duration</th>
+                            <th>Date</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="renovationTable"></tbody>
+                </table>
+            </div>
+        </div>
 
-.charts-section { padding: 15px 0; }
-.chart-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); max-width: 450px; margin: 0 auto; }
-.chart-card h3 { font-size: 1rem; color: var(--dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; justify-content: center; }
-.chart-card h3 i { color: var(--secondary); }
-.chart-container { position: relative; height: 280px; }
+        <div class="tab-content" id="acTab">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-wind"></i></div>
+                    <div class="stat-info"><h3 id="totalACs">0</h3><p>Total ACs</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-home"></i></div>
+                    <div class="stat-info"><h3 id="villasWithAC">0</h3><p>Villas</p></div>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Villa</th>
+                            <th>LVR</th>
+                            <th>Sitting</th>
+                            <th>Office</th>
+                            <th>MBR 1</th>
+                            <th>MBR 2</th>
+                            <th>MBR 3</th>
+                            <th>Kids</th>
+                            <th>Guest</th>
+                            <th>Kitchen</th>
+                            <th>SQ</th>
+                            <th>Store</th>
+                            <th>Patio</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="acTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-.progress-section { padding: 10px 0 15px; }
-.progress-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
-.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.progress-header h2 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--dark); }
-.progress-header h2 i { color: var(--secondary); }
-.progress-percentage { font-size: 1.6rem; font-weight: 700; color: var(--success); }
-.progress-bar-container { background: var(--gray-light); border-radius: var(--radius-xl); height: 24px; overflow: hidden; display: flex; }
-.progress-segment { height: 100%; transition: width 1.5s ease; }
-.progress-segment.full { background: var(--success); }
-.progress-segment.half { background: var(--half); }
-.progress-segment.under { background: var(--warning); }
-.progress-segment.non { background: var(--danger); }
-.legend { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 15px; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
-.legend-color { width: 14px; height: 14px; border-radius: 4px; }
-.legend-color.full { background: var(--success); }
-.legend-color.half { background: var(--half); }
-.legend-color.under { background: var(--warning); }
-.legend-color.non { background: var(--danger); }
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loader">
+        <i class="fas fa-spinner"></i>
+        <p>Loading data...</p>
+    </div>
+</div>
 
-.filters-section { padding: 10px 0; }
-.filters-wrapper { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.search-box { flex: 1; min-width: 220px; position: relative; }
-.search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray); }
-.search-box input { width: 100%; padding: 11px 14px 11px 42px; border: 2px solid var(--gray-light); border-radius: var(--radius-xl); font-size: 0.9rem; font-family: inherit; }
-.search-box input:focus { outline: none; border-color: var(--secondary); }
-.filter-group { display: flex; flex-wrap: wrap; gap: 10px; }
-.filter-group select { padding: 10px 14px; border: 2px solid var(--gray-light); border-radius: var(--radius); font-size: 0.85rem; cursor: pointer; font-family: inherit; background: var(--white); min-width: 130px; }
-.clear-btn { padding: 10px 16px; background: var(--gray-light); color: var(--gray); border: none; border-radius: var(--radius); cursor: pointer; font-family: inherit; }
-.clear-btn:hover { background: var(--danger); color: var(--white); }
+<div class="toast" id="toast">
+    <span id="toastMessage">Success!</span>
+</div>
 
-.view-toggle-section { padding: 12px 0; }
-.view-toggle { display: flex; gap: 6px; background: rgba(255,255,255,0.95); padding: 5px; border-radius: var(--radius); box-shadow: var(--shadow); width: fit-content; }
-.view-btn { padding: 9px 16px; background: transparent; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: inherit; color: var(--gray); display: flex; align-items: center; gap: 6px; }
-.view-btn:hover { background: var(--gray-light); color: var(--dark); }
-.view-btn.active { background: var(--primary); color: var(--white); }
-.view-content { display: none; }
-.view-content.active { display: block; animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+<script>
+const VALID_PASSWORD = 'villa2024';
+const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
+const RENOVATION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=0`;
+const AC_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=1`;
 
-.table-section { padding: 10px 0 30px; }
-.table-wrapper { background: rgba(255,255,255,0.98); border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 900px; }
-th, td { padding: 14px 16px; text-align: left; }
-th { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
-th:hover { background: var(--primary-light); }
-th i { margin-left: 5px; font-size: 0.7rem; opacity: 0.7; }
-td { border-bottom: 1px solid var(--gray-light); font-size: 0.9rem; }
-tbody tr { transition: var(--transition); cursor: pointer; }
-tbody tr:hover { background: rgba(52,152,219,0.05); }
-td:first-child { font-weight: 600; color: var(--primary); }
+let renovationData = [];
+let acData = [];
 
-.ac-table th { font-size: 0.75rem; padding: 10px 8px; }
-.ac-table td { padding: 10px 8px; text-align: center; font-size: 0.85rem; }
-.ac-table td:first-child { text-align: left; }
-.ac-qty { font-weight: 600; color: var(--info); }
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('villaLoggedIn') === 'true') showMainContent();
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    document.getElementById('refreshBtn').addEventListener('click', fetchAllData);
+});
 
-.status-badge { padding: 5px 12px; border-radius: var(--radius-xl); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; display: inline-block; }
-.status-full-renovated { background: rgba(39,174,96,0.15); color: var(--success); }
-.status-half-renovated { background: rgba(155,89,182,0.15); color: var(--half); }
-.status-in-progress { background: rgba(243,156,18,0.15); color: var(--warning); }
-.status-non-renovated { background: rgba(231,76,60,0.15); color: var(--danger); }
+function handleLogin(e) {
+    e.preventDefault();
+    if (document.getElementById('passwordInput').value === VALID_PASSWORD) {
+        sessionStorage.setItem('villaLoggedIn', 'true');
+        showMainContent();
+    } else {
+        document.getElementById('loginError').classList.add('show');
+        setTimeout(() => document.getElementById('loginError').classList.remove('show'), 3000);
+    }
+}
 
-.cost-cell { font-weight: 600; color: var(--cost); }
-.duration-badge { background: rgba(52,152,219,0.1); color: var(--secondary); padding: 4px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
-.qr-btn { background: var(--secondary); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-.qr-btn:hover { background: var(--primary); }
-.remarks-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--gray); }
+function showMainContent() {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('mainContent').classList.add('visible');
+    fetchAllData();
+}
 
-.table-footer { display: flex; justify-content: space-between; align-items: center; padding: 15px 18px; background: var(--light); flex-wrap: wrap; gap: 10px; }
-#rowCount { color: var(--gray); font-size: 0.85rem; }
-.pagination { display: flex; gap: 4px; }
-.pagination button { width: 36px; height: 36px; border: 1px solid var(--gray-light); background: var(--white); cursor: pointer; border-radius: 8px; font-size: 0.9rem; }
-.pagination button:hover:not(:disabled) { background: var(--secondary); color: var(--white); border-color: var(--secondary); }
-.pagination button.active { background: var(--primary); color: var(--white); }
-.pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+function logout() {
+    sessionStorage.removeItem('villaLoggedIn');
+    location.reload();
+}
 
-.cards-section { padding: 10px 0 30px; }
-.villa-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.villa-card { background: rgba(255,255,255,0.98); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; }
-.villa-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.villa-card-header { padding: 18px; display: flex; justify-content: space-between; align-items: center; }
-.villa-card-header.full-renovated { background: linear-gradient(135deg, var(--success), #2ecc71); color: white; }
-.villa-card-header.half-renovated { background: linear-gradient(135deg, var(--half), #a855f7); color: white; }
-.villa-card-header.in-progress { background: linear-gradient(135deg, var(--warning), #e67e22); color: white; }
-.villa-card-header.non-renovated { background: linear-gradient(135deg, var(--danger), #c0392b); color: white; }
-.villa-card-header h3 { font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
-.villa-card-body { padding: 18px; }
-.villa-card-body .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--gray-light); font-size: 0.9rem; }
-.villa-card-body .info-row:last-child { border-bottom: none; }
-.villa-card-body .label { color: var(--gray); display: flex; align-items: center; gap: 6px; }
-.villa-card-body .value { font-weight: 600; color: var(--dark); }
-.villa-card-body .value.cost { color: var(--cost); }
+async function fetchAllData() {
+    showLoading(true);
+    try {
+        await Promise.all([fetchRenovationData(), fetchACData()]);
+        updateRenovationView();
+        updateACView();
+        showToast('Data loaded successfully', 'success');
+    } catch (e) {
+        console.error(e);
+        showToast('Error loading data', 'error');
+    } finally {
+        showLoading(false);
+    }
+}
 
-.timeline-section { padding: 10px 0 30px; }
-.timeline { position: relative; padding-left: 30px; }
-.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--success), var(--half), var(--warning), var(--danger)); border-radius: 3px; }
-.timeline-item { position: relative; padding: 18px; background: rgba(255,255,255,0.98); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 15px; margin-left: 20px; cursor: pointer; transition: var(--transition); }
-.timeline-item:hover { transform: translateX(5px); box-shadow: var(--shadow-lg); }
-.timeline-item::before { content: ''; position: absolute; left: -28px; top: 22px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.timeline-item.full-renovated::before { background: var(--success); }
-.timeline-item.half-renovated::before { background: var(--half); }
-.timeline-item.in-progress::before { background: var(--warning); }
-.timeline-item.non-renovated::before { background: var(--danger); }
-.timeline-date { font-size: 0.8rem; color: var(--gray); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.timeline-title { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 6px; }
-.timeline-info { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 8px; }
-.timeline-info span { font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
-.timeline-info .cost { color: var(--cost); font-weight: 600; }
-.timeline-info .duration { color: var(--secondary); }
+async function fetchRenovationData() {
+    try {
+        const res = await fetch(RENOVATION_URL);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+        renovationData = json.table.rows.map((row, i) => {
+            const c = row.c;
+            return {
+                id: i,
+                villaNo: getVal(c, 0),
+                status: getVal(c, 1),
+                dateRenovated: getVal(c, 2),
+                remarks: getVal(c, 3),
+                cost: parseFloat(String(getVal(c, 4)).replace(/[^0-9.-]/g, '')) || 0,
+                startDate: getVal(c, 5),
+                endDate: getVal(c, 6)
+            };
+        }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa no'));
+    } catch (e) {
+        console.error('Renovation data fetch error:', e);
+    }
+}
 
-.modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; pointer-events: none; transition: var(--transition); backdrop-filter: blur(5px); }
-.modal.show { opacity: 1; pointer-events: auto; }
-.modal-content { background: var(--white); padding: 28px; border-radius: var(--radius); max-width: 600px; width: 92%; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: var(--transition); position: relative; box-shadow: var(--shadow-lg); }
-.modal.show .modal-content { transform: scale(1); }
-.modal-close { position: absolute; top: 12px; right: 12px; width: 35px; height: 35px; border: none; background: var(--gray-light); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-.modal-close:hover { background: var(--danger); color: var(--white); }
+async function fetchACData() {
+    try {
+        const res = await fetch(AC_URL);
+        const text = await res.text();
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+        acData = json.table.rows.map((row, i) => {
+            const c = row.c;
+            return {
+                id: i,
+                villaNo: getVal(c, 0),
+                lvr: parseInt(getVal(c, 1)) || 0,
+                sitting: parseInt(getVal(c, 2)) || 0,
+                office: parseInt(getVal(c, 3)) || 0,
+                mbr1: parseInt(getVal(c, 4)) || 0,
+                mbr2: parseInt(getVal(c, 5)) || 0,
+                mbr3: parseInt(getVal(c, 6)) || 0,
+                kids: parseInt(getVal(c, 7)) || 0,
+                guest: parseInt(getVal(c, 8)) || 0,
+                kitchen: parseInt(getVal(c, 9)) || 0,
+                sq: parseInt(getVal(c, 10)) || 0,
+                store: parseInt(getVal(c, 11)) || 0,
+                patio: parseInt(getVal(c, 12)) || 0,
+                total: parseInt(getVal(c, 13)) || 0
+            };
+        }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa'));
+    } catch (e) {
+        console.error('AC data fetch error:', e);
+    }
+}
 
-.ac-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-.ac-detail-item { background: var(--light); padding: 12px; border-radius: 8px; text-align: center; }
-.ac-detail-item .room-name { font-size: 0.8rem; color: var(--gray); margin-bottom: 5px; }
-.ac-detail-item .room-qty { font-size: 1.3rem; font-weight: 700; color: var(--info); }
+function getVal(cells, i) {
+    if (!cells || !cells[i]) return '';
+    const c = cells[i];
+    return c.f || c.v || '';
+}
 
-.qr-container { text-align: center; margin: 25px 0; }
-.qr-container canvas { margin: 0 auto !important; }
-.qr-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
-.qr-actions button { padding: 12px 24px; border: none; border-radius: var(--radius); cursor: pointer; font-family: inherit; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+function updateRenovationView() {
+    const full = renovationData.filter(i => isFullRenovated(i.status)).length;
+    const half = renovationData.filter(i => isHalfRenovated(i.status)).length;
+    const prog = renovationData.filter(i => isInProgress(i.status)).length;
+    const non = renovationData.filter(i => isNonRenovated(i.status)).length;
+    
+    document.getElementById('totalVillas').textContent = renovationData.length;
+    document.getElementById('fullRenovated').textContent = full;
+    document.getElementById('halfRenovated').textContent = half;
+    document.getElementById('inProgress').textContent = prog;
+    document.getElementById('nonRenovated').textContent = non;
+    
+    const tbody = document.getElementById('renovationTable');
+    tbody.innerHTML = renovationData.map(i => `
+        <tr>
+            <td>Villa ${i.villaNo}</td>
+            <td>${i.status || 'N/A'}</td>
+            <td>${i.cost.toLocaleString()}</td>
+            <td>${calcDuration(i.startDate, i.endDate) || '-'} days</td>
+            <td>${i.dateRenovated || '-'}</td>
+            <td>${i.remarks || '-'}</td>
+        </tr>
+    `).join('');
+}
 
-.loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content:
+function updateACView() {
+    const totalACs = acData.reduce((sum, i) => sum + i.total, 0);
+    document.getElementById('totalACs').textContent = totalACs;
+    document.getElementById('villasWithAC').textContent = acData.length;
+    
+    const tbody = document.getElementById('acTable');
+    tbody.innerHTML = acData.map(i => `
+        <tr>
+            <td>Villa ${i.villaNo}</td>
+            <td>${i.lvr}</td>
+            <td>${i.sitting}</td>
+            <td>${i.office}</td>
+            <td>${i.mbr1}</td>
+            <td>${i.mbr2}</td>
+            <td>${i.mbr3}</td>
+            <td>${i.kids}</td>
+            <td>${i.guest}</td>
+            <td>${i.kitchen}</td>
+            <td>${i.sq}</td>
+            <td>${i.store}</td>
+            <td>${i.patio}</td>
+            <td><strong>${i.total}</strong></td>
+        </tr>
+    `).join('');
+}
+
+function isFullRenovated(s) {
+    if (!s) return false;
+    const x = String(s).toLowerCase();
+    return !x.includes('non') && !x.includes('half') && !x.includes('under') && (x.includes('full') || x.includes('renovated'));
+}
+
+function isHalfRenovated(s) {
+    return s && String(s).toLowerCase().includes('half');
+}
+
+function isInProgress(s) {
+    if (!s) return false;
+    const x = String(s).toLowerCase();
+    return !x.includes('half') && (x.includes('under') || x.includes('progress'));
+}
+
+function isNonRenovated(s) {
+    return !isFullRenovated(s) && !isHalfRenovated(s) && !isInProgress(s);
+}
+
+function calcDuration(start, end) {
+    if (!start) return null;
+    const s = new Date(start);
+    const e = end ? new Date(end) : new Date();
+    if (isNaN(s)) return null;
+    return Math.max(0, Math.ceil((e - s) / (1000 * 60 * 60 * 24)));
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    if (tab === 'renovation') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('renovationTab').classList.add('active');
+    } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('acTab').classList.add('active');
+    }
+}
+
+function exportData() {
+    const ws1 = XLSX.utils.json_to_sheet(renovationData.map(i => ({
+        'Villa': i.villaNo,
+        'Status': i.status,
+        'Cost': i.cost,
+        'Start': i.startDate,
+        'End': i.endDate,
+        'Remarks': i.remarks
+    })));
+    
+    const ws2 = XLSX.utils.json_to_sheet(acData.map(i => ({
+        'Villa': i.villaNo,
+        'LVR': i.lvr,
+        'Sitting': i.sitting,
+        'Office': i.office,
+        'MBR1': i.mbr1,
+        'MBR2': i.mbr2,
+        'MBR3': i.mbr3,
+        'Kids': i.kids,
+        'Guest': i.guest,
+        'Kitchen': i.kitchen,
+        'SQ': i.sq,
+        'Store': i.store,
+        'Patio': i.patio,
+        'Total': i.total
+    })));
+    
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws1, 'Renovation');
+    XLSX.utils.book_append_sheet(wb, ws2, 'AC Replacement');
+    XLSX.writeFile(wb, `Villa_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+    showToast('Exported successfully', 'success');
+}
+
+function showLoading(show) {
+    document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+}
+
+function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMessage').textContent = msg;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+window.switchTab = switchTab;
+window.logout = logout;
+window.exportData = exportData;
+</script>
+</body>
+</html>
