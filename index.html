@@ -70,7 +70,9 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 
 .stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--secondary); cursor: pointer; position: relative; overflow: hidden; }
 .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+/* Active Filter Checkmark */
 .stat-card.active-filter::after { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 10px; top: 10px; font-size: 1.2rem; opacity: 0.2; color: var(--dark); }
+
 .stat-card.total { border-left-color: var(--secondary); }
 .stat-card.renovated { border-left-color: var(--success); }
 .stat-card.half-renovated { border-left-color: var(--half); }
@@ -301,21 +303,21 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
         <!-- AC REPLACEMENT TAB -->
         <div class="tab-content" id="acTab">
-            <!-- Dashboard AC Stats -->
+            <!-- Dashboard AC Stats - Now Clickable Filters -->
             <div class="stats-grid">
-                <div class="stat-card total">
+                <div class="stat-card total" onclick="filterAC('all')" title="Show All">
                     <div class="stat-icon"><i class="fas fa-wind"></i></div>
                     <div class="stat-info"><h3 id="totalACs">0</h3><p>Total ACs</p></div>
                 </div>
-                <div class="stat-card renovated new-ac">
+                <div class="stat-card renovated new-ac" onclick="filterAC('new')" title="Show Villas with New ACs">
                     <div class="stat-icon"><i class="fas fa-plus-circle"></i></div>
                     <div class="stat-info"><h3 id="totalNewACs">0</h3><p>New ACs</p></div>
                 </div>
-                <div class="stat-card in-progress old-ac">
+                <div class="stat-card in-progress old-ac" onclick="filterAC('old')" title="Show Villas with Old ACs">
                     <div class="stat-icon"><i class="fas fa-history"></i></div>
                     <div class="stat-info"><h3 id="totalOldACs">0</h3><p>Old ACs</p></div>
                 </div>
-                <div class="stat-card non-renovated">
+                <div class="stat-card non-renovated" onclick="filterAC('all')">
                     <div class="stat-icon"><i class="fas fa-home"></i></div>
                     <div class="stat-info"><h3 id="villasWithAC">0</h3><p>Villas</p></div>
                 </div>
@@ -376,12 +378,13 @@ const VALID_PASSWORD = 'villa2024';
 const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
 // RENOVATION URL uses gid=0 (Sheet 1)
 const RENOVATION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=0`;
-// AC URL uses gid=1 (Sheet 2). If this doesn't work, check your Google Sheet URL.
+// AC URL uses custom GID provided by user
 const AC_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=7537460`;
 
 let renovationData = [];
 let acData = [];
 let currentFilter = 'all'; // 'all', 'full', 'half', 'progress', 'non'
+let currentACFilter = 'all'; // 'all', 'new', 'old'
 
 document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('villaLoggedIn') === 'true') showMainContent();
@@ -476,7 +479,7 @@ async function fetchACData() {
         }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa'));
         
         if (acData.length === 0) {
-            showToast('Warning: No AC Data found in Sheet2 (gid=1). Check sheet settings.', 'error');
+            showToast('Warning: No AC Data found.', 'error');
         }
 
     } catch (e) {
@@ -491,7 +494,7 @@ function getVal(cells, i) {
     return c.f || c.v || '';
 }
 
-// Filter Function
+// Renovation Filter Function
 function filterRenovation(type) {
     currentFilter = type;
     
@@ -505,6 +508,20 @@ function filterRenovation(type) {
 
     renderRenovationTable();
     renderRenovationCards();
+}
+
+// AC Filter Function
+function filterAC(type) {
+    currentACFilter = type;
+    
+    // Highlight the active card in AC Tab
+    document.querySelectorAll('#acTab .stat-card').forEach(c => c.classList.remove('active-filter'));
+    if(type === 'all') document.querySelector('#acTab .stat-card.total').classList.add('active-filter');
+    if(type === 'new') document.querySelector('#acTab .stat-card.new-ac').classList.add('active-filter');
+    if(type === 'old') document.querySelector('#acTab .stat-card.old-ac').classList.add('active-filter');
+
+    renderACTable();
+    renderACCards();
 }
 
 function updateRenovationView() {
@@ -632,7 +649,22 @@ function updateACView() {
 
 function renderACTable() {
     const tbody = document.getElementById('acTable');
-    tbody.innerHTML = acData.map(i => `
+    
+    // Filter Rows: Only show villas that have the selected filter type
+    let rowsToShow = acData;
+    if (currentACFilter !== 'all') {
+        rowsToShow = acData.filter(villa => {
+            const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
+            return rooms.some(r => String(r).toLowerCase().trim() === currentACFilter);
+        });
+    }
+    
+    if(rowsToShow.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="13" style="text-align:center; padding: 20px;">No data found for this filter.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = rowsToShow.map(i => `
         <tr>
             <td>Villa ${i.villaNo}</td>
             ${renderACCell(i.lvr)}
@@ -654,13 +686,40 @@ function renderACTable() {
 function renderACCell(val) {
     if(!val) return `<td style="text-align:center; color:#ccc;">-</td>`;
     const s = String(val).toLowerCase();
+    let style = '';
+    let fontWeight = '';
+    
+    // Visual Highlighting for Filter
+    if (currentACFilter !== 'all') {
+        if (s === currentACFilter) {
+            style = 'font-weight: 900; font-size: 1.1rem; transform: scale(1.1);';
+        } else {
+            style = 'opacity: 0.2;'; // Dim non-matching cells
+        }
+    }
+    
     const cls = s === 'new' ? 'ac-badge-new' : (s === 'old' ? 'ac-badge-old' : '');
-    return `<td style="text-align:center"><span class="${cls}">${val}</span></td>`;
+    return `<td style="text-align:center; ${style}"><span class="${cls}">${val}</span></td>`;
 }
 
 function renderACCards() {
     const cards = document.getElementById('acCards');
-    cards.innerHTML = acData.map(i => `
+    
+    // Filter Cards
+    let cardsToShow = acData;
+    if (currentACFilter !== 'all') {
+        cardsToShow = acData.filter(villa => {
+            const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
+            return rooms.some(r => String(r).toLowerCase().trim() === currentACFilter);
+        });
+    }
+    
+    if(cardsToShow.length === 0) {
+        cards.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:20px; color:var(--gray);">No data found for this filter.</p>`;
+        return;
+    }
+
+    cards.innerHTML = cardsToShow.map(i => `
         <div class="ac-card">
             <div class="ac-card-header">
                 <h3><i class="fas fa-wind"></i> Villa ${i.villaNo}</h3>
@@ -688,8 +747,18 @@ function renderACCards() {
 function renderACRoomCard(name, val) {
     if(!val) return `<div class="ac-room-item" style="opacity:0.5"><div class="room-name">${name}</div><div class="room-qty">-</div></div>`;
     const s = String(val).toLowerCase();
+    
+    let style = '';
+    if (currentACFilter !== 'all') {
+        if (s === currentACFilter) {
+            style = 'font-weight: 900; font-size: 1.2rem; transform: scale(1.1);';
+        } else {
+            style = 'opacity: 0.2;';
+        }
+    }
+    
     const color = s === 'new' ? 'var(--success)' : (s === 'old' ? 'var(--warning)' : 'var(--info)');
-    return `<div class="ac-room-item"><div class="room-name">${name}</div><div class="room-qty" style="color:${color}">${val}</div></div>`;
+    return `<div class="ac-room-item" style="${style}"><div class="room-name">${name}</div><div class="room-qty" style="color:${color}">${val}</div></div>`;
 }
 
 function isFullRenovated(s) {
@@ -828,6 +897,7 @@ window.switchACView = switchACView;
 window.logout = logout;
 window.exportData = exportData;
 window.filterRenovation = filterRenovation;
+window.filterAC = filterAC;
 </script>
 </body>
 </html>
