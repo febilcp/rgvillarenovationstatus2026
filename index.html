@@ -606,15 +606,12 @@ function updateACView() {
         const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
         
         rooms.forEach(status => {
-            const s = String(status).toLowerCase().trim();
-            if (s) {
+            const s = String(status).toUpperCase().trim();
+            // LOGIC UPDATE: Skip if "X"
+            if (s && s !== 'X') {
                 totalACs++;
-                // Check if "new" is in the text
-                if (s.includes('new')) {
-                    newACs++;
-                } else if (s.includes('old')) {
-                    oldACs++;
-                }
+                if (s.includes('NEW')) newACs++;
+                else if (s.includes('OLD')) oldACs++;
             }
         });
     });
@@ -634,7 +631,12 @@ function renderACTable() {
     if (currentACFilter !== 'all') {
         rowsToShow = acData.filter(villa => {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
-            return rooms.some(r => String(r).toLowerCase().includes(currentACFilter));
+            return rooms.some(r => {
+                const s = String(r).toUpperCase().trim();
+                // Filter Logic: If 'X', do NOT match filter
+                if (s === 'X') return false;
+                return s.includes(currentACFilter.toUpperCase());
+            });
         });
     }
     
@@ -663,12 +665,14 @@ function renderACTable() {
 }
 
 function renderACCell(val) {
-    if(!val) return `<td style="text-align:center; color:#ccc;">-</td>`;
-    const s = String(val).toLowerCase();
+    const s = String(val).toUpperCase().trim();
+    // LOGIC UPDATE: If "X", show empty dash
+    if(!val || s === 'X') return `<td style="text-align:center; color:#ccc;">-</td>`;
+    
     let style = '';
     
     if (currentACFilter !== 'all') {
-        if (s.includes(currentACFilter)) {
+        if (s.includes(currentACFilter.toUpperCase())) {
             style = 'font-weight: 900; font-size: 1rem; transform: scale(1.05);';
         } else {
             style = 'opacity: 0.2;';
@@ -676,8 +680,8 @@ function renderACCell(val) {
     }
     
     let cls = '';
-    if (s.includes('new')) cls = 'ac-badge-new';
-    else if (s.includes('old')) cls = 'ac-badge-old';
+    if (s.includes('NEW')) cls = 'ac-badge-new';
+    else if (s.includes('OLD')) cls = 'ac-badge-old';
 
     return `<td style="text-align:center; ${style}"><span class="${cls}">${val}</span></td>`;
 }
@@ -688,7 +692,11 @@ function renderACCards() {
     if (currentACFilter !== 'all') {
         cardsToShow = acData.filter(villa => {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
-            return rooms.some(r => String(r).toLowerCase().includes(currentACFilter));
+            return rooms.some(r => {
+                const s = String(r).toUpperCase().trim();
+                if (s === 'X') return false;
+                return s.includes(currentACFilter.toUpperCase());
+            });
         });
     }
     
@@ -723,12 +731,13 @@ function renderACCards() {
 }
 
 function renderACRoomCard(name, val) {
-    if(!val) return `<div class="ac-room-item" style="opacity:0.5"><div class="room-name">${name}</div><div class="room-qty">-</div></div>`;
-    const s = String(val).toLowerCase();
+    const s = String(val).toUpperCase().trim();
+    // LOGIC UPDATE: If "X", show empty dash
+    if(!val || s === 'X') return `<div class="ac-room-item" style="opacity:0.5"><div class="room-name">${name}</div><div class="room-qty">-</div></div>`;
     
     let style = '';
     if (currentACFilter !== 'all') {
-        if (s.includes(currentACFilter)) {
+        if (s.includes(currentACFilter.toUpperCase())) {
             style = 'font-weight: 900; font-size: 0.9rem; transform: scale(1.1);';
         } else {
             style = 'opacity: 0.2;';
@@ -736,8 +745,8 @@ function renderACRoomCard(name, val) {
     }
     
     let color = 'var(--dark)';
-    if (s.includes('new')) color = 'var(--success)';
-    else if (s.includes('old')) color = 'var(--warning)';
+    if (s.includes('NEW')) color = 'var(--success)';
+    else if (s.includes('OLD')) color = 'var(--warning)';
 
     return `<div class="ac-room-item" style="${style}"><div class="room-name">${name}</div><div class="room-qty" style="color:${color}">${val}</div></div>`;
 }
@@ -781,7 +790,6 @@ function calcDuration(start, end) {
     const s = new Date(start);
     const e = end ? new Date(end) : new Date();
     if (isNaN(s)) return null;
-    // FIXED SYNTAX ERROR HERE: Removed extra closing parenthesis
     return Math.max(0, Math.ceil((e - s) / (1000 * 60 * 60 * 24)));
 }
 
