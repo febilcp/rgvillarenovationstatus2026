@@ -75,7 +75,7 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .header-btn:hover { transform: translateY(-2px); }
 
 .tab-navigation { background: rgba(255,255,255,0.95); padding: 0; margin: 20px 0 0; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; }
-.tab-btn { flex: 1; padding: 16px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
+.tab-btn { flex:1; padding: 16px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
 .tab-btn:hover { background: var(--light); }
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: rgba(52,152,219,0.05); }
 .tab-content { display: none; }
@@ -122,7 +122,7 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 table { width: 100%; border-collapse: collapse; min-width: 900px; }
 th, td { padding: 14px 16px; text-align: left; }
 th { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; white-space: nowrap; }
-td { border-bottom: 1px solid var(--gray-light); font-size: 0.85rem; } /* Reduced font size slightly for longer text */
+td { border-bottom: 1px solid var(--gray-light); font-size: 0.85rem; }
 tbody tr { transition: var(--transition); cursor: pointer; }
 tbody tr:hover { background: rgba(52,152,219,0.05); }
 td:first-child { font-weight: 600; color: var(--primary); }
@@ -133,7 +133,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .status-in-progress { background: rgba(243,156,18,0.15); color: var(--warning); }
 .status-non-renovated { background: rgba(231,76,60,0.15); color: var(--danger); }
 
-/* AC Badge Styles - Adjusted for longer text */
 .ac-badge-new { font-weight: 700; color: var(--success); text-transform: none; }
 .ac-badge-old { font-weight: 700; color: var(--warning); text-transform: none; }
 
@@ -162,7 +161,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .ac-room-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .ac-room-item { background: var(--light); padding: 10px; border-radius: 8px; text-align: center; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center;}
 .ac-room-item .room-name { font-size: 0.7rem; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; }
-.ac-room-item .room-qty { font-size: 0.75rem; font-weight: 700; text-transform: none; line-height: 1.2; word-wrap: break-word; } /* Adjusted for long text */
+.ac-room-item .room-qty { font-size: 0.75rem; font-weight: 700; text-transform: none; line-height: 1.2; word-wrap: break-word; }
 
 .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 .loading-overlay.hidden { display: none; }
@@ -206,13 +205,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
                 </div>
             </div>
             <div class="header-actions">
-                <!-- Search Bar -->
                 <div class="search-container">
                     <i class="fas fa-search"></i>
                     <input type="text" id="searchInput" placeholder="Search Villa..." onkeyup="handleSearch()">
                 </div>
                 
-                <!-- Open Sheet Button -->
                 <button onclick="openSheet()" class="header-btn sheet-btn"><i class="fas fa-table"></i> Open Sheet</button>
                 
                 <button id="refreshBtn" class="header-btn refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -234,7 +231,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
         <!-- RENOVATION TAB -->
         <div class="tab-content active" id="renovationTab">
-            <!-- Dashboard Stats - Always Visible & Clickable -->
             <div class="stats-grid">
                 <div class="stat-card total" onclick="filterRenovation('all')" title="Show All">
                     <div class="stat-icon"><i class="fas fa-home"></i></div>
@@ -257,8 +253,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <div class="stat-info"><h3 id="nonRenovated">0</h3><p>Non Renovated</p></div>
                 </div>
             </div>
-
-            <!-- Progress Section Removed -->
 
             <div class="view-toggle-section">
                 <div class="view-toggle">
@@ -292,7 +286,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
         <!-- AC REPLACEMENT TAB -->
         <div class="tab-content" id="acTab">
-            <!-- Dashboard AC Stats - Now Clickable Filters -->
             <div class="stats-grid">
                 <div class="stat-card total" onclick="filterAC('all')" title="Show All">
                     <div class="stat-icon"><i class="fas fa-wind"></i></div>
@@ -616,9 +609,12 @@ function updateACView() {
             const s = String(status).toLowerCase().trim();
             if (s) {
                 totalACs++;
-                // LOGIC UPDATE: Checks if text contains 'new' or 'old'
-                if (s.includes('new')) newACs++;
-                else if (s.includes('old')) oldACs++;
+                // Check if "new" is in the text
+                if (s.includes('new')) {
+                    newACs++;
+                } else if (s.includes('old')) {
+                    oldACs++;
+                }
             }
         });
     });
@@ -679,7 +675,6 @@ function renderACCell(val) {
         }
     }
     
-    // LOGIC UPDATE: Determine color based on content
     let cls = '';
     if (s.includes('new')) cls = 'ac-badge-new';
     else if (s.includes('old')) cls = 'ac-badge-old';
@@ -740,7 +735,6 @@ function renderACRoomCard(name, val) {
         }
     }
     
-    // LOGIC UPDATE: Determine color based on content
     let color = 'var(--dark)';
     if (s.includes('new')) color = 'var(--success)';
     else if (s.includes('old')) color = 'var(--warning)';
@@ -787,6 +781,7 @@ function calcDuration(start, end) {
     const s = new Date(start);
     const e = end ? new Date(end) : new Date();
     if (isNaN(s)) return null;
+    // FIXED SYNTAX ERROR HERE: Removed extra closing parenthesis
     return Math.max(0, Math.ceil((e - s) / (1000 * 60 * 60 * 24)));
 }
 
