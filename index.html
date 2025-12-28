@@ -62,25 +62,15 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Renovation Stats & Toggle */
-.dashboard-controls { text-align: center; margin: 20px 0; }
-.toggle-dashboard-btn {
-    background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white);
-    padding: 12px 30px; border-radius: var(--radius-xl); border: none; font-size: 1rem; font-weight: 600;
-    cursor: pointer; box-shadow: var(--shadow); transition: var(--transition); display: inline-flex; align-items: center; gap: 10px;
-}
-.toggle-dashboard-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.dashboard-wrapper { display: none; margin: 20px 0; }
-.dashboard-wrapper.show { display: block; animation: slideDown 0.4s ease; }
-@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+/* Renovation Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 20px 0; }
 @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
 
-.stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--secondary); cursor: pointer; }
+.stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--secondary); cursor: pointer; position: relative; overflow: hidden; }
 .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.stat-card.active-filter::after { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 10px; top: 10px; font-size: 1.2rem; opacity: 0.2; color: var(--dark); }
 .stat-card.total { border-left-color: var(--secondary); }
 .stat-card.renovated { border-left-color: var(--success); }
 .stat-card.half-renovated { border-left-color: var(--half); }
@@ -88,7 +78,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .stat-card.non-renovated { border-left-color: var(--danger); }
 .stat-card.new-ac { border-left-color: var(--success); }
 .stat-card.old-ac { border-left-color: var(--warning); }
-.stat-card:hover { background: rgba(52,152,219,0.05); }
 
 .stat-icon { width: 55px; height: 55px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
 .stat-card.total .stat-icon { background: rgba(52,152,219,0.15); color: var(--secondary); }
@@ -100,8 +89,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .stat-card.old-ac .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
 .stat-info h3 { font-size: 1.8rem; font-weight: 700; line-height: 1; color: var(--dark); }
 .stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
-
-/* Removed Chart CSS */
 
 .progress-section { padding: 10px 0 15px; }
 .progress-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
@@ -145,7 +132,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .status-half-renovated { background: rgba(155,89,182,0.15); color: var(--half); }
 .status-in-progress { background: rgba(243,156,18,0.15); color: var(--warning); }
 .status-non-renovated { background: rgba(231,76,60,0.15); color: var(--danger); }
-/* AC Badge Styles */
+
 .ac-badge-new { font-weight: 700; color: var(--success); text-transform: uppercase; }
 .ac-badge-old { font-weight: 700; color: var(--warning); text-transform: uppercase; }
 
@@ -175,9 +162,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .ac-room-item { background: var(--light); padding: 10px; border-radius: 8px; text-align: center; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center;}
 .ac-room-item .room-name { font-size: 0.7rem; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; }
 .ac-room-item .room-qty { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
-.ac-total { margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--gray-light); text-align: center; }
-.ac-total span { font-size: 0.85rem; color: var(--gray); }
-.ac-total strong { font-size: 1.5rem; color: var(--info); margin-left: 8px; }
 
 .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 .loading-overlay.hidden { display: none; }
@@ -240,40 +224,29 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
         <!-- RENOVATION TAB -->
         <div class="tab-content active" id="renovationTab">
-            <!-- Toggle Button -->
-            <div class="dashboard-controls">
-                <button class="toggle-dashboard-btn" onclick="toggleRenovationDashboard()">
-                    <i class="fas fa-chart-bar"></i> Show / Hide Dashboard Statistics
-                </button>
-            </div>
-
-            <!-- Stats Grid (Hidden by default) -->
-            <div class="dashboard-wrapper" id="renovationDashboard">
-                <div class="stats-grid">
-                    <div class="stat-card total">
-                        <div class="stat-icon"><i class="fas fa-home"></i></div>
-                        <div class="stat-info"><h3 id="totalVillas">0</h3><p>Total Villas</p></div>
-                    </div>
-                    <div class="stat-card renovated">
-                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                        <div class="stat-info"><h3 id="fullRenovated">0</h3><p>Full Renovated</p></div>
-                    </div>
-                    <div class="stat-card half-renovated">
-                        <div class="stat-icon"><i class="fas fa-adjust"></i></div>
-                        <div class="stat-info"><h3 id="halfRenovated">0</h3><p>Half Renovated</p></div>
-                    </div>
-                    <div class="stat-card in-progress">
-                        <div class="stat-icon"><i class="fas fa-tools"></i></div>
-                        <div class="stat-info"><h3 id="inProgress">0</h3><p>Under Renovation</p></div>
-                    </div>
-                    <div class="stat-card non-renovated">
-                        <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
-                        <div class="stat-info"><h3 id="nonRenovated">0</h3><p>Non Renovated</p></div>
-                    </div>
+            <!-- Dashboard Stats - Always Visible & Clickable -->
+            <div class="stats-grid">
+                <div class="stat-card total" onclick="filterRenovation('all')" title="Show All">
+                    <div class="stat-icon"><i class="fas fa-home"></i></div>
+                    <div class="stat-info"><h3 id="totalVillas">0</h3><p>Total Villas</p></div>
+                </div>
+                <div class="stat-card renovated" onclick="filterRenovation('full')" title="Show Full Renovated">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info"><h3 id="fullRenovated">0</h3><p>Full Renovated</p></div>
+                </div>
+                <div class="stat-card half-renovated" onclick="filterRenovation('half')" title="Show Half Renovated">
+                    <div class="stat-icon"><i class="fas fa-adjust"></i></div>
+                    <div class="stat-info"><h3 id="halfRenovated">0</h3><p>Half Renovated</p></div>
+                </div>
+                <div class="stat-card in-progress" onclick="filterRenovation('progress')" title="Show Under Renovation">
+                    <div class="stat-icon"><i class="fas fa-tools"></i></div>
+                    <div class="stat-info"><h3 id="inProgress">0</h3><p>Under Renovation</p></div>
+                </div>
+                <div class="stat-card non-renovated" onclick="filterRenovation('non')" title="Show Non Renovated">
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="stat-info"><h3 id="nonRenovated">0</h3><p>Non Renovated</p></div>
                 </div>
             </div>
-            
-            <!-- Chart Removed as requested -->
 
             <div class="progress-section">
                 <div class="progress-card">
@@ -328,7 +301,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
 
         <!-- AC REPLACEMENT TAB -->
         <div class="tab-content" id="acTab">
-            <!-- New Dashboard for AC -->
+            <!-- Dashboard AC Stats -->
             <div class="stats-grid">
                 <div class="stat-card total">
                     <div class="stat-icon"><i class="fas fa-wind"></i></div>
@@ -401,12 +374,14 @@ td:first-child { font-weight: 600; color: var(--primary); }
 <script>
 const VALID_PASSWORD = 'villa2024';
 const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
+// RENOVATION URL uses gid=0 (Sheet 1)
 const RENOVATION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=0`;
-const AC_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=1`;
+// AC URL uses gid=1 (Sheet 2). If this doesn't work, check your Google Sheet URL.
+const AC_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=7537460`;
 
 let renovationData = [];
 let acData = [];
-// Chart instance removed as chart is removed
+let currentFilter = 'all'; // 'all', 'full', 'half', 'progress', 'non'
 
 document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('villaLoggedIn') === 'true') showMainContent();
@@ -484,7 +459,7 @@ async function fetchACData() {
             return {
                 id: i,
                 villaNo: getVal(c, 0),
-                // Storing as STRING instead of Number (e.g., "New", "Old")
+                // Reading as text
                 lvr: getVal(c, 1),
                 sitting: getVal(c, 2),
                 office: getVal(c, 3),
@@ -499,8 +474,14 @@ async function fetchACData() {
                 patio: getVal(c, 12)
             };
         }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa'));
+        
+        if (acData.length === 0) {
+            showToast('Warning: No AC Data found in Sheet2 (gid=1). Check sheet settings.', 'error');
+        }
+
     } catch (e) {
         console.error('AC data fetch error:', e);
+        showToast('Error fetching AC Data. Check URL.', 'error');
     }
 }
 
@@ -510,9 +491,20 @@ function getVal(cells, i) {
     return c.f || c.v || '';
 }
 
-function toggleRenovationDashboard() {
-    const dashboard = document.getElementById('renovationDashboard');
-    dashboard.classList.toggle('show');
+// Filter Function
+function filterRenovation(type) {
+    currentFilter = type;
+    
+    // Highlight the active card
+    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active-filter'));
+    if(type === 'all') document.querySelector('.stat-card.total').classList.add('active-filter');
+    if(type === 'full') document.querySelector('.stat-card.renovated').classList.add('active-filter');
+    if(type === 'half') document.querySelector('.stat-card.half-renovated').classList.add('active-filter');
+    if(type === 'progress') document.querySelector('.stat-card.in-progress').classList.add('active-filter');
+    if(type === 'non') document.querySelector('.stat-card.non-renovated').classList.add('active-filter');
+
+    renderRenovationTable();
+    renderRenovationCards();
 }
 
 function updateRenovationView() {
@@ -537,15 +529,26 @@ function updateRenovationView() {
         document.getElementById('progressNon').style.width = (t > 0 ? non / t * 100 : 0) + '%';
     }, 300);
     
-    // Chart update code removed
-    
     renderRenovationTable();
     renderRenovationCards();
 }
 
 function renderRenovationTable() {
     const tbody = document.getElementById('renovationTable');
-    tbody.innerHTML = renovationData.map(i => `
+    
+    // Apply Filter
+    let dataToShow = renovationData;
+    if (currentFilter === 'full') dataToShow = renovationData.filter(i => isFullRenovated(i.status));
+    else if (currentFilter === 'half') dataToShow = renovationData.filter(i => isHalfRenovated(i.status));
+    else if (currentFilter === 'progress') dataToShow = renovationData.filter(i => isInProgress(i.status));
+    else if (currentFilter === 'non') dataToShow = renovationData.filter(i => isNonRenovated(i.status));
+
+    if(dataToShow.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No data found for this filter.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = dataToShow.map(i => `
         <tr>
             <td>Villa ${i.villaNo}</td>
             <td><span class="status-badge ${getStatusClass(i.status)}">${i.status || 'N/A'}</span></td>
@@ -559,7 +562,20 @@ function renderRenovationTable() {
 
 function renderRenovationCards() {
     const cards = document.getElementById('villaCards');
-    cards.innerHTML = renovationData.map(i => {
+
+    // Apply Filter
+    let dataToShow = renovationData;
+    if (currentFilter === 'full') dataToShow = renovationData.filter(i => isFullRenovated(i.status));
+    else if (currentFilter === 'half') dataToShow = renovationData.filter(i => isHalfRenovated(i.status));
+    else if (currentFilter === 'progress') dataToShow = renovationData.filter(i => isInProgress(i.status));
+    else if (currentFilter === 'non') dataToShow = renovationData.filter(i => isNonRenovated(i.status));
+
+    if(dataToShow.length === 0) {
+        cards.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:20px; color:var(--gray);">No data found for this filter.</p>`;
+        return;
+    }
+
+    cards.innerHTML = dataToShow.map(i => {
         const dur = calcDuration(i.startDate, i.endDate);
         return `<div class="villa-card">
             <div class="villa-card-header ${getHeaderClass(i.status)}">
@@ -762,7 +778,7 @@ function switchACView(view) {
 }
 
 function exportData() {
-    // Renovation Sheet (Original logic is fine)
+    // Always export ALL data, not filtered
     const ws1 = XLSX.utils.json_to_sheet(renovationData.map(i => ({
         'Villa': i.villaNo,
         'Status': i.status,
@@ -772,7 +788,6 @@ function exportData() {
         'Remarks': i.remarks
     })));
     
-    // AC Sheet (Modified to export raw strings "New"/"Old" instead of 0)
     const ws2 = XLSX.utils.json_to_sheet(acData.map(i => ({
         'Villa': i.villaNo,
         'LVR': i.lvr,
@@ -812,7 +827,7 @@ window.switchView = switchView;
 window.switchACView = switchACView;
 window.logout = logout;
 window.exportData = exportData;
-window.toggleRenovationDashboard = toggleRenovationDashboard;
+window.filterRenovation = filterRenovation;
 </script>
 </body>
 </html>
