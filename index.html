@@ -22,6 +22,19 @@ html { scroll-behavior: smooth; }
 body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: var(--dark); line-height: 1.6; }
 .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
+/* Print Styles */
+@media print {
+    .header-actions, .tab-navigation, .view-toggle-section, .stats-grid, .login-overlay, .loading-overlay, .toast, .header-btn { display: none !important; }
+    .header { position: static; box-shadow: none; background: none; padding: 0; }
+    .container { max-width: 100%; padding: 0; }
+    body { background: white; color: black; -webkit-print-color-adjust: exact; }
+    .table-wrapper { box-shadow: none; overflow: visible; }
+    table { min-width: 100%; font-size: 10px; }
+    .villa-card, .ac-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; page-break-inside: avoid; }
+    /* Show filtered rows in print */
+    tr, .villa-card, .ac-card { display: table-row !important; display: flex !important; } 
+}
+
 .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.5s ease; }
 .login-overlay.hidden { opacity: 0; pointer-events: none; }
 .login-box { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-lg); width: 90%; max-width: 400px; text-align: center; }
@@ -47,8 +60,16 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .logo-text h1 { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 .logo-text span { font-size: 0.75rem; color: var(--gray); }
 .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* Search Bar Style */
+.search-container { position: relative; display: flex; align-items: center; }
+.search-container i { position: absolute; left: 14px; color: var(--gray); }
+#searchInput { padding: 9px 14px 9px 36px; border: 1px solid var(--gray-light); border-radius: var(--radius-xl); font-size: 0.85rem; font-family: inherit; width: 180px; transition: var(--transition); outline: none; }
+#searchInput:focus { border-color: var(--secondary); width: 220px; }
+
 .header-btn { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border: none; border-radius: var(--radius-xl); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; }
 .refresh-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
+.sheet-btn { background: linear-gradient(135deg, #e67e22, #f39c12); color: var(--white); }
 .export-btn { background: linear-gradient(135deg, var(--success), var(--success-light)); color: var(--white); }
 .logout-btn { background: var(--gray-light); color: var(--gray); }
 .logout-btn:hover { background: var(--danger); color: white; }
@@ -70,9 +91,7 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 
 .stat-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--secondary); cursor: pointer; position: relative; overflow: hidden; }
 .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-/* Active Filter Checkmark */
 .stat-card.active-filter::after { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 10px; top: 10px; font-size: 1.2rem; opacity: 0.2; color: var(--dark); }
-
 .stat-card.total { border-left-color: var(--secondary); }
 .stat-card.renovated { border-left-color: var(--success); }
 .stat-card.half-renovated { border-left-color: var(--half); }
@@ -91,26 +110,6 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .stat-card.old-ac .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
 .stat-info h3 { font-size: 1.8rem; font-weight: 700; line-height: 1; color: var(--dark); }
 .stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
-
-.progress-section { padding: 10px 0 15px; }
-.progress-card { background: rgba(255,255,255,0.95); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
-.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.progress-header h2 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--dark); }
-.progress-header h2 i { color: var(--secondary); }
-.progress-percentage { font-size: 1.6rem; font-weight: 700; color: var(--success); }
-.progress-bar-container { background: var(--gray-light); border-radius: var(--radius-xl); height: 24px; overflow: hidden; display: flex; }
-.progress-segment { height: 100%; transition: width 1.5s ease; }
-.progress-segment.full { background: var(--success); }
-.progress-segment.half { background: var(--half); }
-.progress-segment.under { background: var(--warning); }
-.progress-segment.non { background: var(--danger); }
-.legend { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 15px; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
-.legend-color { width: 14px; height: 14px; border-radius: 4px; }
-.legend-color.full { background: var(--success); }
-.legend-color.half { background: var(--half); }
-.legend-color.under { background: var(--warning); }
-.legend-color.non { background: var(--danger); }
 
 .view-toggle-section { padding: 12px 0; }
 .view-toggle { display: flex; gap: 6px; background: rgba(255,255,255,0.95); padding: 5px; border-radius: var(--radius); box-shadow: var(--shadow); width: fit-content; }
@@ -207,6 +206,15 @@ td:first-child { font-weight: 600; color: var(--primary); }
                 </div>
             </div>
             <div class="header-actions">
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search Villa..." onkeyup="handleSearch()">
+                </div>
+                
+                <!-- Open Sheet Button -->
+                <button onclick="openSheet()" class="header-btn sheet-btn"><i class="fas fa-table"></i> Open Sheet</button>
+                
                 <button id="refreshBtn" class="header-btn refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                 <button onclick="exportData()" class="header-btn export-btn"><i class="fas fa-file-excel"></i> Export</button>
                 <button class="header-btn logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -250,26 +258,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
                 </div>
             </div>
 
-            <div class="progress-section">
-                <div class="progress-card">
-                    <div class="progress-header">
-                        <h2><i class="fas fa-tasks"></i> Renovation Progress</h2>
-                        <span class="progress-percentage" id="progressPercent">0%</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-segment full" id="progressFull" style="width:0%"></div>
-                        <div class="progress-segment half" id="progressHalf" style="width:0%"></div>
-                        <div class="progress-segment under" id="progressUnder" style="width:0%"></div>
-                        <div class="progress-segment non" id="progressNon" style="width:0%"></div>
-                    </div>
-                    <div class="legend">
-                        <div class="legend-item"><span class="legend-color full"></span>Full Renovated</div>
-                        <div class="legend-item"><span class="legend-color half"></span>Half Renovated</div>
-                        <div class="legend-item"><span class="legend-color under"></span>Under Renovation</div>
-                        <div class="legend-item"><span class="legend-color non"></span>Non Renovated</div>
-                    </div>
-                </div>
-            </div>
+            <!-- Progress Section Removed as per request -->
 
             <div class="view-toggle-section">
                 <div class="view-toggle">
@@ -414,6 +403,10 @@ function logout() {
     location.reload();
 }
 
+function openSheet() {
+    window.open(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`, '_blank');
+}
+
 async function fetchAllData() {
     showLoading(true);
     try {
@@ -524,27 +517,51 @@ function filterAC(type) {
     renderACCards();
 }
 
+// Search Function
+function handleSearch() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    
+    // Search Renovation Table
+    const renRows = document.querySelectorAll('#renovationTable tr');
+    renRows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+
+    // Search Renovation Cards
+    const renCards = document.querySelectorAll('#villaCards .villa-card');
+    renCards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+    });
+
+    // Search AC Table
+    const acRows = document.querySelectorAll('#acTable tr');
+    acRows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+
+    // Search AC Cards
+    const acCards = document.querySelectorAll('#acCards .ac-card');
+    acCards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+    });
+}
+
 function updateRenovationView() {
     const full = renovationData.filter(i => isFullRenovated(i.status)).length;
     const half = renovationData.filter(i => isHalfRenovated(i.status)).length;
     const prog = renovationData.filter(i => isInProgress(i.status)).length;
     const non = renovationData.filter(i => isNonRenovated(i.status)).length;
-    const pct = renovationData.length > 0 ? Math.round(((full + half * 0.5) / renovationData.length) * 100) : 0;
+    // Calculation removed as progress bar is removed
     
     document.getElementById('totalVillas').textContent = renovationData.length;
     document.getElementById('fullRenovated').textContent = full;
     document.getElementById('halfRenovated').textContent = half;
     document.getElementById('inProgress').textContent = prog;
     document.getElementById('nonRenovated').textContent = non;
-    document.getElementById('progressPercent').textContent = pct + '%';
-    
-    setTimeout(() => {
-        const t = renovationData.length;
-        document.getElementById('progressFull').style.width = (t > 0 ? full / t * 100 : 0) + '%';
-        document.getElementById('progressHalf').style.width = (t > 0 ? half / t * 100 : 0) + '%';
-        document.getElementById('progressUnder').style.width = (t > 0 ? prog / t * 100 : 0) + '%';
-        document.getElementById('progressNon').style.width = (t > 0 ? non / t * 100 : 0) + '%';
-    }, 300);
     
     renderRenovationTable();
     renderRenovationCards();
@@ -650,7 +667,7 @@ function updateACView() {
 function renderACTable() {
     const tbody = document.getElementById('acTable');
     
-    // Filter Rows: Only show villas that have the selected filter type
+    // Filter Rows: Only show villas that have selected filter type
     let rowsToShow = acData;
     if (currentACFilter !== 'all') {
         rowsToShow = acData.filter(villa => {
@@ -898,6 +915,8 @@ window.logout = logout;
 window.exportData = exportData;
 window.filterRenovation = filterRenovation;
 window.filterAC = filterAC;
+window.handleSearch = handleSearch;
+window.openSheet = openSheet;
 </script>
 </body>
 </html>
