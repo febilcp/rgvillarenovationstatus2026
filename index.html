@@ -149,7 +149,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .villa-card-body .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--gray-light); font-size: 0.9rem; }
 .villa-card-body .info-row:last-child { border-bottom: none; }
 .villa-card-body .label { color: var(--gray); display: flex; align-items: center; gap: 6px; }
-.villa-card-body .value { font-weight: 600; color: var(--dark); }
+.villa-card-body .value { font-weight: 600; color: var(--dark); word-break: break-word; }
 .villa-card-body .value.cost { color: var(--cost); }
 
 .ac-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 20px 0; }
@@ -272,6 +272,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
                                 <th>Duration</th>
                                 <th>Date</th>
                                 <th>Remarks</th>
+                                <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody id="renovationTable"></tbody>
@@ -428,7 +429,8 @@ async function fetchRenovationData() {
                 remarks: getVal(c, 3),
                 cost: parseFloat(String(getVal(c, 4)).replace(/[^0-9.-]/g, '')) || 0,
                 startDate: getVal(c, 5),
-                endDate: getVal(c, 6)
+                endDate: getVal(c, 6),
+                notes: getVal(c, 7) // Added Notes column (Index 7)
             };
         }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa no'));
     } catch (e) {
@@ -540,7 +542,7 @@ function renderRenovationTable() {
     else if (currentFilter === 'non') dataToShow = renovationData.filter(i => isNonRenovated(i.status));
 
     if(dataToShow.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No data found for this filter.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No data found for this filter.</td></tr>`;
         return;
     }
 
@@ -552,6 +554,7 @@ function renderRenovationTable() {
             <td>${calcDuration(i.startDate, i.endDate) || '-'} days</td>
             <td>${i.dateRenovated || '-'}</td>
             <td>${i.remarks || '-'}</td>
+            <td>${i.notes || '-'}</td>
         </tr>
     `).join('');
 }
@@ -592,6 +595,10 @@ function renderRenovationCards() {
                     <span class="label"><i class="fas fa-calendar"></i> Date</span>
                     <span class="value">${i.dateRenovated || '-'}</span>
                 </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-sticky-note"></i> Notes</span>
+                    <span class="value">${i.notes || '-'}</span>
+                </div>
             </div>
         </div>`;
     }).join('');
@@ -607,7 +614,6 @@ function updateACView() {
         
         rooms.forEach(status => {
             const s = String(status).toUpperCase().trim();
-            // Skip "X" in calculation completely
             if (s && s !== 'X') {
                 totalACs++;
                 if (s.includes('NEW')) newACs++;
@@ -633,7 +639,7 @@ function renderACTable() {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
             return rooms.some(r => {
                 const s = String(r).toUpperCase().trim();
-                if (s === 'X') return false; // Hide 'X' from filter logic
+                if (s === 'X') return false;
                 return s.includes(currentACFilter.toUpperCase());
             });
         });
@@ -664,10 +670,8 @@ function renderACTable() {
 }
 
 function renderACCell(val) {
-    if(!val) return `<td style="text-align:center; color:#ccc;">-</td>`;
     const s = String(val).toUpperCase().trim();
-    // If 'X', return completely empty cell
-    if (s === 'X') return `<td></td>`;
+    if (s === 'X') return `<td style="text-align:center;"></td>`;
     
     let style = '';
     
@@ -694,7 +698,7 @@ function renderACCards() {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
             return rooms.some(r => {
                 const s = String(r).toUpperCase().trim();
-                if (s === 'X') return false; // Hide 'X' from filter logic
+                if (s === 'X') return false;
                 return s.includes(currentACFilter.toUpperCase());
             });
         });
@@ -731,10 +735,7 @@ function renderACCards() {
 }
 
 function renderACRoomCard(name, val) {
-    if(!val) return `<div class="ac-room-item" style="opacity:0.5"><div class="room-name">${name}</div><div class="room-qty">-</div></div>`;
     const s = String(val).toUpperCase().trim();
-    
-    // If 'X', hide room completely (invisible placeholder to keep grid)
     if (s === 'X') return `<div class="ac-room-item" style="visibility: hidden;"></div>`;
     
     let style = '';
@@ -842,7 +843,8 @@ function exportData() {
         'Cost': i.cost,
         'Start': i.startDate,
         'End': i.endDate,
-        'Remarks': i.remarks
+        'Remarks': i.remarks,
+        'Notes': i.notes
     })));
     
     const ws2 = XLSX.utils.json_to_sheet(acData.map(i => ({
