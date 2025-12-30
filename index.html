@@ -163,6 +163,11 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .ac-room-item .room-name { font-size: 0.7rem; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; }
 .ac-room-item .room-qty { font-size: 0.75rem; font-weight: 700; text-transform: none; line-height: 1.2; word-wrap: break-word; }
 
+/* Styles for Total Qty Summary in Cards */
+.ac-summary-row { display: flex; justify-content: space-between; align-items: center; background: rgba(236, 240, 241, 0.05); border-radius: 8px; padding: 10px; margin-bottom: 15px; border-bottom: 1px dashed var(--gray-light); width: 100%; grid-column: 1 / -1; }
+.ac-summary-row .label { font-size: 0.9rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+.ac-summary-row .badge { background: var(--info); color: white; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-xl); font-size: 1.1rem; }
+
 .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 .loading-overlay.hidden { display: none; }
 .loader { text-align: center; color: white; }
@@ -331,6 +336,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
                                 <th>SQ</th>
                                 <th>Store</th>
                                 <th>Patio</th>
+                                <th>Total Qty</th>
                             </tr>
                         </thead>
                         <tbody id="acTable"></tbody>
@@ -430,7 +436,7 @@ async function fetchRenovationData() {
                 cost: parseFloat(String(getVal(c, 4)).replace(/[^0-9.-]/g, '')) || 0,
                 startDate: getVal(c, 5),
                 endDate: getVal(c, 6),
-                notes: getVal(c, 7) // Added Notes column (Index 7)
+                notes: getVal(c, 7)
             };
         }).filter(r => r.villaNo && !String(r.villaNo).toLowerCase().includes('villa no'));
     } catch (e) {
@@ -614,6 +620,7 @@ function updateACView() {
         
         rooms.forEach(status => {
             const s = String(status).toUpperCase().trim();
+            // Skip "X" in calculation completely
             if (s && s !== 'X') {
                 totalACs++;
                 if (s.includes('NEW')) newACs++;
@@ -631,6 +638,21 @@ function updateACView() {
     renderACCards();
 }
 
+// Helper function to count Total Qty for a specific Villa object
+function getVillaTotal(villa) {
+    let count = 0;
+    const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
+    
+    rooms.forEach(status => {
+        const s = String(status).toUpperCase().trim();
+        // Keep existing X check
+        if (s && s !== 'X') {
+            count++;
+        }
+    });
+    return count;
+}
+
 function renderACTable() {
     const tbody = document.getElementById('acTable');
     let rowsToShow = acData;
@@ -639,14 +661,14 @@ function renderACTable() {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
             return rooms.some(r => {
                 const s = String(r).toUpperCase().trim();
-                if (s === 'X') return false;
+                if (s === 'X') return false; // Hide 'X' from filter logic
                 return s.includes(currentACFilter.toUpperCase());
             });
         });
     }
     
     if(rowsToShow.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="13" style="text-align:center; padding: 20px;">No data found for this filter.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="14" style="text-align:center; padding: 20px;">No data found for this filter.</td></tr>`;
         return;
     }
 
@@ -665,6 +687,9 @@ function renderACTable() {
             ${renderACCell(i.sq)}
             ${renderACCell(i.store)}
             ${renderACCell(i.patio)}
+            <td style="text-align:center; font-weight: 700; color: var(--dark); background: var(--light);">
+                ${getVillaTotal(i)}
+            </td>
         </tr>
     `).join('');
 }
@@ -674,7 +699,6 @@ function renderACCell(val) {
     if (s === 'X') return `<td style="text-align:center;"></td>`;
     
     let style = '';
-    
     if (currentACFilter !== 'all') {
         if (s.includes(currentACFilter.toUpperCase())) {
             style = 'font-weight: 900; font-size: 1rem; transform: scale(1.05);';
@@ -698,7 +722,7 @@ function renderACCards() {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
             return rooms.some(r => {
                 const s = String(r).toUpperCase().trim();
-                if (s === 'X') return false;
+                if (s === 'X') return false; // Hide 'X' from filter logic
                 return s.includes(currentACFilter.toUpperCase());
             });
         });
@@ -715,6 +739,10 @@ function renderACCards() {
                 <h3><i class="fas fa-wind"></i> Villa ${i.villaNo}</h3>
             </div>
             <div class="ac-card-body">
+                <div class="ac-summary-row">
+                     <span class="label"><i class="fas fa-wind"></i> Total ACs</span>
+                     <span class="badge">${getVillaTotal(i)}</span>
+                </div>
                 <div class="ac-room-grid">
                     ${renderACRoomCard('LVR', i.lvr)}
                     ${renderACRoomCard('Sitting', i.sitting)}
@@ -860,7 +888,8 @@ function exportData() {
         'Kitchen': i.kitchen,
         'SQ': i.sq,
         'Store': i.store,
-        'Patio': i.patio
+        'Patio': i.patio,
+        'Total Qty': getVillaTotal(i)
     })));
     
     const wb = XLSX.utils.book_new();
