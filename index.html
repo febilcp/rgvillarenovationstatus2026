@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Villa Compound Renovation & AC Tracker</title>
+    <title>Villa Compound, AC & Maintenance Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -69,6 +69,7 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .header-btn { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border: none; border-radius: var(--radius-xl); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; }
 .refresh-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
 .sheet-btn { background: linear-gradient(135deg, #e67e22, #f39c12); color: var(--white); }
+.website-btn { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; } /* New color for website link */
 .export-btn { background: linear-gradient(135deg, var(--success), var(--success-light)); color: var(--white); }
 .logout-btn { background: var(--gray-light); color: var(--gray); }
 .logout-btn:hover { background: var(--danger); color: white; }
@@ -82,9 +83,9 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Renovation Stats */
-.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 20px 0; }
-@media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Stats Grid */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+@media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
 
@@ -98,6 +99,9 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .stat-card.non-renovated { border-left-color: var(--danger); }
 .stat-card.new-ac { border-left-color: var(--success); }
 .stat-card.old-ac { border-left-color: var(--warning); }
+.stat-card.open-ticket { border-left-color: var(--info); }
+.stat-card.pending-ticket { border-left-color: var(--warning); }
+.stat-card.completed-ticket { border-left-color: var(--success); }
 
 .stat-icon { width: 55px; height: 55px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
 .stat-card.total .stat-icon { background: rgba(52,152,219,0.15); color: var(--secondary); }
@@ -107,6 +111,9 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .stat-card.non-renovated .stat-icon { background: rgba(231,76,60,0.15); color: var(--danger); }
 .stat-card.new-ac .stat-icon { background: rgba(39,174,96,0.15); color: var(--success); }
 .stat-card.old-ac .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
+.stat-card.open-ticket .stat-icon { background: rgba(23,162,184,0.15); color: var(--info); }
+.stat-card.pending-ticket .stat-icon { background: rgba(243,156,18,0.15); color: var(--warning); }
+.stat-card.completed-ticket .stat-icon { background: rgba(39,174,96,0.15); color: var(--success); }
 .stat-info h3 { font-size: 1.8rem; font-weight: 700; line-height: 1; color: var(--dark); }
 .stat-info p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
 
@@ -136,20 +143,21 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .ac-badge-new { font-weight: 700; color: var(--success); text-transform: none; }
 .ac-badge-old { font-weight: 700; color: var(--warning); text-transform: none; }
 
-.villa-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
-.villa-card { background: rgba(255,255,255,0.98); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; }
-.villa-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.villa-card-header { padding: 18px; display: flex; justify-content: space-between; align-items: center; }
+.villa-cards, .ticket-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+.villa-card, .ticket-card { background: rgba(255,255,255,0.98); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; }
+.villa-card:hover, .ticket-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.villa-card-header, .ticket-card-header { padding: 18px; display: flex; justify-content: space-between; align-items: center; }
 .villa-card-header.full-renovated { background: linear-gradient(135deg, var(--success), #2ecc71); color: white; }
 .villa-card-header.half-renovated { background: linear-gradient(135deg, var(--half), #a855f7); color: white; }
 .villa-card-header.in-progress { background: linear-gradient(135deg, var(--warning), #e67e22); color: white; }
 .villa-card-header.non-renovated { background: linear-gradient(135deg, var(--danger), #c0392b); color: white; }
-.villa-card-header h3 { font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
-.villa-card-body { padding: 18px; }
-.villa-card-body .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--gray-light); font-size: 0.9rem; }
-.villa-card-body .info-row:last-child { border-bottom: none; }
-.villa-card-body .label { color: var(--gray); display: flex; align-items: center; gap: 6px; }
-.villa-card-body .value { font-weight: 600; color: var(--dark); word-break: break-word; }
+.ticket-card-header { background: linear-gradient(135deg, var(--info), #3498db); color: white; }
+.villa-card-header h3, .ticket-card-header h3 { font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
+.villa-card-body, .ticket-card-body { padding: 18px; }
+.villa-card-body .info-row, .ticket-card-body .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--gray-light); font-size: 0.9rem; }
+.villa-card-body .info-row:last-child, .ticket-card-body .info-row:last-child { border-bottom: none; }
+.villa-card-body .label, .ticket-card-body .label { color: var(--gray); display: flex; align-items: center; gap: 6px; }
+.villa-card-body .value, .ticket-card-body .value { font-weight: 600; color: var(--dark); word-break: break-word; }
 .villa-card-body .value.cost { color: var(--cost); }
 
 .ac-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 20px 0; }
@@ -163,7 +171,6 @@ td:first-child { font-weight: 600; color: var(--primary); }
 .ac-room-item .room-name { font-size: 0.7rem; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; }
 .ac-room-item .room-qty { font-size: 0.75rem; font-weight: 700; text-transform: none; line-height: 1.2; word-wrap: break-word; }
 
-/* Styles for Total Qty Summary in Cards */
 .ac-summary-row { display: flex; justify-content: space-between; align-items: center; background: rgba(236, 240, 241, 0.05); border-radius: 8px; padding: 10px; margin-bottom: 15px; border-bottom: 1px dashed var(--gray-light); width: 100%; grid-column: 1 / -1; }
 .ac-summary-row .label { font-size: 0.9rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
 .ac-summary-row .badge { background: var(--info); color: white; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-xl); font-size: 1.1rem; }
@@ -183,14 +190,15 @@ td:first-child { font-weight: 600; color: var(--primary); }
 </head>
 <body>
 
+<!-- LOGIN MODAL -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-        <div class="logo-icon"><i class="fas fa-building"></i></div>
-        <h2>Villa Renovation Tracker</h2>
+        <div class="logo-icon"><i class="fas fa-tools"></i></div>
+        <h2>Dashboard Access</h2>
         <p>Enter password to access</p>
         <form id="loginForm">
             <div class="input-group">
-                <i class="fas fa-lock"></i>
+                <label><i class="fas fa-lock"></i></label>
                 <input type="password" id="passwordInput" placeholder="Enter Password" required>
             </div>
             <button type="submit" class="login-btn">Login</button>
@@ -199,24 +207,27 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </div>
 </div>
 
+<!-- MAIN DASHBOARD -->
 <div class="main-content" id="mainContent">
     <header class="header">
         <div class="container">
             <div class="logo">
                 <i class="fas fa-building"></i>
                 <div class="logo-text">
-                    <h1>Villa Compound Tracker</h1>
-                    <span>Renovation & AC Management</span>
+                    <h1>Villa Compound & Maintenance Tracker</h1>
+                    <span>Renovation, AC & Tickets</span>
                 </div>
             </div>
             <div class="header-actions">
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search Villa..." onkeyup="handleSearch()">
+                    <input type="text" id="searchInput" placeholder="Search..." onkeyup="handleGlobalSearch()">
                 </div>
                 
+                <!-- YOUR WEBSITE LINK BUTTON -->
+                <button onclick="openTicketWebsite()" class="header-btn website-btn"><i class="fas fa-external-link-alt"></i> Open Ticketrack</button>
+
                 <button onclick="openSheet()" class="header-btn sheet-btn"><i class="fas fa-table"></i> Open Sheet</button>
-                
                 <button id="refreshBtn" class="header-btn refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                 <button onclick="exportData()" class="header-btn export-btn"><i class="fas fa-file-excel"></i> Export</button>
                 <button class="header-btn logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -227,10 +238,13 @@ td:first-child { font-weight: 600; color: var(--primary); }
     <div class="container">
         <div class="tab-navigation">
             <button class="tab-btn active" onclick="switchTab('renovation')">
-                <i class="fas fa-tools"></i> Renovation Status
+                <i class="fas fa-home"></i> Renovation Status
             </button>
             <button class="tab-btn" onclick="switchTab('ac')">
                 <i class="fas fa-wind"></i> AC Replacement
+            </button>
+            <button class="tab-btn" onclick="switchTab('maintenance')">
+                <i class="fas fa-ticket-alt"></i> Maintenance Tickets
             </button>
         </div>
 
@@ -348,9 +362,56 @@ td:first-child { font-weight: 600; color: var(--primary); }
                 <div class="ac-cards" id="acCards"></div>
             </div>
         </div>
+
+        <!-- MAINTENANCE TICKETS TAB -->
+        <div class="tab-content" id="maintenanceTab">
+            <div class="stats-grid">
+                <div class="stat-card total open-ticket" onclick="filterMaintenance('all')" title="Show All">
+                    <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-info"><h3 id="totalTickets">0</h3><p>Open Tickets</p></div>
+                </div>
+                <div class="stat-card pending-ticket" onclick="filterMaintenance('pending')" title="Show Pending">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info"><h3 id="pendingTickets">0</h3><p>Pending</p></div>
+                </div>
+                <div class="stat-card completed-ticket" onclick="filterMaintenance('completed')" title="Show Completed">
+                    <div class="stat-icon"><i class="fas fa-check-double"></i></div>
+                    <div class="stat-info"><h3 id="completedTickets">0</h3><p>Completed</p></div>
+                </div>
+                <div class="stat-card total" style="visibility: hidden; height: 0; padding: 0;"></div>
+            </div>
+
+            <div class="view-toggle-section">
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchMaintenanceView('table')"><i class="fas fa-table"></i> Table</button>
+                </div>
+            </div>
+
+            <div class="view-content active" id="maintenanceTableView">
+                <div class="table-wrapper">
+                    <table class="ticket-table">
+                        <thead>
+                            <tr>
+                                <th>Ticket No</th>
+                                <th>Villa</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="maintenanceTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="view-content" id="maintenanceCardsView">
+                <div class="ticket-cards" id="maintenanceCards"></div>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- LOADING & TOAST -->
 <div class="loading-overlay" id="loadingOverlay">
     <div class="loader">
         <i class="fas fa-spinner"></i>
@@ -367,11 +428,15 @@ const VALID_PASSWORD = 'villa2024';
 const SHEET_ID = '1NQguf6umaBIgBmPDu3EYqQXBW6Ovo6pcoTkalDSUlnk';
 const RENOVATION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=0`;
 const AC_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=7537460`;
+const MAINTENANCE_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=0`; // Fallback for internal fetching
 
 let renovationData = [];
 let acData = [];
+let maintenanceData = [];
+
 let currentFilter = 'all'; 
 let currentACFilter = 'all';
+let currentMaintenanceFilter = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('villaLoggedIn') === 'true') showMainContent();
@@ -401,6 +466,11 @@ function logout() {
     location.reload();
 }
 
+// --- NEW: OPEN EXTERNAL WEBSITE LINK ---
+function openTicketWebsite() {
+    window.open('https://febilcp.github.io/ticketrack/', '_blank');
+}
+
 function openSheet() {
     window.open(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`, '_blank');
 }
@@ -408,13 +478,37 @@ function openSheet() {
 async function fetchAllData() {
     showLoading(true);
     try {
+        // Fetch Renovation & AC
         await Promise.all([fetchRenovationData(), fetchACData()]);
         updateRenovationView();
         updateACView();
-        showToast('Data loaded successfully', 'success');
+        
+        // Fetch Maintenance (from Sheet 3, if linked)
+        try {
+            const res = await fetch(MAINTENANCE_URL);
+            const text = await res.text();
+            const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+            maintenanceData = json.table.rows.map((row, i) => {
+                const c = row.c;
+                return {
+                    id: i,
+                    ticketNo: getVal(c, 0),
+                    villa: getVal(c, 1),
+                    description: getVal(c, 2),
+                    date: getVal(c, 3),
+                    status: getVal(c, 4)
+                };
+            }).filter(r => r.ticketNo && !String(r.ticketNo).toLowerCase().includes('ticket no'));
+            updateMaintenanceView();
+        } catch (e) {
+            console.log('Maintenance sheet fetch failed or not configured:', e);
+            updateMaintenanceView(); // Clears table if fetch fails
+        }
+        
+        showToast('Villa data loaded', 'success');
     } catch (e) {
         console.error(e);
-        showToast('Error loading data', 'error');
+        showToast('Error loading Villa data', 'error');
     } finally {
         showLoading(false);
     }
@@ -479,6 +573,8 @@ function getVal(cells, i) {
     return c.f || c.v || '';
 }
 
+// --- FILTERS & RENDERERS ---
+
 function filterRenovation(type) {
     currentFilter = type;
     document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active-filter'));
@@ -501,8 +597,20 @@ function filterAC(type) {
     renderACCards();
 }
 
-function handleSearch() {
+function filterMaintenance(type) {
+    currentMaintenanceFilter = type;
+    document.querySelectorAll('#maintenanceTab .stat-card').forEach(c => c.classList.remove('active-filter'));
+    if(type === 'all') document.querySelector('#maintenanceTab .stat-card.open-ticket').classList.add('active-filter');
+    if(type === 'pending') document.querySelector('#maintenanceTab .stat-card.pending-ticket').classList.add('active-filter');
+    if(type === 'completed') document.querySelector('#maintenanceTab .stat-card.completed-ticket').classList.add('active-filter');
+    renderMaintenanceTable();
+    renderMaintenanceCards();
+}
+
+function handleGlobalSearch() {
     const query = document.getElementById('searchInput').value.toLowerCase();
+    
+    // Search Renovation
     const renRows = document.querySelectorAll('#renovationTable tr');
     renRows.forEach(row => {
         const text = row.innerText.toLowerCase();
@@ -513,6 +621,8 @@ function handleSearch() {
         const text = card.innerText.toLowerCase();
         card.style.display = text.includes(query) ? 'block' : 'none';
     });
+
+    // Search AC
     const acRows = document.querySelectorAll('#acTable tr');
     acRows.forEach(row => {
         const text = row.innerText.toLowerCase();
@@ -520,6 +630,18 @@ function handleSearch() {
     });
     const acCards = document.querySelectorAll('#acCards .ac-card');
     acCards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+    });
+
+    // Search Tickets
+    const ticketRows = document.querySelectorAll('#maintenanceTable tr');
+    ticketRows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+    const ticketCards = document.querySelectorAll('#maintenanceCards .ticket-card');
+    ticketCards.forEach(card => {
         const text = card.innerText.toLowerCase();
         card.style.display = text.includes(query) ? 'block' : 'none';
     });
@@ -620,7 +742,6 @@ function updateACView() {
         
         rooms.forEach(status => {
             const s = String(status).toUpperCase().trim();
-            // Skip "X" in calculation completely
             if (s && s !== 'X') {
                 totalACs++;
                 if (s.includes('NEW')) newACs++;
@@ -638,14 +759,12 @@ function updateACView() {
     renderACCards();
 }
 
-// Helper function to count Total Qty for a specific Villa object
 function getVillaTotal(villa) {
     let count = 0;
     const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
     
     rooms.forEach(status => {
         const s = String(status).toUpperCase().trim();
-        // Keep existing X check
         if (s && s !== 'X') {
             count++;
         }
@@ -661,7 +780,7 @@ function renderACTable() {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
             return rooms.some(r => {
                 const s = String(r).toUpperCase().trim();
-                if (s === 'X') return false; // Hide 'X' from filter logic
+                if (s === 'X') return false;
                 return s.includes(currentACFilter.toUpperCase());
             });
         });
@@ -699,6 +818,7 @@ function renderACCell(val) {
     if (s === 'X') return `<td style="text-align:center;"></td>`;
     
     let style = '';
+    
     if (currentACFilter !== 'all') {
         if (s.includes(currentACFilter.toUpperCase())) {
             style = 'font-weight: 900; font-size: 1rem; transform: scale(1.05);';
@@ -722,7 +842,7 @@ function renderACCards() {
             const rooms = [villa.lvr, villa.sitting, villa.office, villa.mbr1, villa.mbr2, villa.mbr3, villa.kids, villa.guest, villa.kitchen, villa.sq, villa.store, villa.patio];
             return rooms.some(r => {
                 const s = String(r).toUpperCase().trim();
-                if (s === 'X') return false; // Hide 'X' from filter logic
+                if (s === 'X') return false;
                 return s.includes(currentACFilter.toUpperCase());
             });
         });
@@ -782,6 +902,104 @@ function renderACRoomCard(name, val) {
     return `<div class="ac-room-item" style="${style}"><div class="room-name">${name}</div><div class="room-qty" style="color:${color}">${val}</div></div>`;
 }
 
+// --- MAINTENANCE VIEW UPDATES ---
+
+function updateMaintenanceView() {
+    // Note: maintenanceData is fetched from Sheet 3 (internal) in fetchAllData
+    // Or if user clicks "Open Ticketrack", that is an external link.
+    
+    if (maintenanceData.length > 0) {
+        const total = maintenanceData.length;
+        const pending = maintenanceData.filter(i => i.status.toLowerCase().includes('pending')).length;
+        const completed = maintenanceData.filter(i => i.status.toLowerCase().includes('completed')).length;
+        
+        document.getElementById('totalTickets').textContent = total;
+        document.getElementById('pendingTickets').textContent = pending;
+        document.getElementById('completedTickets').textContent = completed;
+        
+        renderMaintenanceTable();
+        renderMaintenanceCards();
+    } else {
+        // If no data (e.g., external link opened, or Sheet 3 not set)
+        document.getElementById('totalTickets').textContent = 0;
+        document.getElementById('pendingTickets').textContent = 0;
+        document.getElementById('completedTickets').textContent = 0;
+        renderMaintenanceTable(); // Show empty table
+        renderMaintenanceCards();
+    }
+}
+
+function renderMaintenanceTable() {
+    const tbody = document.getElementById('maintenanceTable');
+    let dataToShow = maintenanceData;
+
+    if (currentMaintenanceFilter === 'pending') {
+        dataToShow = maintenanceData.filter(i => i.status.toLowerCase().includes('pending'));
+    } else if (currentMaintenanceFilter === 'completed') {
+        dataToShow = maintenanceData.filter(i => i.status.toLowerCase().includes('completed'));
+    }
+
+    if(dataToShow.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px;">No tickets found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = dataToShow.map(i => {
+        const statusClass = i.status.toLowerCase().includes('pending') ? 'status-pending' : 'status-completed';
+        return `<tr>
+            <td>${i.ticketNo || '-'}</td>
+            <td>${i.villa || '-'}</td>
+            <td>${i.description || '-'}</td>
+            <td>${i.date || '-'}</td>
+            <td><span class="${statusClass}">${i.status || '-'}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+function renderMaintenanceCards() {
+    const cards = document.getElementById('maintenanceCards');
+    let dataToShow = maintenanceData;
+
+    if (currentMaintenanceFilter === 'pending') {
+        dataToShow = maintenanceData.filter(i => i.status.toLowerCase().includes('pending'));
+    } else if (currentMaintenanceFilter === 'completed') {
+        dataToShow = maintenanceData.filter(i => i.status.toLowerCase().includes('completed'));
+    }
+
+    if(dataToShow.length === 0) {
+        cards.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:20px; color:var(--gray);">No tickets found.</p>`;
+        return;
+    }
+
+    cards.innerHTML = dataToShow.map(i => {
+        const statusColor = i.status.toLowerCase().includes('pending') ? 'var(--warning)' : 'var(--success)';
+        const statusIcon = i.status.toLowerCase().includes('pending') ? 'fa-clock' : 'fa-check';
+        return `<div class="ticket-card">
+            <div class="ticket-card-header">
+                <h3><i class="fas fa-ticket-alt"></i> #${i.ticketNo || '?'}</h3>
+            </div>
+            <div class="ticket-card-body">
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-building"></i> Villa</span>
+                    <span class="value">${i.villa || '-'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-sticky-note"></i> Description</span>
+                    <span class="value">${i.description || '-'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-calendar"></i> Date</span>
+                    <span class="value">${i.date || '-'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fas fa-info-circle"></i> Status</span>
+                    <span class="value" style="color:${statusColor}; font-weight:700;">${i.status || 'N/A'}</span>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
 function isFullRenovated(s) {
     if (!s) return false;
     const x = String(s).toLowerCase();
@@ -830,9 +1048,12 @@ function switchTab(tab) {
     if (tab === 'renovation') {
         document.querySelectorAll('.tab-btn')[0].classList.add('active');
         document.getElementById('renovationTab').classList.add('active');
-    } else {
+    } else if (tab === 'ac') {
         document.querySelectorAll('.tab-btn')[1].classList.add('active');
         document.getElementById('acTab').classList.add('active');
+    } else if (tab === 'maintenance') {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('maintenanceTab').classList.add('active');
     }
 }
 
@@ -864,6 +1085,20 @@ function switchACView(view) {
     }
 }
 
+function switchMaintenanceView(view) {
+    const btns = document.querySelectorAll('#maintenanceTab .view-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    document.getElementById('maintenanceTableView').classList.remove('active');
+    document.getElementById('maintenanceCardsView').classList.remove('active');
+    if (view === 'table') {
+        btns[0].classList.add('active');
+        document.getElementById('maintenanceTableView').classList.add('active');
+    } else {
+        btns[0].classList.add('active');
+        document.getElementById('maintenanceCardsView').classList.add('active');
+    }
+}
+
 function exportData() {
     const ws1 = XLSX.utils.json_to_sheet(renovationData.map(i => ({
         'Villa': i.villaNo,
@@ -892,9 +1127,18 @@ function exportData() {
         'Total Qty': getVillaTotal(i)
     })));
     
+    const ws3 = XLSX.utils.json_to_sheet(maintenanceData.map(i => ({
+        'Ticket No': i.ticketNo,
+        'Villa': i.villa,
+        'Description': i.description,
+        'Date': i.date,
+        'Status': i.status
+    })));
+    
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws1, 'Renovation');
     XLSX.utils.book_append_sheet(wb, ws2, 'AC Replacement');
+    XLSX.utils.book_append_sheet(wb, ws3, 'Maintenance Tickets');
     XLSX.writeFile(wb, `Villa_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
     showToast('Exported successfully', 'success');
 }
@@ -913,12 +1157,15 @@ function showToast(msg, type = 'success') {
 window.switchTab = switchTab;
 window.switchView = switchView;
 window.switchACView = switchACView;
+window.switchMaintenanceView = switchMaintenanceView;
 window.logout = logout;
 window.exportData = exportData;
 window.filterRenovation = filterRenovation;
 window.filterAC = filterAC;
-window.handleSearch = handleSearch;
+window.filterMaintenance = filterMaintenance;
+window.handleGlobalSearch = handleGlobalSearch;
 window.openSheet = openSheet;
+window.openTicketWebsite = openTicketWebsite;
 </script>
 </body>
 </html>
