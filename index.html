@@ -60,11 +60,7 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .logo-text span { font-size: 0.75rem; color: var(--gray); }
 .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-/* Search Bar Style */
-.search-container { position: relative; display: flex; align-items: center; }
-.search-container i { position: absolute; left: 14px; color: var(--gray); }
-#searchInput { padding: 9px 14px 9px 36px; border: 1px solid var(--gray-light); border-radius: var(--radius-xl); font-size: 0.85rem; font-family: inherit; width: 180px; transition: var(--transition); outline: none; }
-#searchInput:focus { border-color: var(--secondary); width: 220px; }
+/* REMOVED Search Styles from here - MOVED TO TABS */
 
 .header-btn { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border: none; border-radius: var(--radius-xl); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; }
 .refresh-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
@@ -75,10 +71,54 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .logout-btn:hover { background: var(--danger); color: white; }
 .header-btn:hover { transform: translateY(-2px); }
 
-.tab-navigation { background: rgba(255,255,255,0.95); padding: 0; margin: 20px 0 0; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; }
-.tab-btn { flex:1; padding: 16px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
+.tab-navigation { 
+    background: rgba(255,255,255,0.95); 
+    padding: 20px; 
+    margin: 20px 0 0; 
+    border-radius: var(--radius); 
+    box-shadow: var(--shadow); 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px; 
+}
+.tab-btn { flex: 1; padding: 16px 20px; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 500; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); width: 100%; }
 .tab-btn:hover { background: var(--light); }
 .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: rgba(52,152,219,0.05); }
+
+/* NEW: Search Bar Inside Tab Area (Little Big Size) */
+.search-in-tab-container {
+    width: 100%;
+    max-width: 400px; /* Little big size */
+    position: relative;
+    background: white; /* Visible background against tab container */
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* Subtle inset shadow */
+}
+.search-in-tab-container i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+}
+#searchInput {
+    width: 100%; /* Fill container */
+    padding: 12px 12px 12px 40px; /* More padding for "Big Size" */
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    font-size: 1rem; /* Bigger text */
+    font-family: inherit;
+    outline: none;
+    background: transparent;
+    transition: var(--transition);
+}
+#searchInput:focus {
+    border-color: var(--secondary);
+    background: white;
+}
+
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -213,11 +253,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
                 </div>
             </div>
             <div class="header-actions">
-                <div class="search-container">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search..." onkeyup="handleGlobalSearch()">
-                </div>
-                
+                <!-- SEARCH BAR REMOVED FROM HERE -->
                 <button onclick="openSheet()" class="header-btn sheet-btn"><i class="fas fa-table"></i> Open Sheet</button>
                 <button id="refreshBtn" class="header-btn refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                 <button onclick="exportData()" class="header-btn export-btn"><i class="fas fa-file-excel"></i> Export</button>
@@ -227,15 +263,24 @@ td:first-child { font-weight: 600; color: var(--primary); }
     </header>
 
     <div class="container">
+        <!-- TAB NAVIGATION AREA (WITH SEARCH BAR LITTLE DOWN) -->
         <div class="tab-navigation">
+            <!-- NEW: SEARCH BAR PLACED HERE (Little Big Size) -->
+            <div class="search-in-tab-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search Villa, AC or Tickets..." onkeyup="handleGlobalSearch()">
+            </div>
+
+            <!-- TAB BUTTONS (Below Search) -->
             <button class="tab-btn active" onclick="switchTab('renovation')">
                 <i class="fas fa-home"></i> Renovation Status
             </button>
             <button class="tab-btn" onclick="switchTab('ac')">
                 <i class="fas fa-wind"></i> AC Replacement
             </button>
-            <!-- MOVED BUTTON TO TAB BAR (Placed after AC, as requested) -->
-            <button onclick="openTicketWebsite()" class="header-btn website-btn" title="Maintenance Records"><i class="fas fa-clipboard-list"></i> Maintenance Records</button>
+            <button onclick="openTicketWebsite()" class="tab-btn" style="color: #9b59b6;">
+                <i class="fas fa-clipboard-list"></i> Maintenance Records
+            </button>
         </div>
 
         <!-- RENOVATION TAB -->
@@ -418,7 +463,7 @@ function openSheet() {
 async function fetchAllData() {
     showLoading(true);
     try {
-        // Fetch Renovation & AC only
+        // Fetch Renovation & AC
         await Promise.all([fetchRenovationData(), fetchACData()]);
         updateRenovationView();
         updateACView();
@@ -515,14 +560,6 @@ function filterAC(type) {
 function handleGlobalSearch() {
     const query = document.getElementById('searchInput').value.toLowerCase();
     
-    // --- SMART HIDING OF MAINTENANCE RECORDS BUTTON ---
-    // Hides button when searching to prevent "wrong for search" clicks
-    const maintBtn = document.querySelector('.website-btn');
-    if (maintBtn) {
-        maintBtn.style.display = query.length > 0 ? 'none' : 'flex';
-    }
-    // -------------------------------------------------------------------
-
     // Search Renovation
     const renRows = document.querySelectorAll('#renovationTable tr');
     renRows.forEach(row => {
@@ -856,6 +893,7 @@ function switchTab(tab) {
         document.querySelectorAll('.tab-btn')[1].classList.add('active');
         document.getElementById('acTab').classList.add('active');
     }
+    // Note: Maintenance is the 3rd button (index 2), but it opens a link.
 }
 
 function switchView(view) {
