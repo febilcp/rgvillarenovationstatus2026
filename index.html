@@ -69,7 +69,8 @@ body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #
 .header-btn { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border: none; border-radius: var(--radius-xl); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; }
 .refresh-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
 .sheet-btn { background: linear-gradient(135deg, #e67e22, #f39c12); color: var(--white); }
-.website-btn { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
+/* Updated style for Maintenance Records Button */
+.website-btn { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; } 
 .export-btn { background: linear-gradient(135deg, var(--success), var(--success-light)); color: var(--white); }
 .logout-btn { background: var(--gray-light); color: var(--gray); }
 .logout-btn:hover { background: var(--danger); color: white; }
@@ -218,8 +219,8 @@ td:first-child { font-weight: 600; color: var(--primary); }
                     <input type="text" id="searchInput" placeholder="Search..." onkeyup="handleGlobalSearch()">
                 </div>
                 
-                <!-- Open Ticketrack Link Button -->
-                <button onclick="openTicketWebsite()" class="header-btn website-btn"><i class="fas fa-external-link-alt"></i> Open Ticketrack</button>
+                <!-- UPDATED BUTTON NAME -->
+                <button onclick="openTicketWebsite()" class="header-btn website-btn" title="Maintenance Records"><i class="fas fa-clipboard-list"></i> Maintenance Records</button>
 
                 <button onclick="openSheet()" class="header-btn sheet-btn"><i class="fas fa-table"></i> Open Sheet</button>
                 <button id="refreshBtn" class="header-btn refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -237,7 +238,7 @@ td:first-child { font-weight: 600; color: var(--primary); }
             <button class="tab-btn" onclick="switchTab('ac')">
                 <i class="fas fa-wind"></i> AC Replacement
             </button>
-            <!-- MAINTENANCE TICKETS TAB BUTTON REMOVED -->
+            <!-- MAINTENANCE TAB BUTTON REMOVED -->
         </div>
 
         <!-- RENOVATION TAB -->
@@ -420,7 +421,7 @@ function openSheet() {
 async function fetchAllData() {
     showLoading(true);
     try {
-        // Fetch Renovation & AC only
+        // Fetch Renovation & AC
         await Promise.all([fetchRenovationData(), fetchACData()]);
         updateRenovationView();
         updateACView();
@@ -713,7 +714,6 @@ function renderACCell(val) {
     if (s === 'X') return `<td style="text-align:center;"></td>`;
     
     let style = '';
-    
     if (currentACFilter !== 'all') {
         if (s.includes(currentACFilter.toUpperCase())) {
             style = 'font-weight: 900; font-size: 1rem; transform: scale(1.05);';
@@ -842,7 +842,6 @@ function calcDuration(start, end) {
 function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    
     if (tab === 'renovation') {
         document.querySelectorAll('.tab-btn')[0].classList.add('active');
         document.getElementById('renovationTab').classList.add('active');
